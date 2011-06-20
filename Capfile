@@ -1,37 +1,44 @@
+# Add RVM's lib directory to the load path.
+$:.unshift(File.expand_path('./lib', ENV['rvm_path']))
+# Load RVM's capistrano plugin.
 require 'bundler/capistrano'
 require 'rvm'
 require 'rvm/capistrano'
 
-# Add RVM's lib directory to the load path.
-$:.unshift(File.expand_path('./lib', ENV['rvm_path']))
-# Load RVM's capistrano plugin.
-require "rvm/capistrano"
-
 set :rvm_ruby_string, '1.9.2@wallerblock'
+
+load 'deploy' if respond_to?(:namespace)
 
 ####### VARIABLES #######
 set :application, "wallerblock"
-set :user, 'wallerblock'
+set :user, "wallerblock"
 set :use_sudo, false
 
 set :scm, :git
 set :repository,  "ssh://git.bunnymatic.com/projects/git/wallerblock.git"
 set :deploy_via, :remote_cache
-set :deploy_to "/home/#{user}/webapp"
+set :deploy_to, "/home/#{user}/webapp"
 
-server 'bunnymatic.com', :app, :web, :db, :primary => true
+set :deploy_server, 'bunnymatic.com'
+role :app, deploy_server
+role :web, deploy_server
+role :db, deploy_server, :primary => true
+
 set :runner, user
 set :admin_runner, user
 
 namespace :deploy do
+  desc "Deploy and start #{application} : #{deploy_server}:#{deploy_to}"
   task :start, :roles => [:web, :app] do
     run "cd #{deploy_to}/current && nohup thin -C thin/production_config.yml -R config.ru start"
   end
  
+  desc "Stop #{application} : #{deploy_server}:#{deploy_to}"
   task :stop, :roles => [:web, :app] do
     run "cd #{deploy_to}/current && nohup thin -C thin/production_config.yml -R config.ru stop"
   end
  
+  desc "Stop then start #{application} : #{deploy_server}:#{deploy_to}"
   task :restart, :roles => [:web, :app] do
     deploy.stop
     deploy.start

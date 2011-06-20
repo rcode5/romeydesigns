@@ -1,0 +1,14 @@
+environment: production
+chdir: /home/wallerblock/webapp/current
+address: 127.0.0.1
+user: wallerblock
+group: wallerblock
+port: 5000
+pid: /home/wallerblock/webapp/current/tmp/thin.pid
+rackup: /home/wallerblock/webapp/current/config.ru
+log: /home/wallerblock/webapp/current/log/thin.log
+max_conns: 1024
+timeout: 30
+max_persistent_conns: 128
+daemonize: true
+

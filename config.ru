@@ -5,6 +5,6 @@ set :environment, :production
 set :port, 5000
 disable :run, :reload
 
-require 'wallerblock'
+require './waller_block.rb'
 
-run Sinatra::Application
+run WallerBlock.new

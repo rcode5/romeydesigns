@@ -5,8 +5,8 @@ require 'bundler/capistrano'
 require 'rvm'
 require 'rvm/capistrano'
 
-set :rvm_ruby_string, '1.9.2@wallerblock'
-
+set :rvm_ruby_string, '1.9.2-p180@wallerblock'
+set :rvm_type, :root
 load 'deploy' if respond_to?(:namespace)
 
 ####### VARIABLES #######
@@ -30,12 +30,12 @@ set :admin_runner, user
 namespace :deploy do
   desc "Deploy and start #{application} : #{deploy_server}:#{deploy_to}"
   task :start, :roles => [:web, :app] do
-    run "cd #{deploy_to}/current && nohup thin -C thin/production_config.yml -R config.ru start"
+    run "cd #{deploy_to}/current && nohup bundle exec thin -C thin/production_config.yml -R config.ru start"
   end
  
   desc "Stop #{application} : #{deploy_server}:#{deploy_to}"
   task :stop, :roles => [:web, :app] do
-    run "cd #{deploy_to}/current && nohup thin -C thin/production_config.yml -R config.ru stop"
+    run "cd #{deploy_to}/current && nohup bundle exec thin -C thin/production_config.yml -R config.ru stop"
   end
  
   desc "Stop then start #{application} : #{deploy_server}:#{deploy_to}"

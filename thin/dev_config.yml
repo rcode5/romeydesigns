@@ -1,0 +1,12 @@
+environment: development
+chdir: /projects/wallerblock
+address: 127.0.0.1
+port: 5000
+pid: /projects/wallerblock/tmp/thin.pid
+rackup: /projects/wallerblock/config.ru
+log: /projects/wallerblock/log/thin.log
+max_conns: 1024
+timeout: 30
+max_persistent_conns: 128
+daemonize: true
+

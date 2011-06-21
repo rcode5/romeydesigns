@@ -1,6 +1,6 @@
 require 'sinatra'
 
-class WallerBlock < Sinatra::Base
+class TheApp < Sinatra::Base
   get '/' do
     'yo'
   end

@@ -5,6 +5,6 @@ set :environment, :production
 set :port, 5000
 disable :run, :reload
 
-require './waller_block.rb'
+require './romey.rb'
 
-run WallerBlock.new
+run Romey.new

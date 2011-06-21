@@ -1,6 +1,6 @@
 require 'sinatra'
 
-class TheApp < Sinatra::Base
+class Romey < Sinatra::Base
   get '/' do
     'romey rules'
   end

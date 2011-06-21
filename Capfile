@@ -15,7 +15,7 @@ set :user, "romey"
 set :use_sudo, false
 
 set :scm, :git
-set :repository,  "ssh://git.bunnymatic.com/projects/git/romey.git"
+set :repository,  "ssh://git.bunnymatic.com/projects/git/romeydesigns.git"
 set :deploy_via, :remote_cache
 set :deploy_to, "/home/#{user}/webapp"
 

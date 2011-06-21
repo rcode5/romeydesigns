@@ -30,7 +30,7 @@ set :admin_runner, user
 namespace :deploy do
   desc "Deploy and start #{application} : #{deploy_server}:#{deploy_to}"
   task :start, :roles => [:web, :app] do
-    run "cd #{deploy_to}/current && rm -rf log/ && nohup bundle exec thin -C thin/production_config.yml -R config.ru start"
+    run "cd #{deploy_to}/current && nohup bundle exec thin -C thin/production_config.yml -R config.ru start"
   end
  
   desc "Stop #{application} : #{deploy_server}:#{deploy_to}"

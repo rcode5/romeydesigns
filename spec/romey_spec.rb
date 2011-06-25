@@ -4,13 +4,14 @@ describe Romey do
   include Rack::Test::Methods
 
   def app
-    Sinatra::Application
+    @app ||= Romey
   end
 
   describe '#root' do
     it 'should return success' do
       get '/'
-      last_response.should be_success
+      p last_response
+      last_response.should be_ok
     end
   end
 end

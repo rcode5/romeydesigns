@@ -7,4 +7,6 @@ disable :run, :reload
 
 require './romey.rb'
 
+DataMapper::setup(:default, "sqlite3://#{Dir.pwd}/romey.db")
+
 run Romey.new

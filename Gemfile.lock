@@ -1,6 +1,5 @@
 GEM
   remote: http://rubygems.org/
-  remote: http://gems.tron.name/gems.rubyforge.org/
   specs:
     addressable (2.2.6)
     bcrypt-ruby (2.1.4)

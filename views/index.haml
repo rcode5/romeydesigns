@@ -1,1 +1,37 @@
-%h1 #{@title}
+!!! 5
+%html
+  %head
+    %meta
+    %script{ :src => 'http://code.jquery.com/jquery-1.6.1.min.js' }     
+    %script{ :src => '/js/romey.js' }
+    %link{:rel => 'stylesheet', :type => 'text/css', :media => 'all', :href => '/css/reset.css'}
+    %link{:rel => 'stylesheet', :type => 'text/css', :media => 'all', :href => '/css/oocss/libraries.css'}
+    %link{:rel => 'stylesheet', :type => 'text/css', :media => 'all', :href => '/css/oocss/template.css'}
+    %link{:rel => 'stylesheet', :type => 'text/css', :media => 'all', :href => '/css/oocss/grids.css'}
+    %link{:rel => 'stylesheet', :type => 'text/css', :media => 'all', :href => '/css/romey.css'}
+
+    %title #{@title}
+  %header
+    %h1 #{@title}
+  %section#main
+    .line
+      .unit.size1of4
+        .logo.block
+          %img{:src => '/i/romey_small_logo.png'}
+          
+      - 6.times.each do |ii|
+        .unit.size1of4
+          .pic.block
+      .unit.size1of4
+        .links.block
+          .tw
+            %a{:target => '_blank', :href => 'http://twitter.com/romeydesigns'} on twitter
+          .fb
+            %a{:target => '_blank', :href => 'http://www.facebook.com/pages/Romey-Designs/211002208926771'} on facebook
+          .etsy
+            %a{:target => '_blank', :href => 'http://etsy.com/shop/RomeyDesigns'} shop
+          
+    // %section#fixed_bg
+  %footer
+    handmade in san francisco
+      

@@ -1,0 +1,46 @@
+header {  
+}
+footer {
+}
+
+.block {
+  border: 1px solid gray;
+  background: #feeeff; 
+  margin: 8px;
+  height: 205px;
+  width: 205px;
+}
+
+.links, .logo {
+  background: transparent;
+  border-style: hidden;
+}
+
+.logo img {
+  margin-top: 61px;
+}
+
+#fixed_bg {
+  position: absolute;
+  top: 52px; /* 450-345/2 */
+  left: 127px; /* (900-645)/2 */
+  height: 345px;
+  width: 645px;
+  z-index: 2;
+ /* background-image: url(/i/romey_bg_logo.png);*/
+}
+
+#main {
+  position: relative;
+  height: 450px;
+  border: 1px solid gray;
+  width: 900px;
+  margin: 80px auto;
+}
+#main header, #main footer {
+  text-align: center; 
+}
+
+#main .unit {
+  z-index: 100;
+}

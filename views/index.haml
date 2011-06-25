@@ -3,12 +3,12 @@
   %head
     %meta
     %script{ :src => 'http://code.jquery.com/jquery-1.6.1.min.js' }     
-    %script{ :src => '/js/romey.js' }
-    %link{:rel => 'stylesheet', :type => 'text/css', :media => 'all', :href => '/css/reset.css'}
-    %link{:rel => 'stylesheet', :type => 'text/css', :media => 'all', :href => '/css/oocss/libraries.css'}
-    %link{:rel => 'stylesheet', :type => 'text/css', :media => 'all', :href => '/css/oocss/template.css'}
-    %link{:rel => 'stylesheet', :type => 'text/css', :media => 'all', :href => '/css/oocss/grids.css'}
-    %link{:rel => 'stylesheet', :type => 'text/css', :media => 'all', :href => '/css/romey.css'}
+    %script{ :src => '/javascripts/romey.js' }
+    %link{:rel => 'stylesheet', :type => 'text/css', :media => 'all', :href => '/stylesheets/reset.css'}
+    %link{:rel => 'stylesheet', :type => 'text/css', :media => 'all', :href => '/stylesheets/oocss/libraries.css'}
+    %link{:rel => 'stylesheet', :type => 'text/css', :media => 'all', :href => '/stylesheets/oocss/template.css'}
+    %link{:rel => 'stylesheet', :type => 'text/css', :media => 'all', :href => '/stylesheets/oocss/grids.css'}
+    %link{:rel => 'stylesheet', :type => 'text/css', :media => 'all', :href => '/stylesheets/romey.css'}
 
     %title #{@title}
   %header
@@ -17,7 +17,7 @@
     .line
       .unit.size1of4
         .logo.block
-          %img{:src => '/i/romey_small_logo.png'}
+          %img{:src => '/images/romey_small_logo.png'}
           
       - 6.times.each do |ii|
         .unit.size1of4

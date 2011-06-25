@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'sinatra'
+require 'datamapper'
 
 set :environment, :production
 set :port, 5000

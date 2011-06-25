@@ -8,10 +8,16 @@ describe Romey do
   end
 
   describe '#root' do
+    before do
+      # putting the get here doesn't seem to work
+    end
     it 'should return success' do
       get '/'
-      p last_response
       last_response.should be_ok
+    end
+    it 'should include the title' do
+      get '/'
+      last_response.should have_tag 'h1', /romey rocks/i
     end
   end
 end

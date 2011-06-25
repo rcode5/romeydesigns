@@ -58,6 +58,7 @@ GEM
       data_objects (= 0.10.6)
     eventmachine (0.12.10)
     fastercsv (1.5.4)
+    haml (3.1.2)
     highline (1.6.2)
     json (1.4.6)
     net-scp (1.0.4)
@@ -78,6 +79,8 @@ GEM
     rspec-expectations (2.6.0)
       diff-lcs (~> 1.1.2)
     rspec-mocks (2.6.0)
+    shotgun (0.9)
+      rack (>= 1.0)
     sinatra (1.2.6)
       rack (~> 1.1)
       tilt (>= 1.2.2, < 2.0)
@@ -96,7 +99,9 @@ DEPENDENCIES
   capistrano
   datamapper
   dm-sqlite-adapter
+  haml
   rack-test
   rspec
+  shotgun
   sinatra
   thin

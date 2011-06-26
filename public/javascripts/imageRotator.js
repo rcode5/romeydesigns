@@ -5,7 +5,8 @@
 var imageRotatorDefaults = {};
 
 $.imageRotatorDefaults = {
-  imageContainer: '.ir_img_container'
+  imageContainer: '.ir_img_container',
+  imageUrls: []
 };
 
 $.fn.imageRotator = function( method ) {
@@ -14,12 +15,7 @@ $.fn.imageRotator = function( method ) {
     init: function(options) {
       var localSettings = $.extend({},$.subscriptionModalDefaults, options);
       $(this).data(localSettings);
-      
     },
-    doSomething: function() {
-      console.log('do something', $(this).data());
-      console.log('eat something', $(this).data().eat);
-    }
   };
   return this.each(function() {
     // If options exist, lets merge them

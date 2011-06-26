@@ -17,7 +17,7 @@ describe Romey do
     end
     it 'should include the title' do
       get '/'
-      last_response.should match /romey rocks/i
+      last_response.should match /handmade/i
     end
   end
 end

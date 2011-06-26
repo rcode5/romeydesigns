@@ -10,4 +10,5 @@ gem 'shotgun'
 group :test do
   gem "rspec"
   gem "rack-test"
+  gem "evergreen"
 end

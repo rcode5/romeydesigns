@@ -4,6 +4,10 @@
     %meta
     %script{ :src => 'http://code.jquery.com/jquery-1.6.1.min.js' }     
     %script{ :src => '/javascripts/romey.js' }
+
+    %script{:src => "http://use.typekit.com/cra6buh.js" }
+    :javascript
+      try{Typekit.load();}catch(e){}
     %link{:rel => 'stylesheet', :type => 'text/css', :media => 'all', :href => '/stylesheets/reset.css'}
     %link{:rel => 'stylesheet', :type => 'text/css', :media => 'all', :href => '/stylesheets/oocss/libraries.css'}
     %link{:rel => 'stylesheet', :type => 'text/css', :media => 'all', :href => '/stylesheets/oocss/template.css'}
@@ -11,27 +15,31 @@
     %link{:rel => 'stylesheet', :type => 'text/css', :media => 'all', :href => '/stylesheets/romey.css'}
 
     %title #{@title}
-  %header
-    %h1 #{@title}
-  %section#main
-    .line
-      .unit.size1of4
-        .logo.block
-          %img{:src => '/images/romey_small_logo.png'}
-          
-      - 6.times.each do |ii|
+  %body  
+    %section#main.tk-museo-sans
+      .line.first
         .unit.size1of4
-          .pic.block
-      .unit.size1of4
-        .links.block
-          .tw
-            %a{:target => '_blank', :href => 'http://twitter.com/romeydesigns'} on twitter
-          .fb
-            %a{:target => '_blank', :href => 'http://www.facebook.com/pages/Romey-Designs/211002208926771'} on facebook
-          .etsy
-            %a{:target => '_blank', :href => 'http://etsy.com/shop/RomeyDesigns'} shop
-          
-    // %section#fixed_bg
-  %footer
-    handmade in san francisco
-      
+          .logo.block.first
+            %img{:src => '/images/romey_small_logo.png'}
+            .tk-museo-sans.co_name R O M E Y D E S I G N S . C O M
+
+        - 3.times.each do |ii|
+          .unit.size1of4
+            .pic.block{:class => "#{(ii==2) ? 'last' : ''}"}
+      .line.last
+        - 3.times.each do |ii|
+          .unit.size1of4 
+            .pic.block{:class => "#{((ii==0) ? 'first' : '')}"}
+        .unit.size1of4
+          .links.block.last
+            .tw
+              %a{:target => '_blank', :href => 'http://twitter.com/romeydesigns'} on twitter
+            .fb
+              %a{:target => '_blank', :href => 'http://www.facebook.com/pages/Romey-Designs/211002208926771'} on facebook
+            .etsy
+              %a{:target => '_blank', :href => 'http://etsy.com/shop/RomeyDesigns'} shop
+
+      // %section#fixed_bg
+    %footer.tk-museo-sans
+      handmade in san francisco
+

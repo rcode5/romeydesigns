@@ -28,8 +28,8 @@ header {
 }
 
 .block {
-  border: 1px solid gray;
-  background: #feeeff; 
+  background: white;
+  border: 1px solid #437888;
   margin: 0px auto;
   height: 205px;
   width: 205px;
@@ -74,8 +74,10 @@ text-align:center;
 }
 
 #main {
+  background: #f7fafb;
+
   position: relative;
-  border: 1px solid gray;
+  border: 1px solid #437888;
   width: 908px;
   margin: 75px auto 10px;
 }

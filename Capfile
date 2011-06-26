@@ -32,6 +32,7 @@ namespace :deploy do
   task :setup_shared_tmp_dir => [:web, :app] do
     run "mkdir -p #{deploy_to}/shared/tmp"
     run "ln -s #{deploy_to}/shared/tmp #{deploy_to}/current/tmp"
+  end
 
   desc "Deploy and start #{application} : #{deploy_server}:#{deploy_to}"
   task :start, :roles => [:web, :app] do

@@ -29,7 +29,7 @@ set :admin_runner, user
 
 namespace :deploy do
   desc 'setup shared tmp dir'
-  task :setup_shared_tmp_dir => [:web, :app] do
+  task :setup_shared_tmp_dir, :roles => [:web, :app] do
     run "mkdir -p #{deploy_to}/shared/tmp"
     run "ln -s #{deploy_to}/shared/tmp #{deploy_to}/current/tmp"
   end

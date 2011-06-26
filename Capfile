@@ -28,9 +28,13 @@ set :runner, user
 set :admin_runner, user
 
 namespace :deploy do
+  desc 'setup shared tmp dir'
+  task :setup_shared_tmp_dir => [:web, :app] do
+    run "mkdir -p #{deploy_to}/shared/tmp"
+    run "ln -s #{deploy_to}/shared/tmp #{deploy_to}/current/tmp"
+
   desc "Deploy and start #{application} : #{deploy_server}:#{deploy_to}"
   task :start, :roles => [:web, :app] do
-    run "ln -s #{deploy_to}/shared/tmp #{deploy_to}/current/tmp"
     run "cd #{deploy_to}/current && nohup bundle exec thin -C thin/production_config.yml -R config.ru start"
   end
  
@@ -62,4 +66,5 @@ namespace :apache do
   end
 end
 
+after 'deploy:symlink', 'deploy:setup_shared_tmp_dir'
 after "deploy:start", "apache:reload"

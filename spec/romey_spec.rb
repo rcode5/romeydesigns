@@ -20,4 +20,13 @@ describe Romey do
       last_response.should match /handmade/i
     end
   end
+  
+  describe '#upload' do
+    it 'requires auth' do
+      authorize 'jennymey','jonnlovesjenn'
+      get '/upload'
+      last_response.should be_ok
+    end
+  end
+
 end

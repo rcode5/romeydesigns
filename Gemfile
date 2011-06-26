@@ -6,7 +6,8 @@ gem 'thin'
 gem 'haml'
 gem "dm-sqlite-adapter"
 gem "datamapper"
-gem 'shotgun'
+gem "dm-paperclip"
+
 group :test do
   gem "rspec"
   gem "rack-test"

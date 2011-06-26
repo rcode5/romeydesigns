@@ -48,6 +48,9 @@ GEM
       dm-core (~> 1.1.0)
     dm-migrations (1.1.0)
       dm-core (~> 1.1.0)
+    dm-paperclip (2.4.1)
+      datamapper
+      extlib
     dm-serializer (1.1.0)
       dm-core (~> 1.1.0)
       fastercsv (~> 1.5.4)
@@ -79,6 +82,7 @@ GEM
       sinatra (~> 1.1)
     execjs (1.2.0)
       multi_json (~> 1.0)
+    extlib (0.9.15)
     fastercsv (1.5.4)
     ffi (1.0.9)
     haml (3.1.2)
@@ -116,8 +120,6 @@ GEM
       ffi (>= 1.0.7)
       json_pure
       rubyzip
-    shotgun (0.9)
-      rack (>= 1.0)
     sinatra (1.2.6)
       rack (~> 1.1)
       tilt (>= 1.2.2, < 2.0)
@@ -137,11 +139,11 @@ PLATFORMS
 DEPENDENCIES
   capistrano
   datamapper
+  dm-paperclip
   dm-sqlite-adapter
   evergreen
   haml
   rack-test
   rspec
-  shotgun
   sinatra
   thin

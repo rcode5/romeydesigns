@@ -1,0 +1,7 @@
+%form{:action => '/upload', :enctype => 'multipart/form-data', :method => 'POST'}
+  %input{:type => 'file', :name => 'file'}
+  %input{:type => 'submit'}
+
+- if @resource
+  %p= "Congrats! This is your #{@resource.file.name} uploaded file!"
+  %img{:src => @resource.file.url }  

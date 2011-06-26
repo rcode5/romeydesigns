@@ -9,13 +9,17 @@ $.imageRotatorDefaults = {
   imageUrls: []
 };
 
+var mergeData = function( sel, newData ) {
+    $(sel).data($.extend({},$(sel).data(),newData));
+};
+
 $.fn.imageRotator = function( method ) {
   var inArgs = arguments;
   var methods = {
     init: function(options) {
-      var localSettings = $.extend({},$.subscriptionModalDefaults, options);
-      $(this).data(localSettings);
-    },
+      mergeData(this, $.imageRotatorDefaults);
+      mergeData(this, options);
+    }
   };
   return this.each(function() {
     // If options exist, lets merge them

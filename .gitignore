@@ -9,3 +9,5 @@ tmp/**/*
 *.DS_Store
 .idea
 .project
+romey.db
+public/uploads

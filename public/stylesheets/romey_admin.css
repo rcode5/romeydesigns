@@ -1,0 +1,10 @@
+body, div {
+  color: #86a7b7;
+}
+
+header { width: 205px; float:left; }
+#main { 
+  width: 800px; 
+  float: left; 
+  margin: 20px;
+}

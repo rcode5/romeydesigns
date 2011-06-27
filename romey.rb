@@ -42,20 +42,28 @@ class Romey < Sinatra::Base
   end
   
   get '/upload' do
+    @title = "Upload image"
     protected!
-    haml :upload
+    haml :upload, :layout => :admin_layout
   end
 
   post '/upload' do
     protected!
-    resource = Resource.new(:file => make_paperclip_mash(params[:file]))
-    halt "There were issues with your upload..." unless resource.save
-    haml :upload
+    img = ImageResource.new(:file => make_paperclip_mash(params[:file]))
+    halt "There were issues with your upload..." unless img.save
+    redirect '/uploads'
   end
 
+  get '/uploads' do
+    protected!
+    @title = "Uploads"
+    @images = []
+    @images = ImageResource.all
+    haml :uploads, :layout => :admin_layout
+  end
 end
 
-class Resource
+class ImageResource
 
   include DataMapper::Resource
   include Paperclip::Resource

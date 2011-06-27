@@ -1,0 +1,6 @@
+%ul
+  - @images.each do |r|
+    %li.uploaded_image
+      #{r.id} #{r.file.url}
+
+%a{:href => '/upload'} Add a new image

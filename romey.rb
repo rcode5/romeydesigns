@@ -71,6 +71,7 @@ class ImageResource
   property :id, Serial
   
   has_attached_file :file,
-  :url => "/uploads/:attachment/:id/:style/:basename.:extension",
-  :path => "#{Romey::APP_ROOT}/public/uploads/:attachment/:id/:style/:basename.:extension"
+    :url => "/system/:attachment/:id/:style/:basename.:extension",
+    :path => "#{Romey::APP_ROOT}/public/system/:attachment/:id/:style/:basename.:extension"
+
 end

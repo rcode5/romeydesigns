@@ -39,7 +39,7 @@ describe Romey do
     it "has a 'create new' link" do
       authorize 'jennymey','jonnlovesjenn'
       get '/uploads'
-      last_response.body.should have_tag('a[@href=/upload]', 'Add a new image')
+      last_response.body.should have_tag('a[@href=/upload] button', 'Add a new image')
     end
 
     it "shows a list of images" do
@@ -59,8 +59,8 @@ describe Romey do
       last_response.body.should have_tag('ul li.uploaded_image') do |t|
         tags << t
       end
-      tags[0].inner_text.should match /12 url2/
-      tags[1].inner_text.should match /10 url1/
+      tags[0].inner_text.should match /url2/
+      tags[1].inner_text.should match /url1/
     end
   end
 end

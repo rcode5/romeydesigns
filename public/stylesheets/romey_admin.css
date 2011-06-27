@@ -8,3 +8,7 @@ header { width: 205px; float:left; }
   float: left; 
   margin: 20px;
 }
+
+header #main {
+  width: auto;
+}

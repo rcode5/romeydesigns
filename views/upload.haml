@@ -3,5 +3,5 @@
   %input{:type => 'submit'}
 
 - if @resource
-  %p= "Congrats! This is your #{@resource.file.name} uploaded file!"
+  %p= "Congrats! This is your #{@resource.image.name} uploaded file!"
   %img{:src => @resource.file.url }  

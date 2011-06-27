@@ -20,13 +20,47 @@ describe Romey do
       last_response.should match /handmade/i
     end
   end
-  
-  describe '#upload' do
-    it 'requires auth' do
-      authorize 'jennymey','jonnlovesjenn'
-      get '/upload'
-      last_response.should be_ok
+
+  describe 'authorized urls' do
+    [ '/upload','/uploads' ].each do |endpoint|
+      it "GET #{endpoint} responds error with no auth" do
+        get endpoint
+        last_response.status.should == 401
+      end
+      it "GET #{endpoint} responds ok with proper auth" do
+        authorize 'jennymey','jonnlovesjenn'
+        get endpoint
+        last_response.should be_ok
+      end
     end
   end
 
+  describe "#uploads" do
+    it "has a 'create new' link" do
+      authorize 'jennymey','jonnlovesjenn'
+      get '/uploads'
+      last_response.body.should have_tag('a[@href=/upload]', 'Add a new image')
+    end
+
+    it "shows a list of images" do
+      ImageResource.stubs(:all => [ mock(:file => mock(:url => 'url1'), :id => 10),
+                                    mock(:file => mock(:url => 'url2'), :id => 12) ])
+      authorize 'jennymey','jonnlovesjenn'
+      get '/uploads'
+      last_response.body.should have_tag('ul li.uploaded_image', :count => 2)
+    end
+    
+    it "returns images sorted by id descending" do
+      ImageResource.stubs(:all => [ mock(:file => mock(:url => 'url1'), :id => 10),
+                                    mock(:file => mock(:url => 'url2'), :id => 12) ])
+      authorize 'jennymey','jonnlovesjenn'
+      get '/uploads'
+      tags = []
+      last_response.body.should have_tag('ul li.uploaded_image') do |t|
+        tags << t
+      end
+      tags[0].inner_text.should match /12 url2/
+      tags[1].inner_text.should match /10 url1/
+    end
+  end
 end

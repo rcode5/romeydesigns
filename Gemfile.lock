@@ -87,12 +87,14 @@ GEM
     ffi (1.0.9)
     haml (3.1.2)
     highline (1.6.2)
+    hpricot (0.8.4)
     json (1.4.6)
     json_pure (1.5.3)
     launchy (0.4.0)
       configuration (>= 0.0.5)
       rake (>= 0.8.1)
     mime-types (1.16)
+    mocha (0.9.12)
     multi_json (1.0.3)
     net-scp (1.0.4)
       net-ssh (>= 1.99.1)
@@ -114,6 +116,7 @@ GEM
     rspec-expectations (2.6.0)
       diff-lcs (~> 1.1.2)
     rspec-mocks (2.6.0)
+    rspec_hpricot_matchers (1.0)
     rubyzip (0.9.4)
     selenium-webdriver (0.2.2)
       childprocess (>= 0.1.9)
@@ -143,7 +146,10 @@ DEPENDENCIES
   dm-sqlite-adapter
   evergreen
   haml
+  hpricot
+  mocha
   rack-test
   rspec
+  rspec_hpricot_matchers
   sinatra
   thin

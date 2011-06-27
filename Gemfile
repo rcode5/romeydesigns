@@ -10,6 +10,9 @@ gem "dm-paperclip"
 
 group :test do
   gem "rspec"
+  gem "mocha"
+  gem 'hpricot'
+  gem 'rspec_hpricot_matchers'
   gem "rack-test"
   gem "evergreen"
 end

@@ -58,7 +58,7 @@ class Romey < Sinatra::Base
     protected!
     @title = "Uploads"
     @images = []
-    @images = ImageResource.all
+    @images = ImageResource.all.sort{|a,b| b.id <=> a.id}
     haml :uploads, :layout => :admin_layout
   end
 end

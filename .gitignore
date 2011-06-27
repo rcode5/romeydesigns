@@ -10,5 +10,6 @@ tmp/**/*
 .idea
 .project
 romey.db
+romey.sqlite
 public/uploads
 public/system

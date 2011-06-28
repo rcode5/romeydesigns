@@ -10,7 +10,10 @@ class Romey < Sinatra::Base
   APP_ROOT = root
 
   DataMapper::setup(:default, "sqlite3://#{root}/romey.db")
-
+  
+  Paperclip.options.merge!({:swallow_stderr => false,
+                             :command_path => '/usr/local/bin',
+                           :whiny => true})
   helpers do
     
     def protected!
@@ -71,7 +74,11 @@ class ImageResource
   property :id, Serial
   
   has_attached_file :file,
-    :url => "/system/:attachment/:id/:style/:basename.:extension",
-    :path => "#{Romey::APP_ROOT}/public/system/:attachment/:id/:style/:basename.:extension"
-
+  :url => "/system/:attachment/:id/:style/:basename.:extension",
+  :path => "#{Romey::APP_ROOT}/public/system/:attachment/:id/:style/:basename.:extension",
+  :styles => { 
+    :thumb => { :geometry => '100x100>' },
+    :grid => { :geometry => '205x205>' }
+  }
+  
 end

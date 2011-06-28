@@ -6,7 +6,7 @@ gem 'thin'
 gem 'haml'
 gem "dm-sqlite-adapter"
 gem "datamapper"
-gem "dm-paperclip"
+gem "dm-paperclip", :git => 'git://github.com/bunnymatic/dm-paperclip.git'
 
 group :test do
   gem "rspec"

@@ -11,9 +11,9 @@ class Romey < Sinatra::Base
 
   DataMapper::setup(:default, "sqlite3://#{root}/romey.db")
   
-  Paperclip.options.merge!({:swallow_stderr => false,
-                             :command_path => '/usr/local/bin',
-                           :whiny => true})
+  # if necessary, paperclip options can be merged in here
+  #Paperclip.options.merge!()
+
   helpers do
     
     def protected!

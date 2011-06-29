@@ -1,11 +1,3 @@
-GIT
-  remote: git://github.com/bunnymatic/dm-paperclip.git
-  revision: 450d6f385d107518056e3f7ed6b5042735e9879d
-  specs:
-    dm-paperclip (2.4.1)
-      datamapper
-      extlib
-
 GEM
   remote: http://rubygems.org/
   specs:
@@ -56,6 +48,9 @@ GEM
       dm-core (~> 1.1.0)
     dm-migrations (1.1.0)
       dm-core (~> 1.1.0)
+    dm-paperclip (2.4.1)
+      datamapper
+      extlib
     dm-serializer (1.1.0)
       dm-core (~> 1.1.0)
       fastercsv (~> 1.5.4)
@@ -147,7 +142,7 @@ PLATFORMS
 DEPENDENCIES
   capistrano
   datamapper
-  dm-paperclip!
+  dm-paperclip
   dm-sqlite-adapter
   evergreen
   haml

@@ -3,6 +3,16 @@ require 'haml'
 require 'datamapper'
 require 'dm-paperclip'
 
+module Paperclip
+  class Tempfile < ::Tempfile
+    # Replaces busted paperclip replacement of Tempfile make temp name
+    def make_tmpname(basename, n)
+      extension = File.extname(basename)
+      sprintf("%s,%d,%d%s", File.basename(basename, extension), $$, n.to_i, extension)
+    end
+  end
+end
+
 class Romey < Sinatra::Base
   set :environment, :production
   set :logging, true

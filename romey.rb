@@ -74,6 +74,16 @@ class Romey < Sinatra::Base
     @images = ImageResource.all.sort{|a,b| b.id <=> a.id}
     haml :uploads, :layout => :admin_layout
   end
+
+  get '/del/:id' do
+    protected!
+    img = ImageResource.get(params[:id])
+    if img
+      img.destroy
+    end
+    redirect '/uploads'
+  end
+
 end
 
 class ImageResource

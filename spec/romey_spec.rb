@@ -63,4 +63,22 @@ describe Romey do
       tags[1].inner_text.should match /url1/
     end
   end
+
+  describe "#del" do
+    it "removes the desired image" do
+      pending "need to setup fixtures or something"
+      #ir = ImageResource.all.first
+      authorize 'jennymey','jonnlovesjenn'
+      expect{ get "/del/#{ir.id}" }.to change(ImageResource,:count).by(-1)
+    end
+
+    it "redirects to uploads" do
+      authorize 'jennymey','jonnlovesjenn'
+      get "/del/1"
+      last_response.status.should == 302
+      
+    end
+
+  end
+
 end

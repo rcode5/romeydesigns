@@ -27,6 +27,23 @@ role :db, deploy_server, :primary => true
 set :runner, user
 set :admin_runner, user
 
+namespace :romey do
+  namespace :db do
+    task :stash_latest do
+      run "cd #{deploy_to} && test -d shared/backup/latest && mv shared/backup/latest shared/backup/#{Time.now}"
+    end
+
+    desc "Backup database and associated files"
+    task :backup, :roles => [:web, :app] do
+      romey.db.stash_latest
+      run "cd #{deploy_to} && mv mkdir -p shared/backup/latest && cp current/romey.db shared/backup/latest && tar -C $deploy_to}/current -czf shared/backup/latest/romey_files system"
+    end
+    
+    desc "Restore database and associated files"
+    task :restore, :roles => [:web, :app] do
+    end
+  end
+
 namespace :deploy do
 
   desc "Deploy and start #{application} : #{deploy_server}:#{deploy_to}"
@@ -62,4 +79,6 @@ namespace :apache do
   end
 end
 
-after "deploy:start", "apache:reload"
+before "deploy:start", "romey:db:backup"
+after "deploy:start", "romey:db:restore",  "apache:reload"
+

@@ -32,9 +32,21 @@ ul {
   margin-top: 20px;
 }
 li {
-  width: 250px;
+  width: 120px;
+  height: 100px;
   padding: 10px;
   margin: 10px;
   border: 1px dotted #86a7b7;
   float: left;
+  position: relative;
+}
+li .del {
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  top: 6px;
+  right: 6px;
+}
+li .del:hover {
+  pointer: cursor;
 }

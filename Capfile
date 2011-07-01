@@ -29,19 +29,22 @@ set :admin_runner, user
 
 namespace :romey do
   namespace :db do
+
+    task :setup_backup_dir do
+      run "rm -rf #{deploy_to}/current/backups"
+      run "mkdir -p #{deploy_to}/shared/latest && ln -s #{deploy_to}/shared/backups #{deploy_to}/current/backups"
+    end
+
     task :stash_latest do
       run "cd #{deploy_to} && if [ -d shared/backup/latest ]; then  mv shared/backup/latest shared/backup/#{Time.now.strftime('%Y%m%d%H%M%s')}; fi"
     end
 
-    desc "Backup database and associated files"
+    desc "Backup database"
     task :backup, :roles => [:web, :app] do
+      romey.db.setup_backup_dir
       romey.db.stash_latest
-      run "cd #{deploy_to} && mv mkdir -p shared/backup/latest && cp current/romey.db shared/backup/latest && tar -C $deploy_to}/current -czf shared/backup/latest/romey_files system"
     end
     
-    desc "Restore database and associated files"
-    task :restore, :roles => [:web, :app] do
-    end
   end
 end
 

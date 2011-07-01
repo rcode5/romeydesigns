@@ -104,3 +104,4 @@ class ImageResource
   }
   
 end
+ImageResource.auto_migrate! unless ImageResource.storage_exists?

@@ -14,6 +14,7 @@ footer {
   width: 900px;
   margin: auto;
   text-align:center;
+  font-family: museo-sans-1, museo-sans-2, sans-serif;
 }
 footer > div {
   font-weight: 700;
@@ -49,7 +50,7 @@ header {
 .co_name {
   margin-top: 8px;
   white-space: nowrap;
-text-align:center;
+  text-align:center;
 }
 .links, .logo {
   background: transparent;
@@ -80,6 +81,8 @@ text-align:center;
 }
 
 #main {
+  font-family: museo-sans-1, museo-sans-2, sans-serif;
+
   background: #f7fafb;
 
   position: relative;

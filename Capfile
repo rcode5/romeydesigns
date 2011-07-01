@@ -30,7 +30,7 @@ set :admin_runner, user
 namespace :romey do
   namespace :db do
     task :stash_latest do
-      run "cd #{deploy_to} && test -d shared/backup/latest && mv shared/backup/latest shared/backup/#{Time.now}"
+      run "cd #{deploy_to} && test -d shared/backup/latest && mv shared/backup/latest shared/backup/#{Time.now.strftime('%Y%m%d%H%M%s')}"
     end
 
     desc "Backup database and associated files"

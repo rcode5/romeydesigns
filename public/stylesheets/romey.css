@@ -80,8 +80,25 @@ text-align:center;
   border: 1px solid #437888;
   width: 908px;
   margin: 75px auto 10px;
+
+  -webkit-border-radius:10px;
+  -moz-border-radius:10px;
+  border-radius:10px;
+
+  -webkit-box-shadow: 0 0px 10px #789; 
+  -moz-box-shadow: 0 0px 10px #789; 
+  box-shadow: 0 0px 10px #789;
+
 }
+
+  .block {
+    -webkit-border-radius:6px;
+    -moz-border-radius:6px;
+    border-radius:6px;
+  }
+    
 
 #main .unit {
   z-index: 100;
 }
+

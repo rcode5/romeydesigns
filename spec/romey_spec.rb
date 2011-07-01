@@ -66,10 +66,11 @@ describe Romey do
 
   describe "#del" do
     it "removes the desired image" do
-      pending "need to setup fixtures or something"
-      #ir = ImageResource.all.first
+      mock_image = mock(ImageResource)
+      mock_image.expects(:destroy)
+      ImageResource.expects(:find).with('10').returns( mock_image )
       authorize 'jennymey','jonnlovesjenn'
-      expect{ get "/del/#{ir.id}" }.to change(ImageResource,:count).by(-1)
+      get "/del/19" 
     end
 
     it "redirects to uploads" do

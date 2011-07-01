@@ -51,6 +51,8 @@ class Romey < Sinatra::Base
   set :haml, :format => :html5
   get '/' do
     @title = "Romey Designs : handmade in san francisco"
+    @images = []
+    @images = ImageResource.all.sort{|a,b| b.id <=> a.id}
     haml :index
   end
   
@@ -98,7 +100,7 @@ class ImageResource
   :path => "#{Romey::APP_ROOT}/public/system/:attachment/:id/:style/:basename.:extension",
   :styles => { 
     :thumb => { :geometry => '100x100>' },
-    :grid => { :geometry => '205x205>' }
+    :grid => { :geometry => '205x205#' }
   }
   
 end

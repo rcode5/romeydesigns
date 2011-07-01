@@ -27,6 +27,11 @@ header {
   text-align: center; 
 }
 
+.block.pic img, .block {
+  -webkit-border-radius:6px;
+  -moz-border-radius:6px;
+  border-radius:6px;
+}
 .block {
   background: white;
   border: 1px solid #437888;
@@ -34,6 +39,7 @@ header {
   height: 205px;
   width: 205px;
 }
+
 .line {
   margin: 16px 8px;
 }
@@ -91,12 +97,6 @@ text-align:center;
 
 }
 
-  .block {
-    -webkit-border-radius:6px;
-    -moz-border-radius:6px;
-    border-radius:6px;
-  }
-    
 
 #main .unit {
   z-index: 100;

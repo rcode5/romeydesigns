@@ -32,7 +32,7 @@ namespace :romey do
 
     task :setup_backup_dir do
       run "rm -rf #{deploy_to}/current/backups"
-      run "mkdir -p #{deploy_to}/shared/latest && ln -s #{deploy_to}/shared/backups #{deploy_to}/current/backups"
+      run "mkdir -p #{deploy_to}/shared/backups/latest && ln -s #{deploy_to}/shared/backups #{deploy_to}/current/backups"
     end
 
     task :stash_latest do
@@ -84,5 +84,5 @@ namespace :apache do
 end
 
 before "deploy:start", "romey:db:backup"
-after "deploy:start", "romey:db:restore",  "apache:reload"
+after "deploy:start", "apache:reload"
 

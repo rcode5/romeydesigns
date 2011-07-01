@@ -43,6 +43,7 @@ namespace :romey do
     task :restore, :roles => [:web, :app] do
     end
   end
+end
 
 namespace :deploy do
 

@@ -43,7 +43,7 @@ namespace :romey do
     end
 
     task :symlink do
-      run "cd #{deploy_to} && rm -f current/#{db_file} && ln -s #{shared_db_dir}/#{db_file} current/"
+      run "cd #{deploy_to} && rm -f current/#{db_file} && cp #{shared_db_dir}/#{db_file} current/"
     end
 
     desc "Backup database"
@@ -92,6 +92,5 @@ namespace :apache do
 end
 
 before "deploy:start", "romey:db:backup"
-after "deploy:update_code", "romey:db:symlink"
-after "deploy:start", "deploy:symlink", "apache:reload"
+after "deploy:start", "romey:db:symlink", "apache:reload"
 

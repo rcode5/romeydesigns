@@ -44,7 +44,7 @@ namespace :romey do
     end
 
     task :symlink do
-      run "cd #{deploy_to} && ln -s shared/database/romey.db current/romey.db"
+      run "cd #{deploy_to} && rm -f current/romey.db && ln -s shared/database/romey.db current/romey.db"
     end
 
     desc "Backup database"

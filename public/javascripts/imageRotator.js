@@ -10,15 +10,47 @@ $.imageRotatorDefaults = {
 };
 
 var mergeData = function( sel, newData ) {
-    $(sel).data($.extend({},$(sel).data(),newData));
+  $(sel).data($.extend({},$(sel).data(),newData));
 };
 
 $.fn.imageRotator = function( method ) {
   var inArgs = arguments;
   var methods = {
     init: function(options) {
+      this.imageQ = new Queue();
+      this.counter = 0;
       mergeData(this, $.imageRotatorDefaults);
       mergeData(this, options);
+      var urls = $(this).data().imageUrls;
+      var ii = 0;
+      var nurls = urls.length;
+      for (;ii < nurls; ++ii ) {
+        this.imageQ.enqueue(urls[ii]);
+      };
+      var rotateable = $(this).find(options.imageContainer + " img");
+      ii = 0;
+      var nrotatable = rotateable.length;
+      for (; ii < rotateable.length; ++ii) {
+        var r = rotateable[ii];
+        var controller = this;
+        setTimeout(function() { 
+          setInterval(function() {
+            $(controller).imageRotator('updateImage');
+          }, 3000);
+        }, Math.floor(ii * 1200));
+      }
+    },
+    dump: function() {
+      console.log('queue size: ', this.imageQ.getLength());
+    },
+    updateImage: function(img) {
+      var nextImage = this.imageQ.dequeue();
+      this.imageQ.enqueue(nextImage);
+      var $this = $(this)
+      var rotateable = $this.find($this.data().imageContainer + " img");
+      var nrotateable = rotateable.length;
+      rotateable[ Math.floor(Math.random()*6) % nrotateable].src = nextImage;
+      this.counter+=1;
     }
   };
   return this.each(function() {

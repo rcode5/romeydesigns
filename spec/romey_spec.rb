@@ -1,4 +1,5 @@
 require File.dirname(__FILE__) + '/spec_helper'
+require 'mime/types'
 
 describe Romey do
   include Rack::Test::Methods
@@ -55,12 +56,16 @@ describe Romey do
                                     mock(:file => mock(:url => 'url2'), :id => 12) ])
       authorize 'jennymey','jonnlovesjenn'
       get '/uploads'
-      tags = []
-      last_response.body.should have_tag('ul li.uploaded_image') do |t|
-        tags << t
-      end
-      tags[0].inner_text.should match /url2/
-      tags[1].inner_text.should match /url1/
+      last_response.body.should have_tag('ul li.uploaded_image img[@src=url1]')
+      last_response.body.should have_tag('ul li.uploaded_image img[@src=url2]')
+    end
+    it "returns delete links for each image" do
+      ImageResource.stubs(:all => [ mock(:file => mock(:url => 'url1'), :id => 10),
+                                    mock(:file => mock(:url => 'url2'), :id => 12) ])
+      authorize 'jennymey','jonnlovesjenn'
+      get '/uploads'
+      last_response.body.should have_tag('ul li.uploaded_image div a[@href=/del/12]')
+      last_response.body.should have_tag('ul li.uploaded_image div a[@href=/del/10]')
     end
   end
 
@@ -77,9 +82,22 @@ describe Romey do
       authorize 'jennymey','jonnlovesjenn'
       get "/del/1"
       last_response.status.should == 302
-      
     end
 
   end
 
+  describe 'xhr get#pics' do
+    it "returns json" do
+      get "/pics"
+      last_response.content_type.should ==  MIME::Types.type_for('json').first
+    end
+    it "returns a list of all image resources as json" do
+      get "/pics"
+      ImageResource.stubs(:all => [ mock(:file => mock(:url => 'url1'), :id => 10),
+                                    mock(:file => mock(:url => 'url2'), :id => 12) ])
+
+      j = JSON.parse(last_response.body)
+      j.count.should == ImageResource.all.count
+    end
+  end
 end

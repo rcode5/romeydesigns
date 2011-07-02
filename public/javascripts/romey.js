@@ -1,5 +1,6 @@
 romeyImageData = null;
 $(function() {
+/*
   $.getJSON('/pics', function(data) {
     romeyImageData = data;
     var urls = [];
@@ -9,6 +10,6 @@ $(function() {
     $('#main').imageRotator({imageContainer:'.pic', imageUrls: urls});
     $('#main').imageRotator('dump');
   });
-
+*/
   
 });

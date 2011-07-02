@@ -41,14 +41,14 @@ namespace :romey do
     task :copy_to_current do
       run "cd #{deploy_to} && if [ -f #{shared_backup_dir}/latest/#{db_file} ]; then cp -f #{shared_backup_dir}/latest/#{db_file} #{shared_backup_dir}/latest/; fi"
     end
-      
+    
     task :backup_latest do
       run "cd #{deploy_to} && if [ -d #{shared_backup_dir}/latest ]; then mv #{shared_backup_dir}/latest #{shared_backup_dir}/#{Time.now.strftime('%Y%m%d%H%M%s')}; fi"
     end
 
     desc "Backup database"
     task :backup, :roles => [:web, :app] do
-      romey.db.copy_db
+      romey.db.copy_to_current
       romey.db.backup_latest
     end
     
@@ -61,18 +61,18 @@ namespace :deploy do
   task :start, :roles => [:web, :app] do
     run "cd #{deploy_to}/current && nohup bundle exec thin -C thin/production_config.yml -R config.ru start"
   end
- 
+  
   desc "Stop #{application} : #{deploy_server}:#{deploy_to}"
   task :stop, :roles => [:web, :app] do
     run "cd #{deploy_to}/current && nohup bundle exec thin -C thin/production_config.yml -R config.ru stop"
   end
- 
+  
   desc "Stop then start #{application} : #{deploy_server}:#{deploy_to}"
   task :restart, :roles => [:web, :app] do
     deploy.stop
     deploy.start
   end
- 
+  
   # This will make sure that Capistrano doesn't try to run rake:migrate (this is not a Rails project!)
   task :cold do
     deploy.update

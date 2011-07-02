@@ -35,13 +35,22 @@ namespace :romey do
       run "mkdir -p #{deploy_to}/shared/backups/latest && ln -s #{deploy_to}/shared/backups #{deploy_to}/current/backups"
     end
 
+    task :copy_db do
+      run "cd #{deploy_to} && cp shared/romey.db shared/backup/latest/"
+    end
+
     task :stash_latest do
-      run "cd #{deploy_to} && if [ -d shared/backup/latest ]; then  mv shared/backup/latest shared/backup/#{Time.now.strftime('%Y%m%d%H%M%s')}; fi"
+      run "cd #{deploy_to} && if [ -d shared/backup/latest ]; then mv shared/backup/latest shared/backup/#{Time.now.strftime('%Y%m%d%H%M%s')}; fi"
+    end
+
+    task :symlink do
+      run "cd #{deploy_to} && ln -s shared/database/romey.db current/romey.db"
     end
 
     desc "Backup database"
     task :backup, :roles => [:web, :app] do
       romey.db.setup_backup_dir
+      romey.db.copy_db
       romey.db.stash_latest
     end
     
@@ -84,5 +93,6 @@ namespace :apache do
 end
 
 before "deploy:start", "romey:db:backup"
-after "deploy:start", "apache:reload"
+after "deploy:update_code", "romey:db:symlink"
+after "deploy:start", "deploy:symlink", "apache:reload"
 

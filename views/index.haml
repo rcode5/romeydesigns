@@ -5,7 +5,8 @@
     %script{ :src => 'http://code.jquery.com/jquery-1.6.1.min.js' }     
     %script{ :src => '/javascripts/imageRotator.js' }
     %script{ :src => '/javascripts/romey.js' }
-
+    / [if lt IE 9]
+      %script{:src => "http://html5shim.googlecode.com/svn/trunk/html5.js"}
     %script{:src => "http://use.typekit.com/cra6buh.js" }
     :javascript
       try{Typekit.load();}catch(e){}

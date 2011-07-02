@@ -34,23 +34,22 @@ set :shared_backup__dir, 'shared/backups'
 namespace :romey do
   namespace :db do
 
-    task :copy_db do
-      run "cd #{deploy_to} && cp #{shared_db_dir}/#{db_file} #{shared_backup_dir}/latest/"
+    task :stash_current do
+      run "cd #{deploy_to} && mkdir -p #{shared_backup_dir}/latest && cp #{deploy_to}/current/#{db_file} #{shared_backup_dir}/latest/"
     end
 
-    task :stash_latest do
+    task :copy_to_current do
+      run "cd #{deploy_to} && if [ -f #{shared_backup_dir}/latest/#{db_file} ];  cp -f #{shared_backup_dir}/latest/#{db_file} #{shared_backup_dir}/latest/; fi"
+    end
+      
+    task :backup_latest do
       run "cd #{deploy_to} && if [ -d #{shared_backup_dir}/latest ]; then mv #{shared_backup_dir}/latest #{shared_backup_dir}/#{Time.now.strftime('%Y%m%d%H%M%s')}; fi"
-    end
-
-    task :symlink do
-      run "cd #{deploy_to} && rm -f current/#{db_file} && cp #{shared_db_dir}/#{db_file} current/"
     end
 
     desc "Backup database"
     task :backup, :roles => [:web, :app] do
-      romey.db.setup_backup_dir
       romey.db.copy_db
-      romey.db.stash_latest
+      romey.db.backup_latest
     end
     
   end
@@ -91,6 +90,7 @@ namespace :apache do
   end
 end
 
+before "deploy", "romey:db:stash_current"
 before "deploy:start", "romey:db:backup"
-after "deploy:start", "romey:db:symlink", "apache:reload"
+after "deploy:start", "romey:db:copy_to_current", "apache:reload"
 

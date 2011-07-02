@@ -39,9 +39,13 @@ namespace :romey do
     end
 
     task :copy_to_current do
-      run "cd #{deploy_to} && if [ -f #{shared_backup_dir}/latest/#{db_file} ]; then cp -f #{shared_backup_dir}/latest/#{db_file} #{shared_backup_dir}/latest/; fi"
+      run "cd #{deploy_to} && if [ -f #{shared_backup_dir}/latest/#{db_file} ]; then cp -f #{shared_backup_dir}/latest/#{db_file} #{deploy_to/current}; fi"
     end
     
+    task :backup_latest do
+      run "cd #{deploy_to} && if [ -d #{shared_backup_dir}/latest ]; then mv #{shared_backup_dir}/latest #{shared_backup_dir}/#{Time.now.strftime('%Y%m%d%H%M%s')}; fi"
+    end
+
     desc "Backup database"
     task :backup, :roles => [:web, :app] do
       romey.db.copy_to_current

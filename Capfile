@@ -36,7 +36,7 @@ namespace :romey do
     end
 
     task :copy_db do
-      run "cd #{deploy_to} && cp shared/romey.db shared/backup/latest/"
+      run "cd #{deploy_to} && cp shared/database/romey.db shared/backup/latest/"
     end
 
     task :stash_latest do

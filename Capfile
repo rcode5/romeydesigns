@@ -35,11 +35,11 @@ namespace :romey do
   namespace :db do
 
     task :stash_current do
-      run "cd #{deploy_to} && mkdir -p #{shared_backup_dir}/latest && if [ -f #{deploy_to}/current/#{db_file} ]; cp #{deploy_to}/current/#{db_file} #{shared_backup_dir}/latest/; fi"
-    end
+      run "cd #{deploy_to} && mkdir -p #{shared_backup_dir}/latest && if [ -f #{deploy_to}/current/#{db_file} ]; then cp #{deploy_to}/current/#{db_file} #{shared_backup_dir}/latest/; fi"
+    End
 
     task :copy_to_current do
-      run "cd #{deploy_to} && if [ -f #{shared_backup_dir}/latest/#{db_file} ];  cp -f #{shared_backup_dir}/latest/#{db_file} #{shared_backup_dir}/latest/; fi"
+      run "cd #{deploy_to} && if [ -f #{shared_backup_dir}/latest/#{db_file} ]; then cp -f #{shared_backup_dir}/latest/#{db_file} #{shared_backup_dir}/latest/; fi"
     end
       
     task :backup_latest do

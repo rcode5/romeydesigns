@@ -27,24 +27,23 @@ role :db, deploy_server, :primary => true
 set :runner, user
 set :admin_runner, user
 
+set :shared_db_dir, 'shared/database'
+set :db_file, 'romey.db'
+set :shared_backup__dir, 'shared/backups'
+
 namespace :romey do
   namespace :db do
 
-    task :setup_backup_dir do
-      run "rm -rf #{deploy_to}/current/backups"
-      run "mkdir -p #{deploy_to}/shared/backups/latest && ln -s #{deploy_to}/shared/backups #{deploy_to}/current/backups"
-    end
-
     task :copy_db do
-      run "cd #{deploy_to} && cp shared/database/romey.db shared/backups/latest/"
+      run "cd #{deploy_to} && cp #{shared_db_dir}/#{db_file} #{shared_backup_dir}/latest/"
     end
 
     task :stash_latest do
-      run "cd #{deploy_to} && if [ -d shared/backups/latest ]; then mv shared/backups/latest shared/backups/#{Time.now.strftime('%Y%m%d%H%M%s')}; fi"
+      run "cd #{deploy_to} && if [ -d #{shared_backup_dir}/latest ]; then mv #{shared_backup_dir}/latest #{shared_backup_dir}/#{Time.now.strftime('%Y%m%d%H%M%s')}; fi"
     end
 
     task :symlink do
-      run "cd #{deploy_to} && rm -f current/romey.db && ln -s shared/database/romey.db current/romey.db"
+      run "cd #{deploy_to} && rm -f current/#{db_file} && ln -s #{shared_db_dir}/#{db_file} current/"
     end
 
     desc "Backup database"

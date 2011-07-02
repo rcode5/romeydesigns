@@ -36,11 +36,11 @@ namespace :romey do
     end
 
     task :copy_db do
-      run "cd #{deploy_to} && cp shared/database/romey.db shared/backup/latest/"
+      run "cd #{deploy_to} && cp shared/database/romey.db shared/backups/latest/"
     end
 
     task :stash_latest do
-      run "cd #{deploy_to} && if [ -d shared/backup/latest ]; then mv shared/backup/latest shared/backup/#{Time.now.strftime('%Y%m%d%H%M%s')}; fi"
+      run "cd #{deploy_to} && if [ -d shared/backups/latest ]; then mv shared/backups/latest shared/backups/#{Time.now.strftime('%Y%m%d%H%M%s')}; fi"
     end
 
     task :symlink do

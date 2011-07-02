@@ -86,6 +86,10 @@ class Romey < Sinatra::Base
     redirect '/uploads'
   end
 
+  get '/pics' do
+    content_type :json 
+    ImageResource.all.to_json(:include => :url)
+  end
 end
 
 class ImageResource
@@ -102,6 +106,14 @@ class ImageResource
     :thumb => { :geometry => '100x100>' },
     :grid => { :geometry => '205x205#' }
   }
-  
+  def as_json(options = {})
+    json = super
+    json.merge(
+    { :url => {:grid => self.file(:grid),
+              :original => self.file(:original),
+              :thumb => self.file(:thumb),
+    }         })
+  end
 end
+
 ImageResource.auto_migrate! unless ImageResource.storage_exists?

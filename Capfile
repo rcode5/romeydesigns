@@ -39,7 +39,7 @@ namespace :romey do
     end
 
     task :copy_to_current do
-      run "cd #{deploy_to} && if [ -f #{shared_backup_dir}/latest/#{db_file} ]; then cp -f #{shared_backup_dir}/latest/#{db_file} #{deploy_to/current}; fi"
+      run "cd #{deploy_to} && if [ -f #{shared_backup_dir}/latest/#{db_file} ]; then cp -f #{shared_backup_dir}/latest/#{db_file} #{deploy_to}/current; fi"
     end
     
     task :backup_latest do

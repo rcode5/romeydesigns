@@ -29,7 +29,7 @@ set :admin_runner, user
 
 set :shared_db_dir, 'shared/database'
 set :db_file, 'romey.db'
-set :shared_backup__dir, 'shared/backups'
+set :shared_backup_dir, 'shared/backups'
 
 namespace :romey do
   namespace :db do

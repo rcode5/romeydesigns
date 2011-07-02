@@ -1,3 +1,4 @@
+require('/javascripts/queue.min.js');
 require('/javascripts/imageRotator.js');
 describe('image rotator jquery plugin', function() {
   template('image_rotator.html');

@@ -7,7 +7,7 @@ describe('image rotator jquery plugin', function() {
       $('.images_container').imageRotator({imageContainer:'.blurp'});
     });
     it('puts settings in the data field of element it was called on', function() {
-      expect($('.images_container').data()).toEqual({imageUrls: [], imageContainer:'.blurp'});
+      expect($('.images_container').data()).toEqual({imageUrls: [], imageContainer:'.blurp', delayMillisec:5000, fadeDuration: 500});
 
     });
     it('manages separate settings for separate instances', function() {

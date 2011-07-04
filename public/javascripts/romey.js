@@ -6,7 +6,7 @@ $(function() {
     $.each(data, function() {
       urls.push( this.url.grid );
     });
-    $('#main').imageRotator({imageContainer:'.pic', imageUrls: urls, delayMillisec: 3000, fadeDuration: 350});
+    $('#main').imageRotator({imageContainer:'.pic', imageUrls: urls, delayMillisec: 3000, fadeDuration: 600});
   });
   
 });

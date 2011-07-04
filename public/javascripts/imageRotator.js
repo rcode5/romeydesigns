@@ -6,7 +6,9 @@ var imageRotatorDefaults = {};
 
 $.imageRotatorDefaults = {
   imageContainer: '.ir_img_container',
-  imageUrls: []
+  imageUrls: [],
+  delayMillisec: 5000,
+  fadeDuration: 500
 };
 
 var mergeData = function( sel, newData ) {
@@ -21,6 +23,8 @@ $.fn.imageRotator = function( method ) {
       this.counter = 0;
       mergeData(this, $.imageRotatorDefaults);
       mergeData(this, options);
+      this.delayMillisec = options.delayMillisec;
+      this.fadeDuration = options.fadeDuration;
       var urls = $(this).data().imageUrls;
       var ii = 0;
       var nurls = urls.length;
@@ -30,27 +34,26 @@ $.fn.imageRotator = function( method ) {
       var rotateable = $(this).find(options.imageContainer + " img");
       ii = 0;
       var nrotatable = rotateable.length;
-      for (; ii < rotateable.length; ++ii) {
-        var r = rotateable[ii];
-        var controller = this;
-        setTimeout(function() { 
-          setInterval(function() {
-            $(controller).imageRotator('updateImage');
-          }, 3000);
-        }, Math.floor(ii * 1200));
-      }
+      var _that = this;
+      setTimeout(function(){ $(_that).imageRotator('updateImage'); }, _that.delayMillisec );
     },
     dump: function() {
       console.log('queue size: ', this.imageQ.getLength());
     },
-    updateImage: function(img) {
+    updateImage: function() {
       var nextImage = this.imageQ.dequeue();
       this.imageQ.enqueue(nextImage);
       var $this = $(this)
       var rotateable = $this.find($this.data().imageContainer + " img");
       var nrotateable = rotateable.length;
-      rotateable[ Math.floor(Math.random()*6) % nrotateable].src = nextImage;
+      var img = rotateable[ this.counter % nrotateable];
+      var _that = this;
+      $(img).fadeOut(this.fadeDuration, function() {
+        this.src = nextImage;
+        $(this).fadeIn(_that.fadeDuration);
+      });
       this.counter+=1;
+      setTimeout(function(){ $this.imageRotator('updateImage'); }, this.delayMillisec );
     }
   };
   return this.each(function() {

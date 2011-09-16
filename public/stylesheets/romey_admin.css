@@ -31,7 +31,18 @@ h1 {
 ul {
   margin-top: 20px;
 }
-li {
+
+li.event {
+  padding: 10px;
+  margin: 10px;
+  border: 1px dotted #86a7b7;
+  position: relative;
+}  
+li.event .title {
+  font-weight: bold;
+}
+
+li.uploaded_image {
   width: 120px;
   height: 100px;
   padding: 10px;
@@ -49,4 +60,68 @@ li .del {
 }
 li .del:hover {
   pointer: cursor;
+}
+
+.event_input {
+  margin: 10px 0 0px;
+}
+.event_input .help {
+}
+form .submit {
+  margin-top: 10px;
+}
+input[type=text], textarea, input[type=submit] {
+  border: 1px solid #86a7b7;
+  padding:10px;
+  font-size:18px;
+  color: #357;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+}
+input[type=submit] {
+  cursor: pointer;
+}
+
+.errors {
+  padding: 10px;
+  border: 1px solid #ff4444;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  color: #800;
+  font-weight: bold;
+}
+.errors .err {
+  color: #800;
+  font-weight: normal;
+}
+
+form .fieldWithErrors input {
+  border: 1px solid #ff4444;
+}
+
+nav {
+  font-size: 16px;
+  line-height: 20px;
+  color: #86a7b7;
+}
+nav a {
+  color: #86a7b7;
+  text-decoration: none;
+}
+nav a:hover {
+}
+
+nav li {
+  padding: 10px;
+  margin: 5px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+}    
+nav li:hover {
+  border: 1px solid #467;
+  color: #357;
 }

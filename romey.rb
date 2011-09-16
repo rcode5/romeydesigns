@@ -92,6 +92,10 @@ class Romey < Sinatra::Base
   end
 end
 
+class Events
+  include DataMapper::Resource
+end
+
 class ImageResource
 
   include DataMapper::Resource

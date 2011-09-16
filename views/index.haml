@@ -19,32 +19,41 @@
 
     %title #{@title}
   %body  
-    %section#main
-      .line.first
-        .unit.size1of4
-          .logo.block.first
-            %img{:src => '/images/romey_small_logo.png'}
-            .co_name R O M E Y D E S I G N S . C O M
-            
-        - 3.times.each do |ii|
-          .unit.size1of4
-            .pic.block{:class => "#{(ii==2) ? 'last' : ''}"}
-              - if @images[ii]
-                %img{:src => "#{@images[ii].file.url(:grid)}"}
-      .line.last
-        - 3.times.each do |ii|
-          .unit.size1of4 
-            .pic.block{:class => "#{((ii==0) ? 'first' : '')}"}
-              - if @images[ii+3]
-                %img{:src => "#{@images[ii+3].file.url(:grid)}"}
-        .unit.size1of4
-          .links.block.last
-            .etsy
-              %a{:target => '_blank', :href => 'http://etsy.com/shop/RomeyDesigns'} shop
-            .tw
-              %a{:target => '_blank', :href => 'http://twitter.com/romeydesigns'} tune in
-            .fb
-              %a{:target => '_blank', :href => 'http://www.facebook.com/RomeyDesigns'} be my friend
+    #carousel
+      .fullpanel
+        %section#main.panel
+          .line.first
+            .unit.size1of4
+              .logo.block.first
+                %img{:src => '/images/romey_small_logo.png'}
+                .co_name #{"romeydesigns.com".upcase}
+
+            - 3.times.each do |ii|
+              .unit.size1of4
+                .pic.block{:class => "#{(ii==2) ? 'last' : ''}"}
+                  - if @images[ii]
+                    %img{:src => "#{@images[ii].file.url(:grid)}"}
+          .line.last
+            - 3.times.each do |ii|
+              .unit.size1of4 
+                .pic.block{:class => "#{((ii==0) ? 'first' : '')}"}
+                  - if @images[ii+3]
+                    %img{:src => "#{@images[ii+3].file.url(:grid)}"}
+            .unit.size1of4
+              .links.block.last
+                .etsy
+                  %a{:target => '_blank', :href => 'http://etsy.com/shop/RomeyDesigns'} shop
+                .tw
+                  %a{:target => '_blank', :href => 'http://twitter.com/romeydesigns'} tune in
+                .fb
+                  %a{:target => '_blank', :href => 'http://www.facebook.com/RomeyDesigns'} be my friend
+                .event_link
+                  %a around town
+        %section#events.panel
+          Events
+          .event_link
+            %a main
+
 
       // %section#fixed_bg
     %footer

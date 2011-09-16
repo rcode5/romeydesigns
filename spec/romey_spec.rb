@@ -79,8 +79,9 @@ describe Romey do
 
   describe '#events' do
     it "renders all events" do
-      EventResource.stubs(:all => [ mock(:title => 'whatever', :description => 'this event'),
-                                    mock(:title => 'yo dude', :description => 'rock it') ])
+      pending
+      EventResource.stubs(:all => [ mock(:title => 'whatever', :description => 'this event' , :starttime => Time.now),
+                                    mock(:title => 'yo dude', :description => 'rock it', :starttime => Time.now) ])
 
       authorize 'jennymey','jonnlovesjenn'
       get '/events'
@@ -92,10 +93,13 @@ describe Romey do
   describe 'POST#event' do
     it "creates a new event" do
       authorize 'jennymey','jonnlovesjenn'
-      post '/event', { }
+      precount = EventResource.count
+      post '/event', { :event => {:title => 'yo', 'description' => 'stuff', :starttime => '10/11/2011 6:00pm' }  }
+      (EventResource.count - precount).should == 1
     end
     it "redirects to events list page" do
-      post '/event', { }  
+      authorize 'jennymey','jonnlovesjenn'
+      post '/event', { :event => {:title => 'yo', 'description' => 'stuff' , :starttime => '10/11/2011 6:00pm' }  }
       last_response.status.should == 302
     end
   end

@@ -55,7 +55,7 @@ class Romey < Sinatra::Base
     @title = "Romey Designs : handmade in san francisco"
     @images = []
     @images = ImageResource.all.sort{|a,b| a.id <=> b.id}
-    @events = EventResource.all.sort{|a,b| a.starttime <=> b.starttime}
+    @events = EventResource.all.sort{|a,b| (a.starttime && b.starttime)? (a.starttime <=> b.starttime) : a.id <=> b.id}
     haml :index
   end
 
@@ -74,15 +74,15 @@ class Romey < Sinatra::Base
     protected!
     # update timestamps
     [:starttime, :endtime].each do |thetime|
-      begin
-        t = Chronic.parse(params[:event][thetime])
-        params[:event][thetime] = t
-      rescue ArgumentError
+      if params[:event].has_key? thetime.to_s
+        begin
+          t = Chronic.parse(params[:event][thetime])
+          params[:event][thetime] = t
+        rescue ArgumentError
+        end
       end
     end
-    p params[:event][:starttime]
     ev = EventResource.new(params[:event])
-    p ev
     if !ev.save
       @event = ev
       haml :event, :layout => :admin_layout
@@ -151,6 +151,8 @@ class EventResource
   property :starttime, DateTime
   property :endtime, DateTime
   property :url, String
+
+  validates_presence_of :starttime
 
   def map_link
     "http://maps.google.com/maps?q=%s" % URI.escape(address)

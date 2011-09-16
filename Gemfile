@@ -15,4 +15,5 @@ group :test do
   gem 'rspec_hpricot_matchers'
   gem "rack-test"
   gem "evergreen"
+  gem "selenium-webdriver", "~> 2.0"
 end

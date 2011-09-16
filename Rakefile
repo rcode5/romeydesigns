@@ -7,7 +7,10 @@ task :run do |t|
   Romey.run!
 end
 
-task :migrate do
-  DataMapper.auto_migrate!
+namespace :db do
+  desc "Migrate database with DataMapper auto_migrate"
+  task :migrate do
+    DataMapper.auto_migrate!
+  end
 end
 

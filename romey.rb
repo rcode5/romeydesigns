@@ -2,6 +2,8 @@ require 'sinatra'
 require 'haml'
 require 'datamapper'
 require 'dm-paperclip'
+require 'uri'
+require 'chronic'
 
 module Paperclip
   class Tempfile < ::Tempfile
@@ -52,10 +54,59 @@ class Romey < Sinatra::Base
   get '/' do
     @title = "Romey Designs : handmade in san francisco"
     @images = []
-    @images = ImageResource.all.sort{|a,b| b.id <=> a.id}
+    @images = ImageResource.all.sort{|a,b| a.id <=> b.id}
+    @events = EventResource.all.sort{|a,b| a.starttime <=> b.starttime}
     haml :index
   end
-  
+
+  get '/event' do
+    protected!
+    haml :event, :layout => :admin_layout
+  end
+
+  get '/event/:id' do
+    protected!
+    @event = EventResource.get(params[:id])
+    haml :event, :layout => :admin_layout
+  end
+
+  post '/event' do
+    protected!
+    # update timestamps
+    [:starttime, :endtime].each do |thetime|
+      begin
+        t = Chronic.parse(params[:event][thetime])
+        params[:event][thetime] = t
+      rescue ArgumentError
+      end
+    end
+    p params[:event][:starttime]
+    ev = EventResource.new(params[:event])
+    p ev
+    if !ev.save
+      @event = ev
+      haml :event, :layout => :admin_layout
+    else 
+      redirect '/events'
+    end
+  end
+
+  get '/event/del/:id' do
+    protected!  
+    ev = EventResource.get(params[:id])
+    if ev
+      ev.destroy
+    end
+    redirect '/events'
+  end
+
+  get '/events' do
+    protected!
+    @title = "Events"
+    @events = EventResource.all.sort{|a,b| b.id <=> a.id}
+    haml :events, :layout => :admin_layout
+  end
+
   get '/upload' do
     @title = "Upload image"
     protected!
@@ -72,12 +123,11 @@ class Romey < Sinatra::Base
   get '/uploads' do
     protected!
     @title = "Uploads"
-    @images = []
     @images = ImageResource.all.sort{|a,b| b.id <=> a.id}
     haml :uploads, :layout => :admin_layout
   end
 
-  get '/del/:id' do
+  get '/pic/del/:id' do
     protected!
     img = ImageResource.get(params[:id])
     if img
@@ -92,8 +142,34 @@ class Romey < Sinatra::Base
   end
 end
 
-class Events
+class EventResource
   include DataMapper::Resource
+  property :id, Serial
+  property :title, String
+  property :description, String
+  property :address, String
+  property :starttime, DateTime
+  property :endtime, DateTime
+  property :url, String
+
+  def map_link
+    "http://maps.google.com/maps?q=%s" % URI.escape(address)
+  end
+    
+  def trimmed_description
+    trimmed = []
+    words = description.split
+    nxt = 0
+    while trimmed.join.length < 100 && nxt < words.length
+      trimmed << words[nxt]
+      nxt += 1
+    end
+    result = trimmed.join ' '
+    if result.length < words.join.length
+      result << "..."
+    end
+    result
+  end
 end
 
 class ImageResource

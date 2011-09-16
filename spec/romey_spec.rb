@@ -23,7 +23,7 @@ describe Romey do
   end
 
   describe 'authorized urls' do
-    [ '/upload','/uploads' ].each do |endpoint|
+    [ '/upload','/uploads', '/event', '/events' ].each do |endpoint|
       it "GET #{endpoint} responds error with no auth" do
         get endpoint
         last_response.status.should == 401
@@ -64,26 +64,72 @@ describe Romey do
                                     mock(:file => mock(:url => 'url2'), :id => 12) ])
       authorize 'jennymey','jonnlovesjenn'
       get '/uploads'
-      last_response.body.should have_tag('ul li.uploaded_image div a[@href=/del/12]')
-      last_response.body.should have_tag('ul li.uploaded_image div a[@href=/del/10]')
+      last_response.body.should have_tag('ul li.uploaded_image div a[@href=/pic/del/12]')
+      last_response.body.should have_tag('ul li.uploaded_image div a[@href=/pic/del/10]')
     end
   end
 
-  describe "#del" do
+  describe '#event' do
+    it 'renders a form for event input' do
+      authorize 'jennymey','jonnlovesjenn'
+      get '/event'
+      last_response.body.should have_tag('input#event_title')
+    end
+  end
+
+  describe '#events' do
+    it "renders all events" do
+      EventResource.stubs(:all => [ mock(:title => 'whatever', :description => 'this event'),
+                                    mock(:title => 'yo dude', :description => 'rock it') ])
+
+      authorize 'jennymey','jonnlovesjenn'
+      get '/events'
+      last_response.body.should have_tag('ul li.event', 2)
+      last_response.body.should have_tag('ul li.event', /yo dude/)
+    end
+  end
+
+  describe 'POST#event' do
+    it "creates a new event" do
+      authorize 'jennymey','jonnlovesjenn'
+      post '/event', { }
+    end
+    it "redirects to events list page" do
+      post '/event', { }  
+      last_response.status.should == 302
+    end
+  end
+
+  describe '#pic/del' do
+    it "removes the event" do
+      mock_event = mock(EventResource)
+      mock_event.expects(:destroy)
+      EventResource.expects(:find).with('10').returns( mock_event )
+      authorize 'jennymey','jonnlovesjenn'
+      get "/event/del/19" 
+    end
+
+    it "redirects to events" do
+      authorize 'jennymey','jonnlovesjenn'
+      get "/event/del/4"
+      last_response.status.should == 302
+    end
+  end
+
+  describe "#pic/del" do
     it "removes the desired image" do
       mock_image = mock(ImageResource)
       mock_image.expects(:destroy)
       ImageResource.expects(:find).with('10').returns( mock_image )
       authorize 'jennymey','jonnlovesjenn'
-      get "/del/19" 
+      get "/pic/del/19" 
     end
 
     it "redirects to uploads" do
       authorize 'jennymey','jonnlovesjenn'
-      get "/del/1"
+      get "/pic/del/1"
       last_response.status.should == 302
     end
-
   end
 
   describe 'xhr get#pics' do

@@ -1,0 +1,18 @@
+.ctrls      
+  %a{:href => '/event'}
+    %button Add a new event
+
+%header
+  %h1
+    Current Events
+%ul
+  - @events.each do |ev|
+    %li.event 
+      .title #{ev.title}
+      .desc #{ev.trimmed_description}
+      .start From #{ev.starttime.strftime('%b %e %Y %I:%M%p')} #{ev.endtime ? "- " + ev.endtime.strftime('%b %e %Y %I:%M%p'):''}
+
+      .del
+        %a{:href => "/event/del/#{ev.id}", :title => 'trash'}
+          %img{:src => '/images/trash.png', :alt => 'trash', :title => 'trash'}
+  

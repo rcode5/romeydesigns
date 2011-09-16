@@ -12,7 +12,7 @@ a:hover {
 
 footer {
   width: 900px;
-  margin: 20px auto;
+  margin: auto;
   text-align:center;
   font-family: museo-sans-1, museo-sans-2, sans-serif;
 }
@@ -88,7 +88,7 @@ header {
 #carousel {
   overflow: hidden;
   width: 940px;
-  height: 494px;
+  height: 480px;
   margin: 75px auto 10px;
   position: relative;
 }
@@ -117,7 +117,7 @@ header {
   box-shadow: 0 0px 10px #789;
 
   width: 918px;
-  height: 472px;
+  height: 462px;
 
 }
 
@@ -128,7 +128,47 @@ header {
 #events.panel {
   margin-left:6px;
 }
+#events .event_link {
+  float: right;
+  font-size: 16px;
+  margin-top: 210px;
+  margin-right: 10px;
+}
+#events .event_list {
+  height: 400px;
+  width: 600px;
+  overflow:hidden;
+}
+  
+#events h2 {
+  font-size: 20px;
+  margin: 0 0 24px 10px;
+}
 
+#events .container {
+  margin: 16px 8px;
+  height: 400px;
+}
+
+#events li {
+  color: #457;
+  margin: 0 10px;
+  padding: 10px 0;
+  border-bottom: 1px dashed #8ae;
+  position: relative;
+}
+#events li .starttime {
+  position: absolute;
+  right: 0;
+  top: 10px;
+}
+#events li.last {
+  border: 0;
+}
+#events li .event div {
+  color: #457;
+  line-height: 17px;
+}
 .panel .unit {
   z-index: 100;
 }

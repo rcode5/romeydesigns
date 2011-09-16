@@ -4,6 +4,7 @@ gem 'sinatra'
 gem 'capistrano'
 gem 'thin'
 gem 'haml'
+gem 'chronic'
 gem "dm-sqlite-adapter"
 gem "datamapper"
 gem "dm-paperclip"

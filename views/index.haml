@@ -40,22 +40,48 @@
                   - if @images[ii+3]
                     %img{:src => "#{@images[ii+3].file.url(:grid)}"}
             .unit.size1of4
-              .links.block.last
-                .etsy
+              %ul.links.block.last
+                %li.etsy
                   %a{:target => '_blank', :href => 'http://etsy.com/shop/RomeyDesigns'} shop
-                .tw
+                %li.tw
                   %a{:target => '_blank', :href => 'http://twitter.com/romeydesigns'} tune in
-                .fb
+                %li.fb
                   %a{:target => '_blank', :href => 'http://www.facebook.com/RomeyDesigns'} be my friend
-                .event_link
-                  %a around town
+                %li.event_link
+                  %a 
+                    ! around town &raquo;
         %section#events.panel
-          Events
-          .event_link
-            %a main
+          .container
+            .unit.size1of4
+              .logo.block.first
+                %img{:src => '/images/romey_small_logo.png'}
+                .co_name #{"romeydesigns.com".upcase}
+              .event_link
+                %a 
+                  ! &laquo; back
+            .unit.size3of4
+              .event_list
+                %h2 Romey, out on the town
+                - if @events.empty?
+                  .nothin There's nothing going on for a bit.  Please check back soon for more information about upcoming shows and events.
+                - else
+                  %ul
+                    - @events.each_with_index do |ev, idx|
+                      - clz = 'first' if idx == 0 
+                      - clz = 'last' if idx == @events.length - 1
+                      %li{:class => clz}
+                        .event
+                          .title #{ev.title}
+                          .desc #{ev.description}
+                          .starttime #{ev.starttime.strftime('%b %e %I:%M%p')} #{ev.endtime ? "- " + ev.endtime.strftime('%I:%M%p'):''}
+                          .address 
+                            #{ev.address}
+                            %a.maplink{:href => ev.map_link, :target => '_blank'} (map)
+                          .url 
+                            - if ev.url && ev.url.length > 6
+                              %a{:target => '_blank', :href => ev.url} #{ev.url}
 
 
-      // %section#fixed_bg
     %footer
       %div
         handmade in san francisco

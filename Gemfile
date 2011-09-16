@@ -8,6 +8,7 @@ gem 'chronic'
 gem "dm-sqlite-adapter"
 gem "datamapper"
 gem "dm-paperclip"
+gem "rake"
 
 group :test do
   gem "rspec"

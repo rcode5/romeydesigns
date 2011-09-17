@@ -30,28 +30,15 @@ set :admin_runner, user
 set :shared_db_dir, 'shared/database'
 set :db_file, 'romey.db'
 set :shared_backup_dir, 'shared/backups'
+set :deploy_time, Time.now.strftime('%Y%m%d%H%M%s')
 
 namespace :romey do
   namespace :db do
 
-    task :stash_current do
-      run "cd #{deploy_to} && mkdir -p #{shared_backup_dir}/latest && if [ -f #{deploy_to}/current/#{db_file} ]; then cp #{deploy_to}/current/#{db_file} #{shared_backup_dir}/latest/; fi"
-    end
-
     task :copy_to_current do
-      run "cd #{deploy_to} && if [ -f #{shared_backup_dir}/latest/#{db_file} ]; then cp -f #{shared_backup_dir}/latest/#{db_file} #{deploy_to}/current; fi"
+      run "cd #{deploy_to} && if [ -f #{previous_release}/#{db_file} ]; then cp #{previous_release}/#{db_file} #{current_release}; fi"
     end
-    
-    task :backup_latest do
-      run "cd #{deploy_to} && if [ -d #{shared_backup_dir}/latest ]; then mv #{shared_backup_dir}/latest #{shared_backup_dir}/#{Time.now.strftime('%Y%m%d%H%M%s')}; fi"
-    end
-
-    desc "Backup database"
-    task :backup, :roles => [:web, :app] do
-      romey.db.copy_to_current
-      romey.db.backup_latest
-    end
-    
+   
   end
 end
 
@@ -104,8 +91,6 @@ namespace :apache do
   end
 end
 
-before "deploy", "romey:db:stash_current"
-before "deploy:start", "romey:db:backup"
 before "thin:start", "romey:db:copy_to_current"
 after 'deploy', "apache:reload"
 

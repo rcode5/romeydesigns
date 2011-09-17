@@ -57,6 +57,19 @@ end
 
 namespace :deploy do
   # This will make sure that Capistrano doesn't try to run rake:migrate (this is not a Rails project!)
+  task :start, :roles => [:web, :app] do
+    thin.start
+  end
+
+  task :stop, :roles => [:web, :app] do
+    thin.stop
+  end
+
+  task :restart do
+    deploy.stop
+    deploy.start
+  end
+
   task :cold do
     deploy.update
     deploy.start
@@ -92,5 +105,6 @@ end
 
 before "deploy", "romey:db:stash_current"
 before "deploy:start", "romey:db:backup"
-before "thin:start", "romey:db:copy_to_current", "apache:reload"
+before "thin:start", "romey:db:copy_to_current"
+after 'deploy', "apache:reload"
 

@@ -56,31 +56,31 @@ namespace :romey do
 end
 
 namespace :deploy do
-
-  desc "Deploy and start #{application} : #{deploy_server}:#{deploy_to}"
-  task :start, :roles => [:web, :app] do
-    run "cd #{deploy_to}/current && nohup bundle exec thin -C thin/production_config.yml -R config.ru start"
-  end
-  
-  desc "Stop #{application} : #{deploy_server}:#{deploy_to}"
-  task :stop, :roles => [:web, :app] do
-    run "cd #{deploy_to}/current && nohup bundle exec thin -C thin/production_config.yml -R config.ru stop"
-  end
-  
-  desc "Stop then start #{application} : #{deploy_server}:#{deploy_to}"
-  task :restart, :roles => [:web, :app] do
-    deploy.stop
-    deploy.start
-  end
-  
   # This will make sure that Capistrano doesn't try to run rake:migrate (this is not a Rails project!)
   task :cold do
     deploy.update
     deploy.start
   end
+
 end
 
 ####### Apache commands ####
+namespace :thin do
+  [:stop, :start].each do |action|
+    desc "#{action.to_s} thin servers for #{application} : #{deploy_server}:#{deploy_to}"
+    task action, :roles => [:web, :app] do
+      run "cd #{deploy_to}/current && nohup bundle exec thin -C thin/production_config.yml -R config.ru #{action.to_s}"
+    end
+  end
+
+  desc "Restart thin servers for #{application} : #{deploy_server}:#{deploy_to}"
+  task :restart, :roles => [:web, :app] do
+    deploy.stop
+    deploy.start
+  end
+
+end
+
 namespace :apache do
   [:stop, :start, :restart, :reload].each do |action|
     desc "#{action.to_s.capitalize} Apache"
@@ -92,5 +92,5 @@ end
 
 before "deploy", "romey:db:stash_current"
 before "deploy:start", "romey:db:backup"
-after "deploy:start", "romey:db:copy_to_current", "apache:reload"
+before "thin:start", "romey:db:copy_to_current", "apache:reload"
 

@@ -24,6 +24,18 @@ describe Romey do
       get '/'
       last_response.should have_tag('#events.panel')
     end
+    it 'does not render events that are older than yesterday' do
+      mock_events = []
+      t = Time.now
+      5.times.each do |idx|
+        mock_events << mock(:starttime => t, :id => idx)
+        t -= (3600 * 24)
+      end
+      EventResource.stubs(:all => mock_events)
+      get('/')
+      last_response.should have_tag('.event', 1)
+    end
+
   end
 
   describe 'authorized urls' do

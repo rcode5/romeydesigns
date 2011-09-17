@@ -26,6 +26,8 @@
         %textarea{:class => "event", :id => "event_#{ky}", :name => "event[#{ky}]", :value => (@event ? @event.send(ky) : ''), :rows => 5, :cols => 55}
       - else        
         %input{:type => 'text', :class => "event", :id => "event_#{ky}", :name => "event[#{ky}]", :value => (@event ? @event.send(ky) : '') }
+      - if k == :address
+        %a{:class => 'test_map'} [Test address mapping]
       %span.help #{help_msg[k]}
   .clear
   .submit  

@@ -72,6 +72,7 @@ namespace :deploy do
 
   task :cold do
     deploy.update
+    thin.stop
     deploy.start
   end
 

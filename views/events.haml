@@ -8,9 +8,21 @@
 %ul
   - @events.each do |ev|
     %li.event 
-      .title #{ev.title}
-      .desc #{ev.trimmed_description}
-      .start From #{ev.starttime ? ev.starttime.strftime('%b %e %Y %I:%M%p') : 'N/A'} #{ev.endtime ? "- " + ev.endtime.strftime('%b %e %Y %I:%M%p'):''}
+      .title.editable
+        %label Title:
+        .value{:id => "#{ev.id}_title"} #{ev.title.present? ? ev.title : '[add title]'}
+      .description.editable  
+        %label Desc:
+        .value{:id => "#{ev.id}_description"} #{ev.description.present? ? ev.description : '[add description]'}
+      .starttime.editable
+        %label Start Time
+        .value{:id => "#{ev.id}_starttime"} #{ev.starttime.strftime(Romey::TIME_FORMAT)}
+      .endtime.editable 
+        %label End Time
+        .value{:id => "#{ev.id}_endtime"} #{ev.endtime ? ev.endtime.strftime(Romey::TIME_FORMAT) : '[add endtime]'}
+      .url.editable 
+        %label Event Website
+        .value{:id => "#{ev.id}_url"} #{ev.url.present? ? ev.url : '[add event website]'}
 
       .del
         %a{:href => "/event/del/#{ev.id}", :title => 'trash'}

@@ -6,4 +6,7 @@ $(function() {
       window.open('http://maps.google.com/maps?q='+escape(testaddr));
     }
   });
+  
+  $('.editable .value').editable('/event/update_attr');
+
 });

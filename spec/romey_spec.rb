@@ -1,6 +1,12 @@
 require File.dirname(__FILE__) + '/spec_helper'
 require 'mime/types'
 
+LETTERS_PLUS_SPACE =  (75).times.map{|num| (48+num).chr}.reject{|c| (c =~ /[[:punct:]]/)}
+def gen_random_string(len=8)
+  numchars = LETTERS_PLUS_SPACE.length
+  (0..len).map{ LETTERS_PLUS_SPACE[rand(numchars)] }.join
+end
+
 describe Romey do
   include Rack::Test::Methods
 
@@ -25,29 +31,42 @@ describe Romey do
       last_response.should have_tag('#events.panel')
     end
     it 'does not render events that are older than yesterday' do
-      mock_events = []
-      t = Time.now
-      5.times.each do |idx|
-        mock_events << mock(:starttime => t, :id => idx)
+      t = Time.now + (12000)
+      5.times.each do
+        EventResource.create( :title => gen_random_string, :starttime => t, :url => gen_random_string, :description => '')
         t -= (3600 * 24)
       end
-      EventResource.stubs(:all => mock_events)
       get('/')
-      last_response.should have_tag('.event', 1)
+      last_response.should have_tag('.event')
     end
 
   end
 
   describe 'authorized urls' do
-    [ '/upload','/uploads', '/event', '/events' ].each do |endpoint|
-      it "GET #{endpoint} responds error with no auth" do
-        get endpoint
-        last_response.status.should == 401
+    describe 'GET' do
+      [ '/upload','/uploads', '/event', '/events' ].each do |endpoint|
+        it "#{endpoint} responds error with no auth" do
+          get endpoint
+          last_response.status.should == 401
+        end
+        it "#{endpoint} responds ok with proper auth" do
+          authorize 'jennymey','jonnlovesjenn'
+          get endpoint
+          last_response.should be_ok
+        end
       end
-      it "GET #{endpoint} responds ok with proper auth" do
-        authorize 'jennymey','jonnlovesjenn'
-        get endpoint
-        last_response.should be_ok
+    end
+    describe 'POST' do
+      [ ['/event/update_attr', :id => '23_url', :value => 'url'],['/event', :event => {:starttime => 'yo'}]].each do |endpoint|
+        it "#{endpoint} responds error with no auth" do
+          post *endpoint
+          last_response.status.should == 401
+        end
+        it "#{endpoint} responds ok with proper auth" do
+          authorize 'jennymey','jonnlovesjenn'
+          post *endpoint
+          last_response.should be_ok
+        end
       end
     end
   end
@@ -129,6 +148,30 @@ describe Romey do
       authorize 'jennymey','jonnlovesjenn'
       post '/event', { :event => {:title => 'yo', 'description' => 'stuff' , :starttime => '10/11/2011 6:00pm' }  }
       last_response.status.should == 302
+    end
+  end
+
+  describe '#events/update_attr' do
+    it "updates event attribute" do
+      authorize 'jennymey','jonnlovesjenn'
+
+      ev = EventResource.create(:title => 'yo', :starttime => Time.now)
+      _id = "%d_title" % ev.id
+      params = { :id => _id, :value => 'the new title' }
+      post '/event/update_attr', params
+      last_response.body.should == 'the new title'
+      fetched = EventResource.get(ev.id)
+      fetched.title.should == 'the new title'
+    end
+    it "updates event endtime using chronic parsing" do
+      authorize 'jennymey','jonnlovesjenn'
+
+      ev = EventResource.create(:title => 'yo', :starttime => Time.now)
+      _id = "%d_endtime" % ev.id
+      params = { :id => _id, :value => 'Tomorrow at 11pm' }
+      post '/event/update_attr', params
+      fetched = EventResource.get(ev.id)
+      fetched.endtime.should_not be_nil
     end
   end
 

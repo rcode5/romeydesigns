@@ -92,5 +92,5 @@ namespace :apache do
 end
 
 before "thin:start", "romey:db:copy_to_current"
-after 'deploy', "apache:reload"
+after 'deploy:cold', "apache:reload"
 

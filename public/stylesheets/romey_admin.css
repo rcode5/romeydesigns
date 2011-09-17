@@ -125,3 +125,9 @@ nav li:hover {
   border: 1px solid #467;
   color: #357;
 }
+
+.editable .value {
+  color: #357;
+  cursor: pointer;
+}
+  

@@ -1,9 +1,11 @@
+# -*- coding: utf-8 -*-
 require 'sinatra'
 require 'haml'
 require 'datamapper'
 require 'dm-paperclip'
 require 'uri'
 require 'chronic'
+require 'json'
 
 module Paperclip
   class Tempfile < ::Tempfile
@@ -20,7 +22,7 @@ class Romey < Sinatra::Base
   set :logging, true
   set :root, Dir.pwd
   APP_ROOT = root
-
+  TIME_FORMAT = "%b %e %Y %I:%M%p"
   DataMapper::setup(:default, "sqlite3://#{root}/romey.db")
   
   # if necessary, paperclip options can be merged in here
@@ -95,6 +97,45 @@ class Romey < Sinatra::Base
     end
   end
 
+  post '/event/update_attr' do
+    protected!
+    content_type :json
+    msg = nil
+    if params.has_key?('id') && params.has_key?('value')
+      bits = params['id'].split '_'
+      event_id = bits[0] 
+      event_attr = bits[1]
+      new_val = params['value']
+      ev = EventResource.get(event_id)
+      if ev
+        if ev.respond_to?(event_attr)
+          if ['starttime', 'endtime'].include? event_attr
+            new_val = Chronic.parse(new_val)
+          end
+          if ev.send(event_attr) != new_val
+            ev.send(event_attr + '=', new_val)
+            ev.save
+            if ['starttime', 'endtime'].include? event_attr
+              return ev.send(event_attr).strftime(Romey::TIME_FORMAT)
+            else
+              return ev.send(event_attr)
+            end
+          else
+            msg = 'Update value is same as current.  No change'
+          end
+        else
+          msg = "Attr #{event_attr} is not valid"
+        end
+      else
+        msg = "Unable to find event with id #{event_id}"
+      end
+    else
+      status 404
+      msg = "Invalid POST parameters"
+    end
+    msg
+  end
+
   get '/event/del/:id' do
     protected!  
     ev = EventResource.get(params[:id])
@@ -157,9 +198,12 @@ class EventResource
   property :url, String
 
   validates_presence_of :starttime
+  validates_presence_of :title
 
   def map_link
-    "http://maps.google.com/maps?q=%s" % URI.escape(address, /[[:punct:][:space:]]/)
+    if address.present?
+      "http://maps.google.com/maps?q=%s" % URI.escape(address, /[[:punct:][:space:]]/)
+    end
   end
     
   def trimmed_description
@@ -202,3 +246,14 @@ class ImageResource
   end
 end
 
+
+class Object
+  def empty?
+    (self == nil) || (self.respond_to?(:length) && self.length == 0)
+  end
+  def present?
+    !empty?
+  end
+end
+
+    

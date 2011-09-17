@@ -79,7 +79,7 @@
                             %a.maplink{:href => ev.map_link, :target => '_blank'} (map)
                           .url 
                             - if ev.url && ev.url.length > 6
-                              %a{:target => '_blank', :href => ev.url} #{ev.url}
+                              %a{:target => '_blank', :href => ev.url} #{ev.url.truncate(64)}
 
     %footer
       %div

@@ -221,4 +221,31 @@ describe Romey do
       j.count.should == ImageResource.all.count
     end
   end
+
+  describe 'helpers' do
+    describe '#truncate' do
+      it 'leaves short strings alone' do
+        str = gen_random_string(10)
+        str.truncate.should == str
+      end
+      it 'truncates strings longer than 40 to 40 chars with ...' do
+        str = gen_random_string(60)
+        trunc = str.truncate
+        (trunc =~ /\.{3}$/).should be
+      end
+      it 'truncates string to 10 given length 10' do
+        str = gen_random_string(60)
+        trunc = str.truncate(10)
+        trunc.length.should == 10
+        (trunc =~ /\.{3}$/).should be
+      end
+      it 'adds a custom prefix and truncates to 40' do
+        str = gen_random_string(60)
+        trunc = str.truncate(40, 'postfix')
+        trunc.length.should == 40
+        (trunc =~ /postfix$/).should be
+      end
+    end
+  end
+  
 end

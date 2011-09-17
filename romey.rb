@@ -55,7 +55,11 @@ class Romey < Sinatra::Base
     @title = "Romey Designs : handmade in san francisco"
     @images = []
     @images = ImageResource.all.sort{|a,b| a.id <=> b.id}
-    @events = EventResource.all.sort{|a,b| (a.starttime && b.starttime)? (a.starttime <=> b.starttime) : a.id <=> b.id}
+    @events = EventResource.all.sort{|a,b| (a.starttime && b.starttime)? (a.starttime <=> b.starttime) : a.id <=> b.id}.select do |ev|
+      if ev.starttime
+        (Time.now - (3600 * 24)).to_date < (ev.starttime).to_date
+      end
+    end
     haml :index
   end
 
@@ -155,7 +159,7 @@ class EventResource
   validates_presence_of :starttime
 
   def map_link
-    "http://maps.google.com/maps?q=%s" % URI.escape(address)
+    "http://maps.google.com/maps?q=%s" % URI.escape(address, /[[:punct:][:space:]]/)
   end
     
   def trimmed_description
@@ -198,4 +202,3 @@ class ImageResource
   end
 end
 
-ImageResource.auto_migrate! unless ImageResource.storage_exists?

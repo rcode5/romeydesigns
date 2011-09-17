@@ -190,12 +190,12 @@ end
 class EventResource
   include DataMapper::Resource
   property :id, Serial
-  property :title, String
-  property :description, String
-  property :address, String
+  property :title, String, :length => 255
+  property :description, String, :length => 1024
+  property :address, String, :length => 255
   property :starttime, DateTime
   property :endtime, DateTime
-  property :url, String
+  property :url, String, :length => 255
 
   validates_presence_of :starttime
   validates_presence_of :title

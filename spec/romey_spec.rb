@@ -8,7 +8,7 @@ describe Romey do
     @app ||= Romey
   end
 
-  describe '#root' do
+  describe '#index' do
     before do
       # putting the get here doesn't seem to work
     end
@@ -19,6 +19,10 @@ describe Romey do
     it 'should include the title' do
       get '/'
       last_response.should match /handmade/i
+    end
+    it 'renders events' do
+      get '/'
+      last_response.should have_tag('#events.panel')
     end
   end
 
@@ -74,6 +78,18 @@ describe Romey do
       authorize 'jennymey','jonnlovesjenn'
       get '/event'
       last_response.body.should have_tag('input#event_title')
+    end
+    [ :title, :address, :starttime, :endtime, :url].each do |fld|
+      it "form has an input for #{fld}" do
+        authorize 'jennymey','jonnlovesjenn'
+        get '/event'
+        last_response.body.should have_tag("input#event_#{fld.to_s}")
+      end
+    end
+    it "form has a textarea for description" do
+      authorize 'jennymey','jonnlovesjenn'
+      get '/event'
+      last_response.body.should have_tag("textarea#event_description")
     end
   end
 

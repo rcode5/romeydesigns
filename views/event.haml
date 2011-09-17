@@ -16,7 +16,7 @@
   help_msg = { :starttime => 'e.g "10/20/2011 6:00PM"' ,
   :endtime => 'e.g. "10/21/2011 4:30AM"' }
 %form{:action => '/event', :method => 'POST'}
-  - [ :title, :description, :address, :starttime, :endtime ].each do |k|
+  - [ :title, :description, :address, :starttime, :endtime, :url].each do |k|
     - ky = k.to_s
     - clz = (@event && @event.errors && @event.errors.keys.include?(k)) ? 'fieldWithErrors' :''
     .event_input{:class => clz}

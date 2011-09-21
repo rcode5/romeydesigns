@@ -11,6 +11,9 @@
       .title.editable
         %label Title:
         .value{:id => "#{ev.id}_title"} #{ev.title.present? ? ev.title : '[add title]'}
+      .address.editable        
+        %label Address:
+        .value{:id => "#{ev.id}_address"} #{ev.address.present? ? ev.address : '[add address]'}
       .description.editable  
         %label Desc:
         .value{:id => "#{ev.id}_description"} #{ev.description.present? ? ev.description : '[add description]'}

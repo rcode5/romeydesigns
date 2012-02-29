@@ -42,8 +42,6 @@ header, footer {
   text-align:center;
   font-family: museo-sans-1, museo-sans-2, sans-serif;
   position:relative;
-  right:0;
-  bottom:0;
 }
 footer > div {
   font-weight: 700;
@@ -51,6 +49,8 @@ footer > div {
 footer .site_credits {
   font-weight: 100;
   position:absolute;
+  right:0;
+  bottom:0;
 }
 header {
   text-align: center; 

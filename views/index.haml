@@ -104,7 +104,7 @@
                           .event
                             .title #{ev.title}
                             .desc #{ev.description}
-                            .starttime #{ev.starttime ? ev.starttime.strftime('%b %e %I:%M%p') : ''} #{ev.endtime ? "- " + ev.endtime.strftime('%I:%M%p'):''}
+                            .starttime #{ev.starttime ? ev.starttime.strftime('%b %e %-I:%M%p') : ''} #{ev.endtime ? "- " + ev.endtime.strftime('%-I:%M%p'):''}
                             .address 
                               #{ev.address}
                               %a.maplink{:href => ev.map_link, :target => '_blank'} (map)

@@ -5,9 +5,8 @@ gem 'capistrano'
 gem 'thin'
 gem 'haml'
 gem 'chronic'
-gem "datamapper"
 gem "dm-sqlite-adapter"
-gem 'dm-do-adapter'
+gem "data_mapper"
 gem "dm-paperclip"
 gem "rake"
 

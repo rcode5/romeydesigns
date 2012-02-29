@@ -169,6 +169,12 @@ header {
   color: #457;
   line-height: 17px;
 }
+#events li .event .desc,
+#events li .event .title {
+  margin-bottom: 8px;
+}
+
+
 .panel .unit {
   z-index: 100;
 }

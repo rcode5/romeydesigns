@@ -30,7 +30,7 @@ class Romey < Sinatra::Base
   set :logging, true
   set :root, Dir.pwd
   APP_ROOT = root
-  TIME_FORMAT = "%b %e %Y %I:%M%p"
+  TIME_FORMAT = "%b %e %Y %-I:%M%p"
   DataMapper::setup(:default, "sqlite3://#{root}/romey.db")
   
   # if necessary, paperclip options can be merged in here
@@ -70,6 +70,12 @@ class Romey < Sinatra::Base
         (Time.now - (3600 * 24)).to_date < (ev.starttime).to_date
       end
     end
+    @links = {
+      :twitter => 'http://twitter.com/romeydesigns',
+      :facebook => 'http://www.facebook.com/RomeyDesigns',
+      :etsy_main => 'http://etsy.com/shop/RomeyDesigns',
+      :etsy_baby => 'http://etsy.com/shop/RomeyBaby' }
+     
     haml :index
   end
 

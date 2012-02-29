@@ -30,7 +30,7 @@ class Romey < Sinatra::Base
   set :logging, true
   set :root, Dir.pwd
   APP_ROOT = root
-  TIME_FORMAT = "%b %e %Y %I:%M%p"
+  TIME_FORMAT = "%b %e %Y %-I:%M%p"
   DataMapper::setup(:default, "sqlite3://#{root}/romey.db")
   
   # if necessary, paperclip options can be merged in here
@@ -70,6 +70,12 @@ class Romey < Sinatra::Base
         (Time.now - (3600 * 24)).to_date < (ev.starttime).to_date
       end
     end
+    @links = {
+      :twitter => 'http://twitter.com/romeydesigns',
+      :facebook => 'http://www.facebook.com/RomeyDesigns',
+      :etsy_main => 'http://etsy.com/shop/RomeyDesigns',
+      :etsy_baby => 'http://etsy.com/shop/RomeyBaby' }
+     
     haml :index
   end
 
@@ -180,6 +186,40 @@ class Romey < Sinatra::Base
     haml :uploads, :layout => :admin_layout
   end
 
+  get '/baby/upload' do
+    @title = "Upload image"
+    protected!
+    haml :babyupload, :layout => :admin_layout
+  end
+
+  post '/baby/upload' do
+    protected!
+    img = BabyImageResource.new(:file => make_paperclip_mash(params[:file]))
+    halt "There were issues with your upload..." unless img.save
+    redirect '/baby/uploads'
+  end
+
+  get '/baby/uploads' do
+    protected!
+    @title = "Baby Uploads"
+    @images = BabyImageResource.all.sort{|a,b| b.id <=> a.id}
+    haml :babyuploads, :layout => :admin_layout
+  end
+
+  get '/baby/pics' do
+    content_type :json 
+    BabyImageResource.all.to_json(:include => :url)
+  end
+
+  get '/baby/pic/del/:id' do
+    protected!
+    img = ImageResource.get(params[:id])
+    if img
+      img.destroy
+    end
+    redirect '/uploads'
+  end
+
   get '/pic/del/:id' do
     protected!
     img = ImageResource.get(params[:id])
@@ -254,6 +294,29 @@ class ImageResource
   end
 end
 
+class BabyImageResource
+
+  include DataMapper::Resource
+  include Paperclip::Resource
+  
+  property :id, Serial
+  
+  has_attached_file :file,
+  :url => "/system/baby/:attachment/:id/:style/:basename.:extension",
+  :path => "#{Romey::APP_ROOT}/public/system/baby/:attachment/:id/:style/:basename.:extension",
+  :styles => { 
+    :thumb => { :geometry => '100x100>' },
+    :grid => { :geometry => '205x205#' }
+  }
+  def as_json(options = {})
+    json = super
+    json.merge(
+    { :url => {:grid => self.file(:grid),
+              :original => self.file(:original),
+              :thumb => self.file(:thumb),
+    }         })
+  end
+end
 
 class Object
   def empty?
@@ -265,3 +328,4 @@ class Object
 end
 
     
+DataMapper.finalize

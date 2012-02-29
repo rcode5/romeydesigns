@@ -44,7 +44,7 @@ describe Romey do
 
   describe 'authorized urls' do
     describe 'GET' do
-      [ '/upload','/uploads', '/event', '/events' ].each do |endpoint|
+      [ '/baby/upload','/baby/uploads', '/upload','/uploads', '/event', '/events' ].each do |endpoint|
         it "#{endpoint} responds error with no auth" do
           get endpoint
           last_response.status.should == 401
@@ -104,6 +104,39 @@ describe Romey do
     end
   end
 
+  describe "#baby/uploads" do
+    it "has a 'create new' link" do
+      authorize 'jennymey','jonnlovesjenn'
+      get '/baby/uploads'
+      last_response.body.should have_tag('a[@href=/baby/upload] button', 'Add a new image')
+    end
+
+    it "shows a list of images" do
+      BabyImageResource.stubs(:all => [ mock(:file => mock(:url => 'url1'), :id => 10),
+                                        mock(:file => mock(:url => 'url2'), :id => 12) ])
+      authorize 'jennymey','jonnlovesjenn'
+      get '/baby/uploads'
+      last_response.body.should have_tag('ul li.uploaded_image', :count => 2)
+    end
+    
+    it "returns images sorted by id descending" do
+      BabyImageResource.stubs(:all => [ mock(:file => mock(:url => 'url1'), :id => 10),
+                                    mock(:file => mock(:url => 'url2'), :id => 12) ])
+      authorize 'jennymey','jonnlovesjenn'
+      get '/baby/uploads'
+      last_response.body.should have_tag('ul li.uploaded_image img[@src=url1]')
+      last_response.body.should have_tag('ul li.uploaded_image img[@src=url2]')
+    end
+    it "returns delete links for each image" do
+      BabyImageResource.stubs(:all => [ mock(:file => mock(:url => 'url1'), :id => 10),
+                                    mock(:file => mock(:url => 'url2'), :id => 12) ])
+      authorize 'jennymey','jonnlovesjenn'
+      get '/baby/uploads'
+      last_response.body.should have_tag('ul li.uploaded_image div a[@href=/pic/del/12]')
+      last_response.body.should have_tag('ul li.uploaded_image div a[@href=/pic/del/10]')
+    end
+  end
+
   describe '#event' do
     it 'renders a form for event input' do
       authorize 'jennymey','jonnlovesjenn'
@@ -126,14 +159,13 @@ describe Romey do
 
   describe '#events' do
     it "renders all events" do
-      pending
-      EventResource.stubs(:all => [ mock(:title => 'whatever', :description => 'this event' , :starttime => Time.now),
-                                    mock(:title => 'yo dude', :description => 'rock it', :starttime => Time.now) ])
-
       authorize 'jennymey','jonnlovesjenn'
+      post '/event', { :event => {:title => 'yo1', 'description' => 'stuff' , :starttime => Time.now + 20000 }  }
+      post '/event', { :event => {:title => 'yo2', 'description' => 'stuff' , :starttime => Time.now + 30000 }  }
       get '/events'
-      last_response.body.should have_tag('ul li.event', 2)
-      last_response.body.should have_tag('ul li.event', /yo dude/)
+      last_response.body.should have_tag('ul li.event', :count => 2)
+      last_response.body.should have_tag('ul li.event .title', /yo2/)
+      last_response.body.should have_tag('ul li.event .title', /yo1/)
     end
   end
 
@@ -141,12 +173,12 @@ describe Romey do
     it "creates a new event" do
       authorize 'jennymey','jonnlovesjenn'
       precount = EventResource.count
-      post '/event', { :event => {:title => 'yo', 'description' => 'stuff', :starttime => '10/11/2011 6:00pm' }  }
+      post '/event', { :event => {:title => 'yo', 'description' => 'stuff', :starttime => Time.now + 10000 }  }
       (EventResource.count - precount).should == 1
     end
     it "redirects to events list page" do
       authorize 'jennymey','jonnlovesjenn'
-      post '/event', { :event => {:title => 'yo', 'description' => 'stuff' , :starttime => '10/11/2011 6:00pm' }  }
+      post '/event', { :event => {:title => 'yo', 'description' => 'stuff' , :starttime => Time.now + 20000 }  }
       last_response.status.should == 302
     end
   end
@@ -219,6 +251,21 @@ describe Romey do
 
       j = JSON.parse(last_response.body)
       j.count.should == ImageResource.all.count
+    end
+  end
+
+  describe 'xhr get#baby/pics' do
+    it "returns json" do
+      get "/baby/pics"
+      last_response.content_type.should ==  MIME::Types.type_for('json').first
+    end
+    it "returns a list of all image resources as json" do
+      get "/baby/pics"
+      BabyImageResource.stubs(:all => [ mock(:file => mock(:url => 'url1'), :id => 10),
+                                        mock(:file => mock(:url => 'url2'), :id => 12) ])
+
+      j = JSON.parse(last_response.body)
+      j.count.should == BabyImageResource.all.count
     end
   end
 

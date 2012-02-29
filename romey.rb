@@ -65,6 +65,7 @@ class Romey < Sinatra::Base
     @title = "Romey Designs : handmade in san francisco"
     @images = []
     @images = ImageResource.all.sort{|a,b| a.id <=> b.id}
+    @baby_images = BabyImageResource.all.sort{|a,b| a.id <=> b.id}
     @events = EventResource.all.sort{|a,b| (a.starttime && b.starttime)? (a.starttime <=> b.starttime) : a.id <=> b.id}.select do |ev|
       if ev.starttime
         (Time.now - (3600 * 24)).to_date < (ev.starttime).to_date
@@ -286,11 +287,10 @@ class ImageResource
   }
   def as_json(options = {})
     json = super
-    json.merge(
-    { :url => {:grid => self.file(:grid),
-              :original => self.file(:original),
-              :thumb => self.file(:thumb),
-    }         })
+    json.merge({ :url => {:grid => self.file(:grid),
+        :original => self.file(:original),
+        :thumb => self.file(:thumb) }
+               })
   end
 end
 
@@ -310,11 +310,10 @@ class BabyImageResource
   }
   def as_json(options = {})
     json = super
-    json.merge(
-    { :url => {:grid => self.file(:grid),
-              :original => self.file(:original),
-              :thumb => self.file(:thumb),
-    }         })
+    json.merge({ :url => {:grid => self.file(:grid),
+        :original => self.file(:original),
+        :thumb => self.file(:thumb) }
+               })
   end
 end
 

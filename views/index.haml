@@ -38,7 +38,7 @@
             .unit.size1of4
               .logo.block.first
                 %img{:src => '/images/romey_small_logo.png'}
-                .co_name #{"romeydesigns.com".upcase}
+                .co_name #{"romey designs".upcase}
             - 3.times.each do |ii|
               .unit.size1of4
                 .pic.block{:class => "#{(ii==2) ? 'last' : ''}"}
@@ -64,15 +64,19 @@
             .unit.size1of4
               .logo.block.first
                 %img{:src => '/images/romey_small_logo.png'}
-                .co_name #{"romeydesigns.com".upcase}
+                .co_name #{"romey baby".upcase}
 
             - 3.times.each do |ii|
               .unit.size1of4
                 .pic.block{:class => "#{(ii==2) ? 'last' : ''}"}
+                  - if @baby_images[ii]
+                    %img{:src => "#{@baby_images[ii].file.url(:grid)}"}
           .line.last
             - 3.times.each do |ii|
               .unit.size1of4 
                 .pic.block{:class => "#{((ii==0) ? 'first' : '')}"}
+                  - if @baby_images[ii+3]
+                    %img{:src => "#{@baby_images[ii].file.url(:grid)}"}
             .unit.size1of4
               .links.block.last
                 %ul

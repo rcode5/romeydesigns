@@ -1,4 +1,5 @@
 romeyImageData = null;
+babyImageData = null
 currentSection = null;
 $(function() {
   $.getJSON('/pics', function(data) {
@@ -12,7 +13,7 @@ $(function() {
   });
 
   $.getJSON('/baby/pics', function(data) {
-    romeyImageData = data;
+    babyImageData = data;
     var urls = [];
     $.each(data, function() {
       urls.push( this.url.grid );

@@ -5,8 +5,9 @@ gem 'capistrano'
 gem 'thin'
 gem 'haml'
 gem 'chronic'
-gem "dm-sqlite-adapter"
 gem "datamapper"
+gem "dm-sqlite-adapter"
+gem 'dm-do-adapter'
 gem "dm-paperclip"
 gem "rake"
 
@@ -16,6 +17,9 @@ group :test do
   gem 'hpricot'
   gem 'rspec_hpricot_matchers'
   gem "rack-test"
-  gem "evergreen"
-  gem "selenium-webdriver", "~> 2.0"
+  gem "jasmine"
+  gem "jasmine-headless-webkit"
+  #gem "evergreen"
+  #gem "selenium-webdriver", "~> 2.0"
 end
+

@@ -176,13 +176,18 @@ header {
 #events .jspVerticalBar {
   width: 12px;
   background: transparent;
+  -webkit-border-radius:10px;
+  -moz-border-radius:10px;
   border-radius: 10px;
+
   background:#e4e8f2;
 }
 #events .jspTrack {
   background: transparent;
 }
 #events .jspDrag {
+  -webkit-border-radius:10px;
+  -moz-border-radius:10px;
   border-radius:10px;
   background:#8ca4b1;
 }

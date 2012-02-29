@@ -1,4 +1,5 @@
 romeyImageData = null;
+currentSection = null;
 $(function() {
   $.getJSON('/pics', function(data) {
     romeyImageData = data;
@@ -20,15 +21,25 @@ $(function() {
     $('#baby').imageRotator({imageContainer:'.pic', imageUrls: urls, delayMillisec: 3000, fadeDuration: 600});
   });
 
+  var updateSection = function(sxn) {
+    if (sxn != currentSection) {
+      currentSection = sxn;
+      $('.nav_links li').removeClass('current');
+      $('.nav_links .' + (sxn + '_link')).addClass('current');
+    }
+  };
   var showMain = function() {
+    updateSection('main');
     $('.fullpanel').animate( {'left': '0' }, 1500 );
     return false;
   };
   var showBaby = function() {
+    updateSection('baby');
     $('.fullpanel').animate( {'left': '-938' }, 1500 );
     return false;
   };
   var showEvent = function() {
+    updateSection('event');
     $('.fullpanel').animate( {'left': '-1876' }, 1500 );
     return false;
   };
@@ -46,6 +57,7 @@ $(function() {
   });
     
   $('.event_list .scrollPane').jScrollPane({});
+  showMain();
 });
 
 

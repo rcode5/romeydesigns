@@ -23,6 +23,14 @@
 
     %title #{@title}
   %body  
+    %header
+      %ul.nav_links
+        %li.main_link
+          %a big people
+        %li.baby_link
+          %a small people
+        %li.event_link
+          %a around town
     #carousel
       .fullpanel
         %section#main.panel
@@ -51,16 +59,6 @@
                     %a{:target => '_blank', :href => @links[:twitter]} tune in
                   %li.fb
                     %a{:target => '_blank', :href => @links[:facebook]} be my friend
-                  %li.event_link
-                    %a 
-                      ! around town &raquo; 
-                %ul.nav_links
-                  %li.baby_link
-                    %a 
-                      ! baby &raquo;
-                  %li.main_link
-                    %a 
-                      ! main
         %section#baby.panel
           .line.first
             .unit.size1of4
@@ -84,16 +82,6 @@
                     %a{:target => '_blank', :href => @links[:twitter]} tune in
                   %li.fb
                     %a{:target => '_blank', :href => @links[:facebook]} be my friend
-                  %li.event_link
-                    %a 
-                      ! around town &raquo;
-                %ul.nav_links
-                  %li.baby_link
-                    %a 
-                      ! baby
-                  %li.main_link
-                    %a 
-                      ! &laquo; main
           
         %section#events.panel
           .container
@@ -101,14 +89,6 @@
               .logo.block.first
                 %img{:src => '/images/romey_small_logo.png'}
                 .co_name #{"romeydesigns.com".upcase}
-              .links.block
-                %ul.nav_links
-                  %li.baby_link
-                    %a 
-                      ! &laquo; baby
-                  %li.main_link
-                    %a 
-                      ! &laquo; main
             .unit.size3of4
               .event_list
                 %h2 Romey, out on the town

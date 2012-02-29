@@ -1,0 +1,15 @@
+.ctrls      
+  %a{:href => '/baby/upload'}
+    %button Add a new image
+
+%header
+  %h1
+    Current Baby Images
+%ul
+  - @images.each do |r|
+    %li.uploaded_image
+      %img{:src => r.file.url(:thumb)}
+      .del
+        %a{:href => "/pic/del/#{r.id}", :title => 'trash'}
+          %img{:src => '/images/trash.png', :alt => 'trash', :title => 'trash'}
+  

@@ -20,6 +20,7 @@ $(function() {
     return false;
   });
 
+  $('.event_list .scrollPane').jScrollPane({});
 });
 
 

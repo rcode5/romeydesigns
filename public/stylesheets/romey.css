@@ -134,10 +134,10 @@ header {
   margin-top: 210px;
   margin-right: 10px;
 }
-#events .event_list {
-  height: 400px;
+#events .scrollPane {
+  height: 320px;
   width: 600px;
-  overflow:hidden;
+  overflow:auto;
 }
   
 #events h2 {
@@ -173,3 +173,16 @@ header {
   z-index: 100;
 }
 
+#events .jspVerticalBar {
+  width: 12px;
+  background: transparent;
+  border-radius: 10px;
+  background:#e4e8f2;
+}
+#events .jspTrack {
+  background: transparent;
+}
+#events .jspDrag {
+  border-radius:10px;
+  background:#8ca4b1;
+}

@@ -4,6 +4,9 @@
     %meta
     %script{ :src => '/javascripts/queue.min.js' }
     %script{ :src => 'http://code.jquery.com/jquery-1.6.1.min.js' }     
+    %script{ :src => '/javascripts/thirdparty/jquery.jscrollpane.min.js'}
+    %script{ :src => '/javascripts/thirdparty/jquery.mousewheel.js'}
+    %script{ :src => '/javascripts/thirdparty/mwheelIntent.js'}
     %script{ :src => '/javascripts/imageRotator.js' }
     %script{ :src => '/javascripts/romey.js' }
     / [if lt IE 9]
@@ -16,6 +19,7 @@
     %link{:rel => 'stylesheet', :type => 'text/css', :media => 'all', :href => '/stylesheets/oocss/template.css'}
     %link{:rel => 'stylesheet', :type => 'text/css', :media => 'all', :href => '/stylesheets/oocss/grids.css'}
     %link{:rel => 'stylesheet', :type => 'text/css', :media => 'all', :href => '/stylesheets/romey.css'}
+    %link{:rel => 'stylesheet', :type => 'text/css', :media => 'all', :href => '/stylesheets/jquery.jscrollpane.css'}
 
     %title #{@title}
   %body  
@@ -65,21 +69,22 @@
                 - if @events.empty?
                   .nothin There's nothing going on for a bit.  Please check back soon for more information about upcoming shows and events.
                 - else
-                  %ul
-                    - @events.each_with_index do |ev, idx|
-                      - clz = 'first' if idx == 0 
-                      - clz = 'last' if idx == @events.length - 1
-                      %li{:class => clz}
-                        .event
-                          .title #{ev.title}
-                          .desc #{ev.description}
-                          .starttime #{ev.starttime ? ev.starttime.strftime('%b %e %I:%M%p') : ''} #{ev.endtime ? "- " + ev.endtime.strftime('%I:%M%p'):''}
-                          .address 
-                            #{ev.address}
-                            %a.maplink{:href => ev.map_link, :target => '_blank'} (map)
-                          .url 
-                            - if ev.url && ev.url.length > 6
-                              %a{:target => '_blank', :href => ev.url} #{ev.url.truncate(64)}
+                  .scrollPane
+                    %ul
+                      - @events.each_with_index do |ev, idx|
+                        - clz = 'first' if idx == 0 
+                        - clz = 'last' if idx == @events.length - 1
+                        %li{:class => clz}
+                          .event
+                            .title #{ev.title}
+                            .desc #{ev.description}
+                            .starttime #{ev.starttime ? ev.starttime.strftime('%b %e %I:%M%p') : ''} #{ev.endtime ? "- " + ev.endtime.strftime('%I:%M%p'):''}
+                            .address 
+                              #{ev.address}
+                              %a.maplink{:href => ev.map_link, :target => '_blank'} (map)
+                            .url 
+                              - if ev.url && ev.url.length > 6
+                                %a{:target => '_blank', :href => ev.url} #{ev.url.truncate(64)}
 
     %footer
       %div

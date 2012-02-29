@@ -5,6 +5,7 @@ $(function() {
     var urls = [];
     $.each(data, function() {
       urls.push( this.url.grid );
+      urls = urls.reverse();
     });
     $('#main').imageRotator({imageContainer:'.pic', imageUrls: urls, delayMillisec: 3000, fadeDuration: 600});
   });

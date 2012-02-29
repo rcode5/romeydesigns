@@ -18,6 +18,7 @@ group :test do
   gem "rack-test"
   gem "jasmine"
   gem "jasmine-headless-webkit"
+  gem "mime-types"
   #gem "evergreen"
   #gem "selenium-webdriver", "~> 2.0"
 end

@@ -99,6 +99,7 @@ GEM
       rainbow
       sprockets (~> 2)
     json (1.4.6)
+    mime-types (1.17.2)
     mocha (0.9.12)
     multi_json (1.1.0)
     net-scp (1.0.4)
@@ -157,6 +158,7 @@ DEPENDENCIES
   hpricot
   jasmine
   jasmine-headless-webkit
+  mime-types
   mocha
   rack-test
   rake

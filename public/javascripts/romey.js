@@ -10,6 +10,16 @@ $(function() {
     $('#main').imageRotator({imageContainer:'.pic', imageUrls: urls, delayMillisec: 3000, fadeDuration: 600});
   });
 
+  $.getJSON('/baby/pics', function(data) {
+    romeyImageData = data;
+    var urls = [];
+    $.each(data, function() {
+      urls.push( this.url.grid );
+      urls = urls.reverse();
+    });
+    $('#baby').imageRotator({imageContainer:'.pic', imageUrls: urls, delayMillisec: 3000, fadeDuration: 600});
+  });
+
   var showMain = function() {
     $('.fullpanel').animate( {'left': '0' }, 1500 );
     return false;

@@ -10,10 +10,9 @@ end
 namespace :db do
   desc "Migrate database with DataMapper auto_upgrade"
   task :migrate do
-    DataMapper.finalize
-    EventResource.auto_upgrade
-    ImageResource.auto_upgrade
-    BabyImageResource.auto_upgrade
+    EventResource.auto_upgrade!
+    ImageResource.auto_upgrade!
+    BabyImageResource.auto_upgrade!
   end
 end
 

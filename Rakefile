@@ -3,7 +3,7 @@ require './romey.rb'
 
 desc 'run the server'
 task :run do |t|
-  require './romey.rb'
+  require File.join(File.dirname(__FILE__),'romey')
   Romey.run!
 end
 

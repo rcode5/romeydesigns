@@ -1,10 +1,10 @@
 environment: development
-chdir: /projects/romeydesigns
+chdir: /home/deploy/romeydev
 address: 127.0.0.1
-port: 5000
-pid: /projects/romey/romeydesigns/tmp/thin.pid
-rackup: /projects/romeydesigns/config.ru
-log: /projects/romeydesigns/log/thin.log
+port: 4800
+pid: /home/deploy/romeydev/current/tmp/pids/thin.pid
+rackup: /home/deploy/romeydev/current/config.ru
+log: /home/deploy/romeydev/current/log/thin.log
 max_conns: 1024
 timeout: 30
 max_persistent_conns: 128

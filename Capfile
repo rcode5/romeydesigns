@@ -23,6 +23,7 @@ task :dev do
   set :deploy_to, "/home/deploy/romeydev"
   set :ssh_port, '22022'
   set :server_name, 'dev.romeydesigns.com'
+  set :rails_env, 'development'
 end
 task :prod do
   set :user, "romey"
@@ -39,10 +40,6 @@ role :db, deploy_server, :primary => true
 task :set_runners do
   set :runner, user
   set :admin_runner, user
-end
-
-task :mkdirs do
-  run "mkdir -p #{deploy_to}"
 end
 
 set :shared_db_dir, 'shared/database'
@@ -86,9 +83,9 @@ end
 ####### Apache commands ####
 namespace :thin do
   [:stop, :start].each do |action|
-    desc "#{action.to_s} thin servers for #{application} : #{deploy_server}:#{deploy_to}"
+    desc "#{action.to_s} thin servers for #{application} : #{deploy_server}:#{deploy_to} [env #{rails_env}]"
     task action, :roles => [:web, :app] do
-      run "cd #{deploy_to}/current && nohup bundle exec thin -C thin/production_config.yml -R config.ru #{action.to_s}"
+      run "cd #{deploy_to}/current && nohup bundle exec thin -C thin/#{rails_env}_config.yml -R config.ru #{action.to_s}"
     end
   end
 
@@ -123,7 +120,6 @@ task :ping do
   run "curl -s http://#{server_name}"
 end
 before 'deploy', :set_runners
-before 'deploy', :mkdirs
 before "thin:start", "romey:db:copy_to_current"
 after 'deploy:cold', "apache:reload"
 after "apache:reload", :ping

@@ -8,12 +8,12 @@ task :run do |t|
 end
 
 namespace :db do
-  desc "Migrate database with DataMapper auto_migrate"
+  desc "Migrate database with DataMapper auto_upgrade"
   task :migrate do
     DataMapper.finalize
-    EventResource.auto_migrate!
-    ImageResource.auto_migrate!
-    BabyImageResource.auto_migrate!
+    EventResource.auto_upgrade
+    ImageResource.auto_upgrade
+    BabyImageResource.auto_upgrade
   end
 end
 

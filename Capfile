@@ -16,6 +16,7 @@ set :use_sudo, false
 set :scm, :git
 set :repository,  "ssh://git.bunnymatic.com/projects/git/romeydesigns.git"
 set :deploy_via, :remote_cache
+set :rails_env, 'development'
 
 desc 'Setup Development Deployment Params'
 task :dev do
@@ -30,6 +31,7 @@ task :prod do
   set :deploy_to, "/home/#{user}/webapp"
   set :ssh_port, '22022'
   set :server_name, 'www.romeydesigns.com'
+  set :rails_env, 'production'
 end
 
 set :deploy_server, 'bunnymatic.com'

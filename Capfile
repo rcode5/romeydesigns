@@ -5,27 +5,41 @@ require 'bundler/capistrano'
 require 'rvm'
 require 'rvm/capistrano'
 
-set :rvm_ruby_string, '1.9.2-p180@romey'
+set :rvm_ruby_string, '1.9.2-p290@romey'
 set :rvm_type, :root
 load 'deploy' if respond_to?(:namespace)
 
 ####### VARIABLES #######
 set :application, "romey"
-set :user, "romey"
 set :use_sudo, false
 
 set :scm, :git
 set :repository,  "ssh://git.bunnymatic.com/projects/git/romeydesigns.git"
 set :deploy_via, :remote_cache
-set :deploy_to, "/home/#{user}/webapp"
+
+desc 'Setup Development Deployment Params'
+task :dev do
+  set :user, "deploy"
+  set :deploy_to, "/home/deploy/romeydev"
+  set :ssh_port, '22022'
+  set :server_name, 'dev.romeydesigns.com'
+end
+task :prod do
+  set :user, "romey"
+  set :deploy_to, "/home/#{user}/webapp"
+  set :ssh_port, '22022'
+  set :server_name, 'www.romeydesigns.com'
+end
 
 set :deploy_server, 'bunnymatic.com'
 role :app, deploy_server
 role :web, deploy_server
 role :db, deploy_server, :primary => true
 
-set :runner, user
-set :admin_runner, user
+task :set_runners do
+  set :runner, user
+  set :admin_runner, user
+end
 
 set :shared_db_dir, 'shared/database'
 set :db_file, 'romey.db'
@@ -91,6 +105,21 @@ namespace :apache do
   end
 end
 
+desc "Sanity Check"
+task :checkit do
+  puts("User: %s" % user)
+  puts("Repo: %s" % repository)
+  puts("DeployDir: %s" % deploy_to)
+  puts("SSH Port: %s" % ssh_port)
+end
+
+desc "ping the server"
+task :ping do
+  run "curl -s http://#{server_name}/feeds/feed"
+  run "curl -s http://#{server_name}"
+end
+before 'deploy', :set_runners
 before "thin:start", "romey:db:copy_to_current"
 after 'deploy:cold', "apache:reload"
+after "apache:reload", :ping
 

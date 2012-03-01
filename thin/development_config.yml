@@ -1,5 +1,5 @@
 environment: development
-chdir: /home/deploy/romeydev
+chdir: /home/deploy/romeydev/current
 address: 127.0.0.1
 port: 4800
 pid: /home/deploy/romeydev/current/tmp/pids/thin.pid

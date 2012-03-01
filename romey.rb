@@ -28,7 +28,7 @@ end
 class Romey < Sinatra::Base
   set :environment, :production
   set :logging, true
-  set :root, Dir.pwd
+  set :root, File.dirname(__FILE__)
   APP_ROOT = root
   TIME_FORMAT = "%b %e %Y %-I:%M%p"
   DataMapper::setup(:default, "sqlite3://#{root}/romey.db")

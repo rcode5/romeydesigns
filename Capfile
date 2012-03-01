@@ -41,6 +41,10 @@ task :set_runners do
   set :admin_runner, user
 end
 
+task :mkdirs do
+  run "mkdir -p #{deploy_to}"
+end
+
 set :shared_db_dir, 'shared/database'
 set :db_file, 'romey.db'
 set :shared_backup_dir, 'shared/backups'
@@ -119,6 +123,7 @@ task :ping do
   run "curl -s http://#{server_name}"
 end
 before 'deploy', :set_runners
+before 'deploy', :mkdirs
 before "thin:start", "romey:db:copy_to_current"
 after 'deploy:cold', "apache:reload"
 after "apache:reload", :ping

@@ -72,10 +72,17 @@ class Romey < Sinatra::Base
       end
     end
     @links = {
-      :twitter => 'http://twitter.com/romeydesigns',
-      :facebook => 'http://www.facebook.com/RomeyDesigns',
-      :etsy_main => 'http://etsy.com/shop/RomeyDesigns',
-      :etsy_baby => 'http://etsy.com/shop/RomeyBaby' }
+      :baby => {
+        :twitter => 'http://twitter.com/romeydesigns',
+        :facebook => 'http://www.facebook.com/pages/Romey-Baby/349937505041234',
+        :etsy => 'http://etsy.com/shop/RomeyBaby' 
+      }, 
+      :grownup => {
+        :twitter => 'http://twitter.com/romeydesigns',
+        :facebook => 'http://www.facebook.com/RomeyDesigns',
+        :etsy => 'http://etsy.com/shop/RomeyDesigns'
+      }
+    }
      
     haml :index
   end

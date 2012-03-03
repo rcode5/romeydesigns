@@ -127,6 +127,7 @@ GEM
     rspec-mocks (2.6.0)
     rspec_hpricot_matchers (1.0)
     rubyzip (0.9.6.1)
+    sass (3.1.15)
     selenium-webdriver (2.20.0)
       childprocess (>= 0.2.5)
       ffi (~> 1.0)
@@ -163,6 +164,7 @@ DEPENDENCIES
   rake
   rspec
   rspec_hpricot_matchers
+  sass
   selenium-webdriver (~> 2.0)
   sinatra
   thin

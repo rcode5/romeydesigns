@@ -1,5 +1,35 @@
-body, div {
+/* 
+  grownup
+    text #86a7b7
+    bg f4f7f9
+    link
+    link hover
+    border
+    header hover bg
+    header hover bg current f4f7f9
+    block bg #7b95a6;
+    block border #437888;
+    box shadow #789  
+    
+  baby
+    text #b48fb5
+    bg f9f4f9
+    link
+    link hover
+    border
+    header hover bg f9f4f9
+    header hover bg current f9f4f9
+    block bg #7b95a6;
+    block border #7c4388;
+    box shadow #868  
+
+*/
+body.event, body.event div,
+body.main, body.main div {
   color: #86a7b7;
+}
+body.baby, body.baby div {
+  color: #b48fb5;
 }
 a {
   text-decoration:none;

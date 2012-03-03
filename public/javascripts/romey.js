@@ -25,6 +25,7 @@ $(function() {
   var updateSection = function(sxn) {
     if (sxn != currentSection) {
       currentSection = sxn;
+      $('body').removeClass('baby main event').addClass(sxn);
       $('.nav_links li').removeClass('current');
       $('.nav_links .' + (sxn + '_link')).addClass('current');
     }

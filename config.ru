@@ -2,12 +2,12 @@ require 'rubygems'
 require 'sinatra'
 require 'datamapper'
 
-disable :run, :reload
+disable :run
 
-require File.join(File.dirname(__FILE__),'romey')
+root = ::File.dirname(__FILE__)
+require ::File.join( root, 'romey' )
 
 # setup static serving
-use Rack::Static, :urls => [ "/images", "/stylesheets", "/javascripts"], :root => File.expand_path(File.join(Dir.pwd, 'public'))
-
+use Rack::Static, :urls => [ "/images", "/stylesheets", "/javascripts"], :root => File.join(root, 'public')
 
 run Romey.new

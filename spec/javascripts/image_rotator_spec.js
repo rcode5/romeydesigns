@@ -1,7 +1,7 @@
-require('/javascripts/queue.min.js');
-require('/javascripts/imageRotator.js');
 describe('image rotator jquery plugin', function() {
-  template('image_rotator.html');
+  beforeEach(function() {
+    loadFixtures('image_rotator.html');
+  });
   describe('init', function() {
     beforeEach(function() {
       $('.images_container').imageRotator({imageContainer:'.blurp'});

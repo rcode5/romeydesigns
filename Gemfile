@@ -18,7 +18,7 @@ group :test do
   gem 'rspec_hpricot_matchers'
   gem "rack-test"
   gem "mime-types"
-  gem "evergreen"
-  gem "selenium-webdriver", "~> 2.0"
+  gem "jasmine"
+  gem "jasmine-headless-webkit"
 end
 

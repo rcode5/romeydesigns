@@ -118,7 +118,6 @@ end
 
 desc "ping the server"
 task :ping do
-  run "curl -s http://#{server_name}/feeds/feed"
   run "curl -s http://#{server_name}"
 end
 before 'deploy', :set_runners

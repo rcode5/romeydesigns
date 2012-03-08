@@ -51,16 +51,16 @@ set :deploy_time, Time.now.strftime('%Y%m%d%H%M%s')
 
 namespace :romey do
   namespace :db do
-
     task :copy_to_current do
       run "cd #{deploy_to} && if [ -f #{previous_release}/#{db_file} ]; then cp #{previous_release}/#{db_file} #{current_release}; fi"
     end
-   
+    task :migrate do
+      run "cd #{deploy_to} && bundle exec rake db:migrate"
+    end   
   end
 end
 
 namespace :deploy do
-  # This will make sure that Capistrano doesn't try to run rake:migrate (this is not a Rails project!)
   task :start, :roles => [:web, :app] do
     thin.start
   end
@@ -122,6 +122,7 @@ task :ping do
 end
 before 'deploy', :set_runners
 before "thin:start", "romey:db:copy_to_current"
+after 'deploy:cold', "romey:db:migrate"
 after 'deploy:cold', "apache:reload"
 after "apache:reload", :ping
 

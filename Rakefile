@@ -1,6 +1,5 @@
 require 'datamapper'
 require './romey.rb'
-require 'rspec/core/rake_task'
 
 desc 'run the server'
 task :run do |t|
@@ -8,8 +7,14 @@ task :run do |t|
   Romey.run!
 end
 
-desc "run specs"
-RSpec::Core::RakeTask.new
+begin
+  require 'rspec/core/rake_task'
+  desc "run specs"
+  RSpec::Core::RakeTask.new
+rescue Exception => ex
+  puts "Failed to include RSpec rake tasks - should be ok for production environments"
+end
+
 
 namespace :db do
   desc "Migrate database with DataMapper auto_upgrade"

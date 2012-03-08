@@ -1,0 +1,18 @@
+%header
+  %h1
+    Keywords
+%section
+  %ul.keywords
+    - @keywords.each do |kw|
+      %li.kw
+        %span #{kw.keyword}
+        .del
+          %a{:href => "/keyword/del/#{kw.id}", :title => 'trash'}
+            %img{:src => '/images/trash.png', :alt => 'trash', :title => 'trash'}
+
+  .add_keywords
+    %form{:method => 'post', :action => '/keyword'}
+      %input{:type => :text, :name => :keyword}
+      %input{:type => :submit, :value => 'add new keyword'}
+  
+  

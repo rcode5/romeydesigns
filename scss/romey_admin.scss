@@ -1,0 +1,152 @@
+body, div {
+  color: #86a7b7;
+}
+
+header { 
+  width: 205px; float:left; 
+}
+#main { 
+  width: 800px; 
+  float: left; 
+  margin: 20px;
+}
+
+header #main {
+  width: auto;
+}
+#main header {
+  width: 100%;
+  float: none;
+}
+
+h1 {
+  font-size: 150%;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px dotted #86a7b7;
+}
+.ctrls {
+  float: right;
+}
+ul {
+  margin-top: 20px;
+}
+
+li.event {
+  padding: 10px;
+  margin: 10px;
+  border: 1px dotted #86a7b7;
+  position: relative;
+  .title {
+    font-weight: bold;
+  }
+}
+
+li.uploaded_image {
+  width: 120px;
+  height: 100px;
+  padding: 10px;
+  margin: 10px;
+  border: 1px dotted #86a7b7;
+  float: left;
+  position: relative;
+}
+li .del {
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  top: 6px;
+  right: 6px;
+}
+
+li .del:hover {
+  pointer: cursor;
+}
+
+li.kw {
+  width: 200px;
+  float: left;
+}
+li.kw .del {
+  position: relative;
+  display: inline-block;
+  margin-left: 10px;
+}
+
+ul.keywords {
+  margin-bottom: 10px;
+}
+.add_keywords {
+  padding-top:20px;
+  clear: both;
+}
+.event_input {
+  margin: 10px 0 0px;
+}
+.event_input .help {
+}
+form .submit {
+  margin-top: 10px;
+}
+input[type=text], textarea, input[type=submit] {
+  border: 1px solid #86a7b7;
+  padding:10px;
+  font-size:18px;
+  color: #357;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+}
+input[type=submit] {
+  cursor: pointer;
+  background-color: #EFFFEF;
+}
+
+.errors {
+  padding: 10px;
+  border: 1px solid #ff4444;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  color: #800;
+  font-weight: bold;
+}
+.errors .err {
+  color: #800;
+  font-weight: normal;
+}
+
+form .fieldWithErrors input {
+  border: 1px solid #ff4444;
+}
+
+nav {
+  font-size: 16px;
+  line-height: 20px;
+  color: #86a7b7;
+}
+nav a {
+  color: #86a7b7;
+  text-decoration: none;
+}
+nav a:hover {
+}
+
+nav li {
+  padding: 10px;
+  margin: 5px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+}    
+nav li:hover {
+  border: 1px solid #467;
+  color: #357;
+}
+
+.editable .value {
+  color: #357;
+  cursor: pointer;
+}
+  

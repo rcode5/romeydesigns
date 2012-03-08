@@ -55,7 +55,7 @@ namespace :romey do
       run "cd #{deploy_to} && if [ -f #{previous_release}/#{db_file} ]; then cp #{previous_release}/#{db_file} #{current_release}; fi"
     end
     task :migrate do
-      run "cd #{deploy_to} && bundle exec rake db:migrate"
+      run "cd #{deploy_to}/current && bundle exec rake db:migrate"
     end   
   end
 end

@@ -1,7 +1,8 @@
 !!! 5
 %html
   %head
-    %meta
+    %meta{:name => 'description', :content => 'Romey Designs : Since February 2010, Romey has been creating appliquéd and screen-printed tees for the whole family. From conceptualizing to creating the tees, Romey often cracks herself up… and expects you to do the same when you wear them. The themes often analyze the questions we all face from day to day and make general statements based on the state of the world.'}
+    %meta{:name => 'keywords', :content => "#{KeywordResource.all.map(&:keyword).compact.uniq.join(', ')}" }
     %script{ :src => '/javascripts/queue.min.js' }
     %script{ :src => 'http://code.jquery.com/jquery-1.6.1.min.js' }     
     %script{ :src => '/javascripts/thirdparty/jquery.jscrollpane.min.js'}

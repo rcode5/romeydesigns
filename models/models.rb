@@ -2,6 +2,12 @@ require 'sinatra'
 require 'datamapper'
 require 'dm-paperclip'
 
+class KeywordResource
+  include DataMapper::Resource
+  property :id, Serial
+  property :keyword, String
+end
+
 class ImageResource
 
   include DataMapper::Resource

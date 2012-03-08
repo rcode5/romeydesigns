@@ -1,5 +1,6 @@
 require 'datamapper'
 require './romey.rb'
+require 'rspec/core/rake_task'
 
 desc 'run the server'
 task :run do |t|
@@ -7,15 +8,18 @@ task :run do |t|
   Romey.run!
 end
 
+desc "run specs"
+RSpec::Core::RakeTask.new
+
 namespace :db do
   desc "Migrate database with DataMapper auto_upgrade"
   task :migrate do
     EventResource.auto_upgrade!
     ImageResource.auto_upgrade!
     BabyImageResource.auto_upgrade!
+    KeywordResource.auto_upgrade!
   end
 end
-
 
 begin
   require 'jasmine'

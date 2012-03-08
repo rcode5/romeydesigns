@@ -39,12 +39,19 @@ describe Romey do
       get('/')
       last_response.should have_tag('.event')
     end
-
+    it 'includes a description' do
+      get('/')
+      last_response.should have_tag('meta[@name=description]')
+    end
+    it 'includes keywords' do
+      get('/')
+      last_response.should have_tag('meta[@name=keywords]')
+    end
   end
 
   describe 'authorized urls' do
     describe 'GET' do
-      [ '/baby/upload','/baby/uploads', '/upload','/uploads', '/event', '/events' ].each do |endpoint|
+      [ '/keywords', '/baby/upload','/baby/uploads', '/upload','/uploads', '/event', '/events' ].each do |endpoint|
         it "#{endpoint} responds error with no auth" do
           get endpoint
           last_response.status.should == 401
@@ -57,7 +64,9 @@ describe Romey do
       end
     end
     describe 'POST' do
-      [ ['/event/update_attr', :id => '23_url', :value => 'url'],['/event', :event => {:starttime => 'yo'}]].each do |endpoint|
+      [ ['/event/update_attr', :id => '23_url', :value => 'url'],
+        ['/event', :event => {:starttime => 'yo'}]
+      ].each do |endpoint|
         it "#{endpoint} responds error with no auth" do
           post *endpoint
           last_response.status.should == 401
@@ -70,6 +79,54 @@ describe Romey do
       end
     end
   end
+
+  describe '#keywords' do
+    before do
+      KeywordResource.new(:keyword => 'yo1', :id => 12).save
+      KeywordResource.new(:keyword => 'yo2', :id => 14).save
+      KeywordResource.new(:keyword => 'yo yo3', :id => 15).save
+    end
+
+    it "has a 'create new' link" do
+      authorize 'jennymey','jonnlovesjenn'
+      get '/keywords'
+      last_response.body.should have_tag('.add_keywords form[@action=/keyword]')
+      last_response.body.should have_tag('.add_keywords input[@type=submit]')
+    end
+
+    it "shows a list of keywords" do
+      authorize 'jennymey','jonnlovesjenn'
+      get '/keywords'
+      last_response.body.should have_tag('ul li.kw', :count => 3)
+    end
+    
+    it "returns delete links for each image" do
+      authorize 'jennymey','jonnlovesjenn'
+      get '/keywords'
+      last_response.body.should have_tag('ul li.kw div.del a[@href=/keyword/del/12]')
+      last_response.body.should have_tag('ul li.kw div.del a[@href=/keyword/del/14]')
+    end
+  end    
+
+  describe '#keyword' do
+    it "shows a list of keywords" do
+      authorize 'jennymey','jonnlovesjenn'
+      post '/keyword', :keyword => 'rock and roll'
+      (KeywordResource.all.map(&:keyword).include? 'rock and roll').should be
+      last_response.status.should == 302
+    end
+  end    
+  describe '#keyword/del' do
+    it "shows a list of keywords" do
+      authorize 'jennymey','jonnlovesjenn'
+      k = KeywordResource.new(:keyword => 'whatever')
+      k.save
+      (KeywordResource.all.map(&:keyword).include? 'whatever').should be      
+      get "/keyword/del/#{k.id}"
+      (KeywordResource.all.map(&:keyword).include? 'whatever').should be_false
+      last_response.status.should == 302
+    end
+  end    
 
   describe "#uploads" do
     it "has a 'create new' link" do

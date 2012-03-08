@@ -1,6 +1,7 @@
 source 'http://rubygems.org'
 
 gem 'sinatra'
+gem 'sinatra-static-assets'
 gem 'capistrano'
 gem 'thin'
 gem 'haml'

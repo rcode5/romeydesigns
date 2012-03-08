@@ -2,8 +2,8 @@
 %html
   %head
     %meta
-
     %link{:rel => 'stylesheet', :type => 'text/css', :media => 'all', :href => '/stylesheets/reset.css'}
+    %link{:rel => 'stylesheet', :type => 'text/css', :media => 'all', :href => '/stylesheets/oocss/libraries.css'}
     %link{:rel => 'stylesheet', :type => 'text/css', :media => 'all', :href => '/stylesheets/oocss/libraries.css'}
     %link{:rel => 'stylesheet', :type => 'text/css', :media => 'all', :href => '/stylesheets/oocss/template.css'}
     %link{:rel => 'stylesheet', :type => 'text/css', :media => 'all', :href => '/stylesheets/oocss/grids.css'}
@@ -25,6 +25,8 @@
             %a{:href => '/uploads'} pictures
           %li 
             %a{:href => '/baby/uploads'} baby pictures
+          %li 
+            %a{:href => '/keywords'} keywords
     #main
       =yield
 

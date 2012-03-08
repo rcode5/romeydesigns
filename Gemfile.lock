@@ -133,6 +133,8 @@ GEM
     sinatra (1.2.6)
       rack (~> 1.1)
       tilt (>= 1.2.2, < 2.0)
+    sinatra-static-assets (1.0.3)
+      sinatra (>= 1.1.0)
     sprockets (2.3.1)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -167,4 +169,5 @@ DEPENDENCIES
   rspec_hpricot_matchers
   sass
   sinatra
+  sinatra-static-assets
   thin

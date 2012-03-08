@@ -9,4 +9,5 @@ $(function() {
   
   $('.editable .value').editable('/event/update_attr');
 
+  $('.add_keywords input[type=text]').focus();
 });

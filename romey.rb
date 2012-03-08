@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 require 'sinatra'
+require 'sinatra/static_assets'
 require 'haml'
 require 'datamapper'
 require 'dm-paperclip'
@@ -25,6 +26,8 @@ class String
 end
 
 class Romey < Sinatra::Base
+  register Sinatra::StaticAssets
+
   set :environment, :production
   set :logging, true
   set :root, File.dirname(__FILE__)
@@ -240,6 +243,32 @@ class Romey < Sinatra::Base
     content_type :json 
     ImageResource.all.to_json(:include => :url)
   end
+
+  post '/keyword' do
+    protected!
+    if params[:keyword] && params[:keyword].length > 0
+      kw = KeywordResource.new(:keyword => params[:keyword])
+      halt 'There was a problem saving that keyword' unless kw.save
+    end
+    redirect '/keywords'
+  end
+
+  get '/keywords' do
+    protected!
+    @title = "Uploads"
+    @keywords = KeywordResource.all.sort
+    haml :keywords, :layout => :admin_layout
+  end
+
+  get '/keyword/del/:id' do
+    protected!  
+    kw = KeywordResource.get(params[:id])
+    if kw
+      kw.destroy
+    end
+    redirect '/keywords'
+  end
+
 end
 
 

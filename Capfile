@@ -1,8 +1,4 @@
-# Add RVM's lib directory to the load path.
-$:.unshift(File.expand_path('./lib', ENV['rvm_path']))
-# Load RVM's capistrano plugin.
 require 'bundler/capistrano'
-require 'rvm'
 require 'rvm/capistrano'
 
 set :rvm_ruby_string, '1.9.2-p290@romey'
@@ -14,17 +10,18 @@ set :application, "romey"
 set :use_sudo, false
 
 set :scm, :git
-set :repository,  "ssh://git.bunnymatic.com/projects/git/romeydesigns.git"
+set :repository,  "git@ci.2rye.com:/space/git/romeydesigns.git"
 set :deploy_via, :remote_cache
 set :rails_env, 'development'
 
 desc 'Setup Development Deployment Params'
 task :dev do
-  set :user, "deploy"
-  set :deploy_to, "/home/deploy/romeydev"
+  set :user, "ubuntu"
+  set :deploy_to, "/home/ubuntu/romeydev"
   set :ssh_port, '22022'
   set :server_name, 'dev.romeydesigns.com'
   set :rails_env, 'development'
+  set :deploy_server, 'ec2-184-73-144-174.compute-1.amazonaws.com'
 end
 task :prod do
   set :user, "romey"
@@ -32,9 +29,9 @@ task :prod do
   set :ssh_port, '22022'
   set :server_name, 'www.romeydesigns.com'
   set :rails_env, 'production'
+  set :deploy_server, 'bunnymatic.com'
 end
 
-set :deploy_server, 'bunnymatic.com'
 role :app, deploy_server
 role :web, deploy_server
 role :db, deploy_server, :primary => true

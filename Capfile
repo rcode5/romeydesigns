@@ -14,14 +14,17 @@ set :repository,  "git@ci.2rye.com:/space/git/romeydesigns.git"
 set :deploy_via, :remote_cache
 set :rails_env, 'development'
 
+set :ec2 = 'ec2-72-44-54-78.compute-1.amazonaws.com'
+ 
+  set :deploy_server, ec2
 desc 'Setup Development Deployment Params'
 task :dev do
   set :user, "ubuntu"
   set :deploy_to, "/home/ubuntu/romeydev"
-  set :ssh_port, '22022'
+  #set :ssh_port '22022'
   set :server_name, 'dev.romeydesigns.com'
   set :rails_env, 'development'
-  set :deploy_server, 'ec2-184-73-144-174.compute-1.amazonaws.com'
+  set :deploy_server, ec
 end
 task :prod do
   set :user, "romey"

@@ -1,5 +1,5 @@
 require 'sinatra'
-require 'datamapper'
+require 'data_mapper'
 require 'dm-paperclip'
 
 class KeywordResource

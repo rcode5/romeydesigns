@@ -1,4 +1,4 @@
-require 'datamapper'
+require 'data_mapper'
 require './romey.rb'
 
 desc 'run the server'

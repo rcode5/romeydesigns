@@ -57,7 +57,7 @@ describe Romey do
           last_response.status.should == 401
         end
         it "#{endpoint} responds ok with proper auth" do
-          authorize 'jennymey','jonnlovesjenn'
+          authorize 'whatever','whatever'
           get endpoint
           last_response.should be_ok
         end
@@ -72,7 +72,7 @@ describe Romey do
           last_response.status.should == 401
         end
         it "#{endpoint} responds ok with proper auth" do
-          authorize 'jennymey','jonnlovesjenn'
+          authorize 'whatever','whatever'
           post *endpoint
           last_response.should be_ok
         end
@@ -88,20 +88,20 @@ describe Romey do
     end
 
     it "has a 'create new' link" do
-      authorize 'jennymey','jonnlovesjenn'
+      authorize 'whatever','whatever'
       get '/keywords'
       last_response.body.should have_tag('.add_keywords form[@action=/keyword]')
       last_response.body.should have_tag('.add_keywords input[@type=submit]')
     end
 
     it "shows a list of keywords" do
-      authorize 'jennymey','jonnlovesjenn'
+      authorize 'whatever','whatever'
       get '/keywords'
       last_response.body.should have_tag('ul li.kw', :count => 3)
     end
     
     it "returns delete links for each image" do
-      authorize 'jennymey','jonnlovesjenn'
+      authorize 'whatever','whatever'
       get '/keywords'
       last_response.body.should have_tag('ul li.kw div.del a[@href=/keyword/del/12]')
       last_response.body.should have_tag('ul li.kw div.del a[@href=/keyword/del/14]')
@@ -110,7 +110,7 @@ describe Romey do
 
   describe '#keyword' do
     it "shows a list of keywords" do
-      authorize 'jennymey','jonnlovesjenn'
+      authorize 'whatever','whatever'
       post '/keyword', :keyword => 'rock and roll'
       (KeywordResource.all.map(&:keyword).include? 'rock and roll').should be
       last_response.status.should == 302
@@ -118,7 +118,7 @@ describe Romey do
   end    
   describe '#keyword/del' do
     it "shows a list of keywords" do
-      authorize 'jennymey','jonnlovesjenn'
+      authorize 'whatever','whatever'
       k = KeywordResource.new(:keyword => 'whatever')
       k.save
       (KeywordResource.all.map(&:keyword).include? 'whatever').should be      
@@ -130,7 +130,7 @@ describe Romey do
 
   describe "#uploads" do
     it "has a 'create new' link" do
-      authorize 'jennymey','jonnlovesjenn'
+      authorize 'whatever','whatever'
       get '/uploads'
       last_response.body.should have_tag('a[@href=/upload] button', 'Add a new image')
     end
@@ -138,7 +138,7 @@ describe Romey do
     it "shows a list of images" do
       ImageResource.stubs(:all => [ mock(:file => mock(:url => 'url1'), :id => 10),
                                     mock(:file => mock(:url => 'url2'), :id => 12) ])
-      authorize 'jennymey','jonnlovesjenn'
+      authorize 'whatever','whatever'
       get '/uploads'
       last_response.body.should have_tag('ul li.uploaded_image', :count => 2)
     end
@@ -146,7 +146,7 @@ describe Romey do
     it "returns images sorted by id descending" do
       ImageResource.stubs(:all => [ mock(:file => mock(:url => 'url1'), :id => 10),
                                     mock(:file => mock(:url => 'url2'), :id => 12) ])
-      authorize 'jennymey','jonnlovesjenn'
+      authorize 'whatever','whatever'
       get '/uploads'
       last_response.body.should have_tag('ul li.uploaded_image img[@src=url1]')
       last_response.body.should have_tag('ul li.uploaded_image img[@src=url2]')
@@ -154,7 +154,7 @@ describe Romey do
     it "returns delete links for each image" do
       ImageResource.stubs(:all => [ mock(:file => mock(:url => 'url1'), :id => 10),
                                     mock(:file => mock(:url => 'url2'), :id => 12) ])
-      authorize 'jennymey','jonnlovesjenn'
+      authorize 'whatever','whatever'
       get '/uploads'
       last_response.body.should have_tag('ul li.uploaded_image div a[@href=/pic/del/12]')
       last_response.body.should have_tag('ul li.uploaded_image div a[@href=/pic/del/10]')
@@ -163,7 +163,7 @@ describe Romey do
 
   describe "#baby/uploads" do
     it "has a 'create new' link" do
-      authorize 'jennymey','jonnlovesjenn'
+      authorize 'whatever','whatever'
       get '/baby/uploads'
       last_response.body.should have_tag('a[@href=/baby/upload] button', 'Add a new image')
     end
@@ -171,7 +171,7 @@ describe Romey do
     it "shows a list of images" do
       BabyImageResource.stubs(:all => [ mock(:file => mock(:url => 'url1'), :id => 10),
                                         mock(:file => mock(:url => 'url2'), :id => 12) ])
-      authorize 'jennymey','jonnlovesjenn'
+      authorize 'whatever','whatever'
       get '/baby/uploads'
       last_response.body.should have_tag('ul li.uploaded_image', :count => 2)
     end
@@ -179,7 +179,7 @@ describe Romey do
     it "returns images sorted by id descending" do
       BabyImageResource.stubs(:all => [ mock(:file => mock(:url => 'url1'), :id => 10),
                                     mock(:file => mock(:url => 'url2'), :id => 12) ])
-      authorize 'jennymey','jonnlovesjenn'
+      authorize 'whatever','whatever'
       get '/baby/uploads'
       last_response.body.should have_tag('ul li.uploaded_image img[@src=url1]')
       last_response.body.should have_tag('ul li.uploaded_image img[@src=url2]')
@@ -187,7 +187,7 @@ describe Romey do
     it "returns delete links for each image" do
       BabyImageResource.stubs(:all => [ mock(:file => mock(:url => 'url1'), :id => 10),
                                     mock(:file => mock(:url => 'url2'), :id => 12) ])
-      authorize 'jennymey','jonnlovesjenn'
+      authorize 'whatever','whatever'
       get '/baby/uploads'
       last_response.body.should have_tag('ul li.uploaded_image div a[@href=/pic/del/12]')
       last_response.body.should have_tag('ul li.uploaded_image div a[@href=/pic/del/10]')
@@ -196,19 +196,19 @@ describe Romey do
 
   describe '#event' do
     it 'renders a form for event input' do
-      authorize 'jennymey','jonnlovesjenn'
+      authorize 'whatever','whatever'
       get '/event'
       last_response.body.should have_tag('input#event_title')
     end
     [ :title, :address, :starttime, :endtime, :url].each do |fld|
       it "form has an input for #{fld}" do
-        authorize 'jennymey','jonnlovesjenn'
+        authorize 'whatever','whatever'
         get '/event'
         last_response.body.should have_tag("input#event_#{fld.to_s}")
       end
     end
     it "form has a textarea for description" do
-      authorize 'jennymey','jonnlovesjenn'
+      authorize 'whatever','whatever'
       get '/event'
       last_response.body.should have_tag("textarea#event_description")
     end
@@ -216,7 +216,7 @@ describe Romey do
 
   describe '#events' do
     it "renders all events" do
-      authorize 'jennymey','jonnlovesjenn'
+      authorize 'whatever','whatever'
       post '/event', { :event => {:title => 'yo1', 'description' => 'stuff' , :starttime => Time.now + 20000 }  }
       post '/event', { :event => {:title => 'yo2', 'description' => 'stuff' , :starttime => Time.now + 30000 }  }
       get '/events'
@@ -228,13 +228,13 @@ describe Romey do
 
   describe 'POST#event' do
     it "creates a new event" do
-      authorize 'jennymey','jonnlovesjenn'
+      authorize 'whatever','whatever'
       precount = EventResource.count
       post '/event', { :event => {:title => 'yo', 'description' => 'stuff', :starttime => Time.now + 10000 }  }
       (EventResource.count - precount).should == 1
     end
     it "redirects to events list page" do
-      authorize 'jennymey','jonnlovesjenn'
+      authorize 'whatever','whatever'
       post '/event', { :event => {:title => 'yo', 'description' => 'stuff' , :starttime => Time.now + 20000 }  }
       last_response.status.should == 302
     end
@@ -242,7 +242,7 @@ describe Romey do
 
   describe '#events/update_attr' do
     it "updates event attribute" do
-      authorize 'jennymey','jonnlovesjenn'
+      authorize 'whatever','whatever'
 
       ev = EventResource.create(:title => 'yo', :starttime => Time.now)
       _id = "%d_title" % ev.id
@@ -253,7 +253,7 @@ describe Romey do
       fetched.title.should == 'the new title'
     end
     it "updates event endtime using chronic parsing" do
-      authorize 'jennymey','jonnlovesjenn'
+      authorize 'whatever','whatever'
 
       ev = EventResource.create(:title => 'yo', :starttime => Time.now)
       _id = "%d_endtime" % ev.id
@@ -269,12 +269,12 @@ describe Romey do
       mock_event = mock(EventResource)
       mock_event.expects(:destroy)
       EventResource.expects(:find).with('10').returns( mock_event )
-      authorize 'jennymey','jonnlovesjenn'
+      authorize 'whatever','whatever'
       get "/event/del/19" 
     end
 
     it "redirects to events" do
-      authorize 'jennymey','jonnlovesjenn'
+      authorize 'whatever','whatever'
       get "/event/del/4"
       last_response.status.should == 302
     end
@@ -285,12 +285,12 @@ describe Romey do
       mock_image = mock(ImageResource)
       mock_image.expects(:destroy)
       ImageResource.expects(:find).with('10').returns( mock_image )
-      authorize 'jennymey','jonnlovesjenn'
+      authorize 'whatever','whatever'
       get "/pic/del/19" 
     end
 
     it "redirects to uploads" do
-      authorize 'jennymey','jonnlovesjenn'
+      authorize 'whatever','whatever'
       get "/pic/del/1"
       last_response.status.should == 302
     end

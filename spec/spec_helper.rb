@@ -3,7 +3,7 @@ require 'sinatra'
 require 'rack/test'
 require 'rspec'
 require 'mocha'
-require 'datamapper'
+require 'data_mapper'
 require 'dm-paperclip'
 require 'rspec_hpricot_matchers'
 

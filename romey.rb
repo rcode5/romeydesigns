@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 require 'sinatra'
 require 'sinatra/static_assets'
+require 'sinatra/contrib'
 require 'haml'
-require 'datamapper'
+require 'data_mapper'
 require 'dm-paperclip'
 require 'uri'
 require 'chronic'
@@ -27,6 +28,7 @@ end
 
 class Romey < Sinatra::Base
   register Sinatra::StaticAssets
+  register Sinatra::ConfigFile
 
   set :environment, :production
   set :logging, true
@@ -34,6 +36,12 @@ class Romey < Sinatra::Base
   APP_ROOT = root
   TIME_FORMAT = "%b %e %Y %-I:%M%p"
   DataMapper::setup(:default, "sqlite3://#{root}/romey.db")
+
+  romey_cfg_file = File.join(root, 'config', 'romey.yml')
+  if !File.exists? romey_cfg_file
+    raise Exception.new("You need to make a config file at #{romey_cfg_file}.  See the example file in the repo for an example")
+  end
+  config_file romey_cfg_file
 
   # if necessary, paperclip options can be merged in here
   #Paperclip.options.merge!()
@@ -49,7 +57,7 @@ class Romey < Sinatra::Base
     
     def authorized?
       @auth ||=  Rack::Auth::Basic::Request.new(request.env)
-      @auth.provided? && @auth.basic? && @auth.credentials && @auth.credentials == ['jennymey', 'jonnlovesjenn']
+      @auth.provided? && @auth.basic? && @auth.credentials && @auth.credentials == [settings.username, settings.password]
     end
 
     def make_paperclip_mash(file_hash)

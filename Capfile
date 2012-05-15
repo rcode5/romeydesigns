@@ -1,8 +1,9 @@
 require 'bundler/capistrano'
-require 'rvm/capistrano'
 
 set :rvm_ruby_string, '1.9.2-p290@romey'
-set :rvm_type, :root
+
+require 'rvm/capistrano'
+#set :rvm_type, :root
 load 'deploy' if respond_to?(:namespace)
 
 ####### VARIABLES #######
@@ -120,6 +121,11 @@ desc "ping the server"
 task :ping do
   run "curl -s http://#{server_name}"
 end
+
+before 'deploy:setup', 'rvm:install_rvm'   # install RVM
+before 'deploy:setup', 'rvm:install_ruby'  # install Ruby and create gemset, or:
+before 'deploy:setup', 'rvm:create_gemset' # only create gemset
+
 before 'deploy', :set_runners
 before "thin:start", "romey:db:copy_to_current"
 after 'deploy:cold', "romey:db:migrate"

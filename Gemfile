@@ -10,6 +10,7 @@ gem 'sass'
 gem 'chronic'
 gem "data_mapper"
 gem "dm-paperclip"
+gem 'aws-s3'
 gem "rake"
 gem 'heroku'
 

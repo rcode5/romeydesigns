@@ -8,6 +8,17 @@ require 'dm-paperclip'
 require 'uri'
 require 'chronic'
 require 'json'
+
+
+LETTERS_PLUS_SPACE =  []
+('a'..'z').each {|ltr| LETTERS_PLUS_SPACE << ltr}
+('A'..'Z').each {|ltr| LETTERS_PLUS_SPACE << ltr}
+
+def gen_random_string(len=8)
+  numchars = LETTERS_PLUS_SPACE.length
+  (0..len).map{ LETTERS_PLUS_SPACE[rand(numchars)] }.join
+end
+
 module Paperclip
   class Tempfile < ::Tempfile
     # Replaces busted paperclip replacement of Tempfile make temp name
@@ -28,20 +39,13 @@ end
 
 class Romey < Sinatra::Base
   register Sinatra::StaticAssets
-  register Sinatra::ConfigFile
 
   set :environment, :production
   set :logging, true
   set :root, File.dirname(__FILE__)
   APP_ROOT = root
   TIME_FORMAT = "%b %e %Y %-I:%M%p"
-  DataMapper::setup(:default, "sqlite3://#{root}/romey.db")
-
-  romey_cfg_file = File.join(root, 'config', 'romey.yml')
-  if !File.exists? romey_cfg_file
-    raise Exception.new("You need to make a config file at #{romey_cfg_file}.  See the example file in the repo for an example")
-  end
-  config_file romey_cfg_file
+  DataMapper::setup(:default, ENV['DATABASE_URL'] || "sqlite3://#{root}/romey.db")
 
   # if necessary, paperclip options can be merged in here
   #Paperclip.options.merge!()
@@ -57,7 +61,10 @@ class Romey < Sinatra::Base
     
     def authorized?
       @auth ||=  Rack::Auth::Basic::Request.new(request.env)
-      @auth.provided? && @auth.basic? && @auth.credentials && @auth.credentials == [settings.username, settings.password]
+      user = ENV['ADMIN_USER'] || gen_random_string
+      pass = ENV['ADMIN_PASS'] || gen_random_string
+      puts "User/Pass: #{user} #{pass}"
+      @auth.provided? && @auth.basic? && @auth.credentials && @auth.credentials == [user,pass]
     end
 
     def make_paperclip_mash(file_hash)

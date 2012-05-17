@@ -16,8 +16,12 @@ class ImageResource
   property :id, Serial
   
   has_attached_file :file,
-  :url => "/system/:attachment/:id/:style/:basename.:extension",
-  :path => "#{Romey::APP_ROOT}/public/system/:attachment/:id/:style/:basename.:extension",
+  :storage => :s3
+  :s3_credentials => {
+    ENV[S3_ACCESS_KEY],
+    ENV[S3_SECRET],
+    ENV[S3_BUCKET] || 'romeydev'
+  }
   :styles => { 
     :thumb => { :geometry => '100x100>' },
     :grid => { :geometry => '205x205#' }
@@ -39,8 +43,12 @@ class BabyImageResource
   property :id, Serial
   
   has_attached_file :file,
-  :url => "/system/baby/:attachment/:id/:style/:basename.:extension",
-  :path => "#{Romey::APP_ROOT}/public/system/baby/:attachment/:id/:style/:basename.:extension",
+  :storage => :s3,
+  :s3_credentials => {
+    ENV[S3_ACCESS_KEY],
+    ENV[S3_SECRET],
+    ENV[S3_BUCKET] || 'romeydev'
+  }
   :styles => { 
     :thumb => { :geometry => '100x100>' },
     :grid => { :geometry => '205x205#' }

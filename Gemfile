@@ -8,9 +8,8 @@ gem 'thin'
 gem 'haml'
 gem 'sass'
 gem 'chronic'
-gem 'pg', :group => :production
-gem "dm-sqlite-adapter", :group => :development
-gem 'dm-postgres-adapter', :group => :production
+gem 'pg'
+gem 'dm-postgres-adapter'
 gem "data_mapper"
 gem "dm-paperclip"
 gem "rake"

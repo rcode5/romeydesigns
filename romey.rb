@@ -46,6 +46,7 @@ class Romey < Sinatra::Base
   APP_ROOT = root
   TIME_FORMAT = "%b %e %Y %-I:%M%p"
   DataMapper::setup(:default, ENV['DATABASE_URL'] || "sqlite3://#{root}/romey.db")
+  DataMapper.auto_upgrade!
 
   # if necessary, paperclip options can be merged in here
   #Paperclip.options.merge!()

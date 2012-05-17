@@ -9,7 +9,6 @@ require 'uri'
 require 'chronic'
 require 'json'
 
-
 LETTERS_PLUS_SPACE =  []
 ('a'..'z').each {|ltr| LETTERS_PLUS_SPACE << ltr}
 ('A'..'Z').each {|ltr| LETTERS_PLUS_SPACE << ltr}
@@ -45,7 +44,7 @@ class Romey < Sinatra::Base
   set :root, File.dirname(__FILE__)
   APP_ROOT = root
   TIME_FORMAT = "%b %e %Y %-I:%M%p"
-  DataMapper::setup(:default, ENV['DATABASE_URL'])
+  DataMapper::setup(:default, ENV['DATABASE_URL'] || "sqlite3://#{root}/romey.db")
 
   # if necessary, paperclip options can be merged in here
   #Paperclip.options.merge!()
@@ -63,7 +62,7 @@ class Romey < Sinatra::Base
       @auth ||=  Rack::Auth::Basic::Request.new(request.env)
       user = ENV['ADMIN_USER'] || gen_random_string
       pass = ENV['ADMIN_PASS'] || gen_random_string
-      puts "User/Pass: #{user} #{pass}"
+      #puts "User/Pass: #{user} #{pass}"
       @auth.provided? && @auth.basic? && @auth.credentials && @auth.credentials == [user,pass]
     end
 

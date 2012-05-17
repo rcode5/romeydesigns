@@ -8,12 +8,20 @@ gem 'thin'
 gem 'haml'
 gem 'sass'
 gem 'chronic'
-gem 'pg'
-gem 'dm-postgres-adapter'
 gem "data_mapper"
 gem "dm-paperclip"
 gem "rake"
 gem 'heroku'
+
+group :development do
+  gem 'sqlite3'
+  gem 'dm-sqlite-adapter'
+end
+
+group :production do
+  gem 'pg'
+  gem 'dm-postgres-adapter'
+end
 
 group :test do
   gem "rspec"

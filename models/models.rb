@@ -16,12 +16,12 @@ class ImageResource
   property :id, Serial
   
   has_attached_file :file,
-  :storage => :s3
+  :storage => :s3,
   :s3_credentials => {
-    ENV[S3_ACCESS_KEY],
-    ENV[S3_SECRET],
-    ENV[S3_BUCKET] || 'romeydev'
-  }
+    :access_key_id => ENV['S3_ACCESS_KEY'],
+    :secret_access_key => ENV['S3_SECRET'],
+    :bucket => ENV['S3_BUCKET'] || 'romeydev'
+  },
   :styles => { 
     :thumb => { :geometry => '100x100>' },
     :grid => { :geometry => '205x205#' }
@@ -41,14 +41,13 @@ class BabyImageResource
   include Paperclip::Resource
   
   property :id, Serial
-  
   has_attached_file :file,
   :storage => :s3,
   :s3_credentials => {
-    ENV[S3_ACCESS_KEY],
-    ENV[S3_SECRET],
-    ENV[S3_BUCKET] || 'romeydev'
-  }
+    :access_key_id => ENV['S3_ACCESS_KEY'],
+    :secret_access_key => ENV['S3_SECRET'],
+    :bucket => ENV['S3_BUCKET'] || 'romeydev'
+  },
   :styles => { 
     :thumb => { :geometry => '100x100>' },
     :grid => { :geometry => '205x205#' }

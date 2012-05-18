@@ -17,6 +17,7 @@ class ImageResource
   
   has_attached_file :file,
   :storage => :s3,
+  :path => "/images/:style/:filename",
   :s3_credentials => {
     :access_key_id => ENV['S3_ACCESS_KEY'],
     :secret_access_key => ENV['S3_SECRET'],
@@ -43,6 +44,7 @@ class BabyImageResource
   property :id, Serial
   has_attached_file :file,
   :storage => :s3,
+  :path => "/baby_images/:style/:filename",
   :s3_credentials => {
     :access_key_id => ENV['S3_ACCESS_KEY'],
     :secret_access_key => ENV['S3_SECRET'],

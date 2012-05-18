@@ -1,3 +1,9 @@
+GIT
+  remote: https://github.com/krobertson/dm-paperclip.git
+  revision: aabad04f2a65e8f628e7e838d9bd3e1c9c39914d
+  specs:
+    dm-paperclip (2.4.1)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -35,16 +41,6 @@ GEM
       dm-validations (~> 1.2.0)
     data_objects (0.10.8)
       addressable (~> 2.1)
-    datamapper (1.2.0)
-      dm-aggregates (~> 1.2.0)
-      dm-constraints (~> 1.2.0)
-      dm-core (~> 1.2.0)
-      dm-migrations (~> 1.2.0)
-      dm-serializer (~> 1.2.0)
-      dm-timestamps (~> 1.2.0)
-      dm-transactions (~> 1.2.0)
-      dm-types (~> 1.2.0)
-      dm-validations (~> 1.2.0)
     diff-lcs (1.1.3)
     dm-aggregates (1.2.0)
       dm-core (~> 1.2.0)
@@ -57,9 +53,6 @@ GEM
       dm-core (~> 1.2.0)
     dm-migrations (1.2.0)
       dm-core (~> 1.2.0)
-    dm-paperclip (2.4.1)
-      datamapper
-      extlib
     dm-postgres-adapter (1.2.0)
       dm-do-adapter (~> 1.2.0)
       do_postgres (~> 0.10.6)
@@ -93,8 +86,7 @@ GEM
     eventmachine (0.12.10)
     execjs (1.3.2)
       multi_json (~> 1.0)
-    extlib (0.9.15)
-    fastercsv (1.5.4)
+    fastercsv (1.5.5)
     ffi (1.0.11)
     haml (3.1.5)
     heroku (2.25.0)
@@ -200,7 +192,7 @@ DEPENDENCIES
   aws-s3
   chronic
   data_mapper
-  dm-paperclip
+  dm-paperclip!
   dm-postgres-adapter
   dm-sqlite-adapter
   haml

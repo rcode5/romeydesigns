@@ -18,16 +18,6 @@ def gen_random_string(len=8)
   (0..len).map{ LETTERS_PLUS_SPACE[rand(numchars)] }.join
 end
 
-module Paperclip
-  class Tempfile < ::Tempfile
-    # Replaces busted paperclip replacement of Tempfile make temp name
-    def make_tmpname(basename, n)
-      extension = File.extname(basename)
-      sprintf("%s,%d,%d%s", File.basename(basename, extension), $$, n.to_i, extension)
-    end
-  end
-end
-
 class String
   def truncate(len = 40, postfix = '...')
     return self if length <= len - postfix.length
@@ -60,14 +50,14 @@ class Romey < Sinatra::Base
     
     def authorized?
       @auth ||=  Rack::Auth::Basic::Request.new(request.env)
-      user = ENV['ADMIN_USER'] || gen_random_string
-      pass = ENV['ADMIN_PASS'] || gen_random_string
+      user = ENV['ROMEY_ADMIN_USER'] || gen_random_string
+      pass = ENV['ROMEY_ADMIN_PASS'] || gen_random_string
       #puts "User/Pass: #{user} #{pass}"
       @auth.provided? && @auth.basic? && @auth.credentials && @auth.credentials == [user,pass]
     end
 
     def make_paperclip_mash(file_hash)
-      mash = Mash.new
+      mash = DataMapper::Mash.new
       mash['tempfile'] = file_hash[:tempfile]
       mash['filename'] = file_hash[:filename]
       mash['content_type'] = file_hash[:type]
@@ -198,7 +188,7 @@ class Romey < Sinatra::Base
 
   post '/upload' do
     protected!
-    img = ImageResource.new(:file => make_paperclip_mash(params[:file]))
+    img = ImageResource.new(:file => params[:file])
     halt "There were issues with your upload..." unless img.save
     redirect '/uploads'
   end

@@ -7,4 +7,4 @@ You'll need S3_ACCESS_KEY, S3_SECRET and S3_BUCKET
 
 
 ## Running tests
-Set environment variables ADMIN_USER and ADMIN_PASS both to 'whatever' to test authorization.
+Set environment variables ROMEY_ADMIN_USER and ROMEY_ADMIN_PASS both to 'whatever' to test authorization.

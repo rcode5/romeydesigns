@@ -201,7 +201,7 @@ class Romey < Sinatra::Base
   end
 
   get '/baby/upload' do
-    @title = "Upload image"
+    @title = "Upload image for baby section"
     protected!
     haml :babyupload, :layout => :admin_layout
   end
@@ -227,11 +227,11 @@ class Romey < Sinatra::Base
 
   get '/baby/pic/del/:id' do
     protected!
-    img = ImageResource.get(params[:id])
+    img = BabyImageResource.get(params[:id])
     if img
       img.destroy
     end
-    redirect '/uploads'
+    redirect '/baby/uploads'
   end
 
   get '/pic/del/:id' do

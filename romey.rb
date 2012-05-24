@@ -193,6 +193,10 @@ class Romey < Sinatra::Base
     redirect '/uploads'
   end
 
+  get '/admin' do
+    redirect '/uploads'
+  end
+
   get '/uploads' do
     protected!
     @title = "Uploads"

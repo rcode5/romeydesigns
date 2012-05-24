@@ -14,3 +14,5 @@ romey.sqlite
 public/uploads
 public/system
 s3.config.sh
+.sass-cache
+.jhw-cache

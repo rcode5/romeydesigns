@@ -97,9 +97,9 @@ a:hover {
 .links {
   font-size: 16px;
   font-weight: 100;
-}
-.links li {
-  line-height: 25px;
+  li {
+    line-height: 25px;
+  }
 }
 .logo img {
   margin-top: 61px;
@@ -283,8 +283,17 @@ header {
   }
 }
 #events{
+  position: relative;
   &.panel {
     margin-left:6px;
+  }
+  .link_block {
+    position: absolute;
+    left :0;
+    top: 220px;
+  }
+  .event_list {
+    min-height: 400px;
   }
   .event_link {
     float: right;
@@ -348,7 +357,11 @@ header {
     @include rounded_corners();
     background:#8ca4b1;
   }
-
+  .links li {
+    border: 0;
+    padding: 0;
+    margin: 0 6px;
+  }
 }
 
 

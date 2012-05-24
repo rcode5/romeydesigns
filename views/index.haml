@@ -116,7 +116,15 @@
                             .url 
                               - if ev.url && ev.url.length > 6
                                 %a{:target => '_blank', :href => ev.url} #{ev.url.truncate(64)}
-            .unit.size1of4
+            .unit.size1of4.link_block
+              .links.block.last
+                %ul
+                  %li.etsy
+                    %a{:target => '_blank', :href => @links[:grownup][:etsy]} shop
+                  %li.tw
+                    %a{:target => '_blank', :href => @links[:grownup][:twitter]} tune in
+                  %li.fb
+                    %a{:target => '_blank', :href => @links[:grownup][:facebook]} be my friend
     %footer
       %div
         handmade in san francisco

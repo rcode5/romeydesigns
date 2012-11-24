@@ -11,6 +11,9 @@ require File.join(File.dirname(__FILE__), '..', 'romey.rb')
 
 set :environment, :test
 
+ENV['ROMEY_ADMIN_USER'] = 'whatever'
+ENV['ROMEY_ADMIN_PASS'] = 'whatever'
+
 RSpec.configure do |config|
   config.before(:each) { DataMapper.auto_migrate! }
   config.include(RspecHpricotMatchers)

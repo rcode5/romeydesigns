@@ -226,7 +226,7 @@ class Romey < Sinatra::Base
 
   get '/baby/pics' do
     content_type :json 
-    BabyImageResource.all.to_json(:include => :url)
+    BabyImageResource.all.shuffle.to_json(:include => :url)
   end
 
   get '/baby/pic/del/:id' do
@@ -249,7 +249,7 @@ class Romey < Sinatra::Base
 
   get '/pics' do
     content_type :json 
-    ImageResource.all.to_json(:include => :url)
+    ImageResource.all.shuffle.to_json(:include => :url)
   end
 
   post '/keyword' do

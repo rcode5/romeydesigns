@@ -189,8 +189,8 @@ describe Romey do
                                     mock(:file => mock(:url => 'url2'), :id => 12) ])
       authorize 'whatever','whatever'
       get '/baby/uploads'
-      last_response.body.should have_tag('ul li.uploaded_image div a[@href=/pic/del/12]')
-      last_response.body.should have_tag('ul li.uploaded_image div a[@href=/pic/del/10]')
+      last_response.body.should have_tag('ul li.uploaded_image div a[@href=/baby/pic/del/12]')
+      last_response.body.should have_tag('ul li.uploaded_image div a[@href=/baby/pic/del/10]')
     end
   end
 

@@ -1,5 +1,5 @@
 source 'http://rubygems.org'
-ruby '1.9.3'
+#ruby '1.9.3'  # commented for heroku
 
 gem 'sinatra'
 gem 'sinatra-static-assets'
@@ -14,7 +14,7 @@ gem "data_mapper"
 gem "dm-paperclip", :git => 'https://github.com/krobertson/dm-paperclip.git'
 gem 'aws-s3'
 gem "rake"
-gem 'heroku'
+#gem 'heroku'
 
 group :development do
   gem 'sqlite3'

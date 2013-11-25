@@ -29,8 +29,7 @@ end
 group :test do
   gem "rspec"
   gem "mocha"
-  gem 'hpricot'
-  gem 'rspec_hpricot_matchers'
+  gem 'rspec-html-matchers'
   gem "rack-test"
   gem "mime-types"
   gem "jasmine"

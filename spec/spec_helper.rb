@@ -5,7 +5,7 @@ require 'rspec'
 require 'mocha'
 require 'data_mapper'
 require 'dm-paperclip'
-require 'rspec_hpricot_matchers'
+require 'rspec-html-matchers'
 
 require File.join(File.dirname(__FILE__), '..', 'romey.rb')
 
@@ -16,5 +16,4 @@ ENV['ROMEY_ADMIN_PASS'] = 'whatever'
 
 RSpec.configure do |config|
   config.before(:each) { DataMapper.auto_migrate! }
-  config.include(RspecHpricotMatchers)
 end

@@ -133,7 +133,8 @@ class Romey < Sinatra::Base
       event_id = bits[0] 
       event_attr = bits[1]
       new_val = params['value']
-      ev = EventResource.find(event_id)
+      binding.pry
+      ev = EventResource.get(event_id.to_i)
       if ev
         if ev.respond_to?(event_attr)
           if ['starttime', 'endtime'].include? event_attr
@@ -271,7 +272,6 @@ class Romey < Sinatra::Base
   get '/keyword/del/:id' do
     protected!  
     kw = KeywordResource.find(params[:id])
-    binding.pry
     if kw
       puts "Destroying"
       kw.destroy

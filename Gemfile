@@ -32,7 +32,6 @@ group :test, :development do
 end
 group :test do
   gem "rspec"
-  gem "mocha"
   gem 'rspec-html-matchers'
   gem "rack-test"
   gem "mime-types"

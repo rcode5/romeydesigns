@@ -121,10 +121,12 @@ describe Romey do
       authorize 'whatever','whatever'
       k = KeywordResource.new(:keyword => 'whatever')
       k.save
-      (KeywordResource.all.map(&:keyword).include? 'whatever').should be
+      (KeywordResource.all.map(&:keyword)).should include 'whatever'
+      puts "HEY", k.inspect
+      binding.pry
       get "/keyword/del/#{k.id}"
-      (KeywordResource.all.map(&:keyword).include? 'whatever').should be_false
       last_response.status.should == 302
+      (KeywordResource.all.map(&:keyword)).should_not include 'whatever'
     end
   end
 

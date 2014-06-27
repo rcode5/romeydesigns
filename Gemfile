@@ -1,5 +1,5 @@
 source 'http://rubygems.org'
-#ruby '1.9.3'  # commented for heroku
+ruby '2.1.2'  # commented for heroku
 
 gem 'sinatra'
 gem 'sinatra-static-assets'
@@ -19,6 +19,7 @@ gem "rake"
 group :development do
   gem 'sqlite3'
   gem 'dm-sqlite-adapter'
+  gem 'tux'
 end
 
 group :production do
@@ -26,6 +27,9 @@ group :production do
   gem 'dm-postgres-adapter'
 end
 
+group :test, :development do
+  gem 'pry'
+end
 group :test do
   gem "rspec"
   gem "mocha"

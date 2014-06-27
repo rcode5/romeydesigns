@@ -52,7 +52,6 @@ class Romey < Sinatra::Base
       @auth ||=  Rack::Auth::Basic::Request.new(request.env)
       user = ENV['ROMEY_ADMIN_USER'] || gen_random_string
       pass = ENV['ROMEY_ADMIN_PASS'] || gen_random_string
-      #puts "User/Pass: #{user} #{pass}"
       @auth.provided? && @auth.basic? && @auth.credentials && @auth.credentials == [user,pass]
     end
 
@@ -100,7 +99,7 @@ class Romey < Sinatra::Base
 
   get '/event/:id' do
     protected!
-    @event = EventResource.get(params[:id])
+    @event = EventResource.find(params[:id])
     haml :event, :layout => :admin_layout
   end
 
@@ -134,7 +133,7 @@ class Romey < Sinatra::Base
       event_id = bits[0] 
       event_attr = bits[1]
       new_val = params['value']
-      ev = EventResource.get(event_id)
+      ev = EventResource.find(event_id)
       if ev
         if ev.respond_to?(event_attr)
           if ['starttime', 'endtime'].include? event_attr
@@ -164,9 +163,10 @@ class Romey < Sinatra::Base
     msg
   end
 
+  require 'pry'
   get '/event/del/:id' do
     protected!  
-    ev = EventResource.get(params[:id])
+    ev = EventResource.find(params[:id])
     if ev
       ev.destroy
     end
@@ -231,7 +231,7 @@ class Romey < Sinatra::Base
 
   get '/baby/pic/del/:id' do
     protected!
-    img = BabyImageResource.get(params[:id])
+    img = BabyImageResource.find(params[:id])
     if img
       img.destroy
     end
@@ -240,7 +240,7 @@ class Romey < Sinatra::Base
 
   get '/pic/del/:id' do
     protected!
-    img = ImageResource.get(params[:id])
+    img = ImageResource.find(params[:id])
     if img
       img.destroy
     end
@@ -270,8 +270,10 @@ class Romey < Sinatra::Base
 
   get '/keyword/del/:id' do
     protected!  
-    kw = KeywordResource.get(params[:id])
+    kw = KeywordResource.find(params[:id])
+    binding.pry
     if kw
+      puts "Destroying"
       kw.destroy
     end
     redirect '/keywords'

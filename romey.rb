@@ -164,7 +164,6 @@ class Romey < Sinatra::Base
     msg
   end
 
-  require 'pry'
   get '/event/del/:id' do
     protected!  
     ev = EventResource.find(params[:id])

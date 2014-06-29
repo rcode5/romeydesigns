@@ -1,6 +1,8 @@
 require File.dirname(__FILE__) + '/spec_helper'
 require 'mime/types'
 
+require 'pry'
+
 LETTERS_PLUS_SPACE =  (75).times.map{|num| (48+num).chr}.reject{|c| (c =~ /[[:punct:]]/)}
 def gen_random_string(len=8)
   numchars = LETTERS_PLUS_SPACE.length
@@ -18,11 +20,11 @@ describe Romey do
     before do
       # putting the get here doesn't seem to work
     end
-    it 'should return success' do
+    it 'returns success' do
       get '/'
       expect(last_response).to be_ok
     end
-    it 'should include the title' do
+    it 'includes the title' do
       get '/'
       expect(last_response.body).to match /handmade/i
     end
@@ -54,7 +56,7 @@ describe Romey do
       [ '/keywords', '/baby/upload','/baby/uploads', '/upload','/uploads', '/event', '/events' ].each do |endpoint|
         it "#{endpoint} responds error with no auth" do
           get endpoint
-          last_response.status.should == 401
+          expect(last_response.status).to eql 401
         end
         it "#{endpoint} responds ok with proper auth" do
           authorize 'whatever','whatever'
@@ -69,7 +71,7 @@ describe Romey do
       ].each do |endpoint|
         it "#{endpoint} responds error with no auth" do
           post *endpoint
-          last_response.status.should == 401
+          expect(last_response.status).to eql 401
         end
         it "#{endpoint} responds ok with proper auth" do
           authorize 'whatever','whatever'
@@ -112,8 +114,8 @@ describe Romey do
     it "shows a list of keywords" do
       authorize 'whatever','whatever'
       post '/keyword', :keyword => 'rock and roll'
-      (KeywordResource.all.map(&:keyword).include? 'rock and roll').should be
-      last_response.status.should == 302
+      expect((KeywordResource.all.map(&:keyword).include? 'rock and roll')).to be
+      expect(last_response.status).to eql 302
     end
   end
   describe '#keyword/del' do
@@ -121,10 +123,10 @@ describe Romey do
       authorize 'whatever','whatever'
       k = KeywordResource.new(:keyword => 'whatever')
       k.save
-      (KeywordResource.all.map(&:keyword)).should include 'whatever'
+      expect(KeywordResource.all.map(&:keyword)).to include 'whatever'
       get "/keyword/del/#{k.id}"
-      last_response.status.should == 302
-      (KeywordResource.all.map(&:keyword)).should_not include 'whatever'
+      expect(last_response.status).to eql 302
+      expect(KeywordResource.all.map(&:keyword)).to_not include 'whatever'
     end
   end
 
@@ -232,12 +234,12 @@ describe Romey do
       authorize 'whatever','whatever'
       precount = EventResource.count
       post '/event', { :event => {:title => 'yo', 'description' => 'stuff', :starttime => Time.now + 10000 }  }
-      (EventResource.count - precount).should == 1
+      expect(EventResource.count - precount).to eql 1
     end
     it "redirects to events list page" do
       authorize 'whatever','whatever'
       post '/event', { :event => {:title => 'yo', 'description' => 'stuff' , :starttime => Time.now + 20000 }  }
-      last_response.status.should == 302
+      expect(last_response.status).to eql 302
     end
   end
 
@@ -246,24 +248,22 @@ describe Romey do
       authorize 'whatever','whatever'
 
       ev = EventResource.create(:title => 'yo', :starttime => Time.now)
-      binding.pry
       _id = "%d_title" % ev.id
       params = { :id => _id, :value => 'the new title' }
       post '/event/update_attr', params
       expect(last_response.body).to eql 'the new title'
-      binding.pry
       fetched = EventResource.get(ev.id)
-      fetched.title.should == 'the new title'
+      expect(fetched.title).to eql 'the new title'
     end
     it "updates event endtime using chronic parsing" do
       authorize 'whatever','whatever'
 
       ev = EventResource.create(:title => 'yo', :starttime => Time.now)
       _id = "%d_endtime" % ev.id
-      params = { :id => _id, :value => 'Tomorrow at 11pm' }
+      params = { "id" => _id, "value" => 'Tomorrow at 11pm' }
       post '/event/update_attr', params
-      fetched = EventResource.get(ev.id)
-      fetched.endtime.should_not be_nil
+      fetched = EventResource.get(ev.id.to_i)
+      expect(fetched.endtime).to_not be_nil
     end
   end
 
@@ -271,7 +271,7 @@ describe Romey do
     it "removes the event" do
       mock_event = double(EventResource)
       expect(mock_event).to receive(:destroy)
-      expect(EventResource).to receive(:get).with('19').and_return( mock_event )
+      expect(EventResource).to receive(:get).with(19).and_return( mock_event )
       authorize 'whatever','whatever'
       get "/event/del/19"
     end
@@ -279,7 +279,7 @@ describe Romey do
     it "redirects to events" do
       authorize 'whatever','whatever'
       get "/event/del/4"
-      last_response.status.should == 302
+      expect(last_response.status).to eql 302
     end
   end
 
@@ -287,7 +287,7 @@ describe Romey do
     it "removes the desired image" do
       mock_event = double(ImageResource)
       expect(mock_event).to receive(:destroy)
-      expect(ImageResource).to receive(:get).with('19').and_return( mock_event )
+      expect(ImageResource).to receive(:get).with(19).and_return( mock_event )
       authorize 'whatever','whatever'
       get "/pic/del/19"
     end
@@ -295,37 +295,36 @@ describe Romey do
     it "redirects to uploads" do
       authorize 'whatever','whatever'
       get "/pic/del/1"
-      last_response.status.should == 302
+      expect(last_response.status).to eql 302
     end
   end
 
   describe 'xhr get#pics' do
     it "returns json" do
       get "/pics"
-      last_response.content_type.should ==  MIME::Types.type_for('json').first
+      expect(last_response.content_type).to eql "application/json;charset=utf-8"
     end
     it "returns a list of all image resources as json" do
-      get "/pics"
       expect(ImageResource).to receive(:all).and_return [ double("MockFile", :file => double('MockUpload', :url => 'url1'), :id => 10),
                                                           double("MockFile", :file => double('MockUpload', :url => 'url2'), :id => 12) ]
 
+      get "/pics"
       j = JSON.parse(last_response.body)
-      j.count.should == ImageResource.all.count
+      expect(j.count).to eql 2
     end
   end
 
   describe 'xhr get#baby/pics' do
     it "returns json" do
       get "/baby/pics"
-      last_response.content_type.should ==  MIME::Types.type_for('json').first
+      expect(last_response.content_type).to eql "application/json;charset=utf-8"
     end
     it "returns a list of all image resources as json" do
-      get "/baby/pics"
       expect(BabyImageResource).to receive(:all).and_return [ double("MockFile", :file => double('MockUpload', :url => 'url1'), :id => 10),
                                                               double("MockFile", :file => double('MockUpload', :url => 'url2'), :id => 12) ]
-
+      get "/baby/pics"
       j = JSON.parse(last_response.body)
-      j.count.should == BabyImageResource.all.count
+      expect(j.count).to eql 2
     end
   end
 
@@ -333,24 +332,24 @@ describe Romey do
     describe '#truncate' do
       it 'leaves short strings alone' do
         str = gen_random_string(10)
-        str.truncate.should == str
+        expect(str.truncate).to eql str
       end
       it 'truncates strings longer than 40 to 40 chars with ...' do
         str = gen_random_string(60)
         trunc = str.truncate
-        (trunc =~ /\.{3}$/).should be
+        expect(trunc =~ /\.{3}$/).to be
       end
       it 'truncates string to 10 given length 10' do
         str = gen_random_string(60)
         trunc = str.truncate(10)
-        trunc.length.should == 10
-        (trunc =~ /\.{3}$/).should be
+        expect(trunc.length).to eql 10
+        expect(trunc =~ /\.{3}$/).to be
       end
       it 'adds a custom prefix and truncates to 40' do
         str = gen_random_string(60)
         trunc = str.truncate(40, 'postfix')
-        trunc.length.should == 40
-        (trunc =~ /postfix$/).should be
+        expect(trunc.length).to eql 40
+        expect(trunc =~ /postfix$/).to be
       end
     end
   end

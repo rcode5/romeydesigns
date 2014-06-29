@@ -52,7 +52,6 @@ class Romey < Sinatra::Base
       @auth ||=  Rack::Auth::Basic::Request.new(request.env)
       user = ENV['ROMEY_ADMIN_USER'] || gen_random_string
       pass = ENV['ROMEY_ADMIN_PASS'] || gen_random_string
-      #puts "User/Pass: #{user} #{pass}"
       @auth.provided? && @auth.basic? && @auth.credentials && @auth.credentials == [user,pass]
     end
 
@@ -100,7 +99,7 @@ class Romey < Sinatra::Base
 
   get '/event/:id' do
     protected!
-    @event = EventResource.get(params[:id])
+    @event = EventResource.get(params["id"].to_i)
     haml :event, :layout => :admin_layout
   end
 
@@ -108,15 +107,15 @@ class Romey < Sinatra::Base
     protected!
     # update timestamps
     [:starttime, :endtime].each do |thetime|
-      if params[:event].has_key? thetime.to_s
+      if params["event"].has_key? thetime.to_s
         begin
-          t = Chronic.parse(params[:event][thetime])
-          params[:event][thetime] = t
+          t = Chronic.parse(params["event"][thetime])
+          params["event"][thetime] = t
         rescue ArgumentError
         end
       end
     end
-    ev = EventResource.new(params[:event])
+    ev = EventResource.new(params["event"])
     if !ev.save
       @event = ev
       haml :event, :layout => :admin_layout
@@ -134,7 +133,7 @@ class Romey < Sinatra::Base
       event_id = bits[0] 
       event_attr = bits[1]
       new_val = params['value']
-      ev = EventResource.get(event_id)
+      ev = EventResource.get(event_id.to_i)
       if ev
         if ev.respond_to?(event_attr)
           if ['starttime', 'endtime'].include? event_attr
@@ -166,7 +165,7 @@ class Romey < Sinatra::Base
 
   get '/event/del/:id' do
     protected!  
-    ev = EventResource.get(params[:id])
+    ev = EventResource.get(params["id"].to_i)
     if ev
       ev.destroy
     end
@@ -188,7 +187,7 @@ class Romey < Sinatra::Base
 
   post '/upload' do
     protected!
-    img = ImageResource.new(:file => params[:file])
+    img = ImageResource.new(:file => params["file"])
     halt "There were issues with your upload..." unless img.save
     redirect '/uploads'
   end
@@ -212,7 +211,7 @@ class Romey < Sinatra::Base
 
   post '/baby/upload' do
     protected!
-    img = BabyImageResource.new(:file => make_paperclip_mash(params[:file]))
+    img = BabyImageResource.new(:file => make_paperclip_mash(params["file"]))
     halt "There were issues with your upload..." unless img.save
     redirect '/baby/uploads'
   end
@@ -231,7 +230,7 @@ class Romey < Sinatra::Base
 
   get '/baby/pic/del/:id' do
     protected!
-    img = BabyImageResource.get(params[:id])
+    img = BabyImageResource.get(params["id"].to_i)
     if img
       img.destroy
     end
@@ -240,7 +239,7 @@ class Romey < Sinatra::Base
 
   get '/pic/del/:id' do
     protected!
-    img = ImageResource.get(params[:id])
+    img = ImageResource.get(params["id"].to_i)
     if img
       img.destroy
     end
@@ -254,8 +253,8 @@ class Romey < Sinatra::Base
 
   post '/keyword' do
     protected!
-    if params[:keyword] && params[:keyword].length > 0
-      kw = KeywordResource.new(:keyword => params[:keyword])
+    if params["keyword"] && params["keyword"].length > 0
+      kw = KeywordResource.new(:keyword => params["keyword"])
       halt 'There was a problem saving that keyword' unless kw.save
     end
     redirect '/keywords'
@@ -270,7 +269,7 @@ class Romey < Sinatra::Base
 
   get '/keyword/del/:id' do
     protected!  
-    kw = KeywordResource.get(params[:id])
+    kw = KeywordResource.get(params["id"].to_i)
     if kw
       kw.destroy
     end

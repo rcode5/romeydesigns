@@ -11,7 +11,7 @@ gem 'chronic'
 gem "data_mapper"
 # krobertson's needs a few patches for heroku/s3 tiein
 gem "dm-paperclip", :git => 'https://github.com/krobertson/dm-paperclip.git'
-gem 'aws-sdk'
+gem 'aws-s3'
 gem "rake"
 #gem 'heroku'
 

@@ -12,6 +12,7 @@ gem "data_mapper"
 
 # krobertson's branch is still based on aws-s3 which is old and crufty
 # gem "dm-paperclip-s3", :git => 'https://github.com/krobertson/dm-paperclip.git'
+gem "aws-sdk"
 gem "dm-paperclip-s3", :git => 'https://github.com/krzak/dm-paperclip-s3.git'
 gem "rake"
 

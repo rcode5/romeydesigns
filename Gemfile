@@ -1,5 +1,5 @@
 source 'http://rubygems.org'
-ruby '2.1.2'  # commented for heroku
+ruby '2.1.5'  # commented for heroku
 
 gem 'sinatra'
 gem 'sinatra-static-assets'
@@ -9,11 +9,11 @@ gem 'haml'
 gem 'sass'
 gem 'chronic'
 gem "data_mapper"
-# krobertson's needs a few patches for heroku/s3 tiein
-gem "dm-paperclip", :git => 'https://github.com/krobertson/dm-paperclip.git'
-gem 'aws-s3'
+
+# krobertson's branch is still based on aws-s3 which is old and crufty
+# gem "dm-paperclip-s3", :git => 'https://github.com/krobertson/dm-paperclip.git'
+gem "dm-paperclip-s3", :git => 'https://github.com/krzak/dm-paperclip-s3.git'
 gem "rake"
-#gem 'heroku'
 
 group :development do
   gem 'sqlite3'

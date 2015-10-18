@@ -1,33 +1,30 @@
-.ctrls      
-  %a{:href => '/event'}
-    %button Add a new event
-
 %header
+  .ctrls
+    %a{:href => '/event'} Add a new event
   %h1
     Current Events
 %ul
   - @events.each do |ev|
-    %li.event 
+    %li.event
       .title.editable
         %label Title:
         .value{:id => "#{ev.id}_title"} #{ev.title.present? ? ev.title : '[add title]'}
-      .address.editable        
+      .address.editable
         %label Address:
         .value{:id => "#{ev.id}_address"} #{ev.address.present? ? ev.address : '[add address]'}
-      .description.editable  
+      .description.editable
         %label Desc:
         .value{:id => "#{ev.id}_description"} #{ev.description.present? ? ev.description : '[add description]'}
       .starttime.editable
         %label Start Time
         .value{:id => "#{ev.id}_starttime"} #{ev.starttime.strftime(Romey::TIME_FORMAT)}
-      .endtime.editable 
+      .endtime.editable
         %label End Time
         .value{:id => "#{ev.id}_endtime"} #{ev.endtime ? ev.endtime.strftime(Romey::TIME_FORMAT) : '[add endtime]'}
-      .url.editable 
+      .url.editable
         %label Event Website
         .value{:id => "#{ev.id}_url"} #{ev.url.present? ? ev.url : '[add event website]'}
 
       .del
         %a{:href => "/event/del/#{ev.id}", :title => 'trash'}
           %img{:src => '/images/trash.png', :alt => 'trash', :title => 'trash'}
-  

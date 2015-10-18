@@ -1,12 +1,10 @@
-.ctrls
-  %a{:href => '/baby/uploads'} 
-    (back to uploads)
-
 %header
+  .ctrls
+    %a{:href => '/baby/uploads'}
+      (back to uploads)
   %h1
     Upload a new baby image
 
 %form{:action => '/baby/upload', :enctype => 'multipart/form-data', :method => 'POST'}
   %input{:type => 'file', :name => 'file'}
   %input{:type => 'submit'}
-

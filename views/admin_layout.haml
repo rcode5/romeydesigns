@@ -11,27 +11,25 @@
 
     %title Romey Admin : #{@title}
   %body
-    %header
-      .logo
-        %a{:href => '/'}
-          %img{:src => '/images/romey_small_logo.png'}
+    %header.admin-header
+      %a{:href => '/'}
+        .logo
       %nav
         %ul
-          %li 
+          %li
             %a{:href => '/'} main site
-          %li 
+          %li
             %a{:href => '/events'} events
-          %li 
+          %li
             %a{:href => '/uploads'} pictures
-          %li 
+          %li
             %a{:href => '/baby/uploads'} baby pictures
-          %li 
+          %li
             %a{:href => '/keywords'} keywords
-    #main
+    #main.admin-content
       =yield
 
-      
-    %script{ :src => 'http://code.jquery.com/jquery-1.6.1.min.js' }     
-    %script{ :src => '/javascripts/jquery.jeditable.min.js' }     
+
+    %script{ :src => 'http://code.jquery.com/jquery-1.6.1.min.js' }
+    %script{ :src => '/javascripts/jquery.jeditable.min.js' }
     %script{ :src => '/javascripts/romey_admin.js' }
-   

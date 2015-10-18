@@ -1,14 +1,13 @@
-.ctrls
-  %a{:href => '/events'} 
-    (back to events)
-
 %header
+  .ctrls
+    %a{:href => '/events'} (back to events)
+
   %h1
     Add a new event
 
-- if @event && @event.errors 
+- if @event && @event.errors
   .errors
-    ERRORS! 
+    ERRORS!
     - @event.errors.each do |err|
       .err #{err.join}
 
@@ -24,12 +23,11 @@
         %label{:for => "event_#{ky}"} #{ky.capitalize}
       - if k == :description
         %textarea{:class => "event", :id => "event_#{ky}", :name => "event[#{ky}]", :value => (@event ? @event.send(ky) : ''), :rows => 5, :cols => 55}
-      - else        
+      - else
         %input{:type => 'text', :class => "event", :id => "event_#{ky}", :name => "event[#{ky}]", :value => (@event ? @event.send(ky) : '') }
       - if k == :address
         %a{:class => 'test_map'} [Test address mapping]
       %span.help #{help_msg[k]}
   .clear
-  .submit  
+  .submit
     %input{:type => 'submit'}
-

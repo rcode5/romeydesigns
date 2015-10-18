@@ -1,8 +1,6 @@
-.ctrls      
-  %a{:href => '/upload'}
-    %button Add a new image
-
 %header
+  .ctrls
+    %a{:href => '/upload'} Add a new image
   %h1
     Current Images
 %ul
@@ -12,4 +10,3 @@
       .del
         %a{:href => "/pic/del/#{r.id}", :title => 'trash'}
           %img{:src => '/images/trash.png', :alt => 'trash', :title => 'trash'}
-  

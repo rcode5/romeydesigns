@@ -1,6 +1,6 @@
 GIT
-  remote: https://github.com/rcode5/dm-paperclip-s3.git
-  revision: 0709822abd51afbdd90f69dda936941935ef65bf
+  remote: https://github.com/krzak/dm-paperclip-s3.git
+  revision: e62f3be4ad9846416cc5f87f642ac871e1f0cd11
   specs:
     dm-paperclip-s3 (1.0.0)
 

@@ -17,10 +17,13 @@
         .value{:id => "#{ev.id}_description"} #{ev.description.present? ? ev.description : '[add description]'}
       .starttime.editable
         %label Start Time
-        .value{:id => "#{ev.id}_starttime"} #{ev.starttime.strftime(Romey::TIME_FORMAT)}
+        .value{:id => "#{ev.id}_starttime"} #{ev.starttime.present? ? ev.starttime.strftime(Romey::TIME_FORMAT) : '[add starttime]'}
       .endtime.editable
         %label End Time
-        .value{:id => "#{ev.id}_endtime"} #{ev.endtime ? ev.endtime.strftime(Romey::TIME_FORMAT) : '[add endtime]'}
+        .value{:id => "#{ev.id}_endtime"} #{ev.endtime.present? ? ev.endtime.strftime(Romey::TIME_FORMAT) : '[add endtime]'}
+      .ongoing.editable
+        %label Ongoing?
+        .value{:id => "#{ev.id}_ongoing"} #{ev.ongoing.to_s}
       .url.editable
         %label Event Website
         .value{:id => "#{ev.id}_url"} #{ev.url.present? ? ev.url : '[add event website]'}

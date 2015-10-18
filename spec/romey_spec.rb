@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/spec_helper'
 require 'mime/types'
 
-require 'pry'
+require 'byebug'
 
 LETTERS_PLUS_SPACE =  (75).times.map{|num| (48+num).chr}.reject{|c| (c =~ /[[:punct:]]/)}
 def gen_random_string(len=8)
@@ -32,10 +32,10 @@ describe Romey do
       get '/'
       expect(last_response.body).to have_tag('#events.panel')
     end
-    it 'does not render events that are older than yesterday' do
+    it 'renders events whose endtime has not yet past' do
       t = Time.now + (12000)
       5.times.each do
-        EventResource.create( :title => gen_random_string, :starttime => t, :url => gen_random_string, :description => '')
+        EventResource.create( title: gen_random_string, starttime: t, endtime: t + 20000, url: gen_random_string, description: '')
         t -= (3600 * 24)
       end
       get('/')
@@ -43,11 +43,11 @@ describe Romey do
     end
     it 'includes a description' do
       get('/')
-      expect(last_response.body).to have_tag('meta', :with => {:name => 'description'})
+      expect(last_response.body).to have_tag('meta', with: {name: 'description'})
     end
     it 'includes keywords' do
       get('/')
-      expect(last_response.body).to have_tag('meta', :with => {:name => 'keywords'})
+      expect(last_response.body).to have_tag('meta', with: {name: 'keywords'})
     end
   end
 
@@ -66,8 +66,8 @@ describe Romey do
       end
     end
     describe 'POST' do
-      [ ['/event/update_attr', :id => '23_url', :value => 'url'],
-        ['/event', :event => {:starttime => 'yo'}]
+      [ ['/event/update_attr', id: '23_url', value: 'url'],
+        ['/event', event: {starttime: 'yo'}]
       ].each do |endpoint|
         it "#{endpoint} responds error with no auth" do
           post *endpoint
@@ -84,36 +84,36 @@ describe Romey do
 
   describe '#keywords' do
     before do
-      KeywordResource.new(:keyword => 'yo1', :id => 12).save
-      KeywordResource.new(:keyword => 'yo2', :id => 14).save
-      KeywordResource.new(:keyword => 'yo yo3', :id => 15).save
+      KeywordResource.new(keyword: 'yo1', id: 12).save
+      KeywordResource.new(keyword: 'yo2', id: 14).save
+      KeywordResource.new(keyword: 'yo yo3', id: 15).save
     end
 
     it "has a 'create new' link" do
       authorize 'whatever','whatever'
       get '/keywords'
-      expect(last_response.body).to have_tag('.add_keywords form', :with => {:action=>'/keyword'})
-      expect(last_response.body).to have_tag('.add_keywords input', :with => {:type=>'submit'})
+      expect(last_response.body).to have_tag('.add_keywords form', with: {:action=>'/keyword'})
+      expect(last_response.body).to have_tag('.add_keywords input', with: {:type=>'submit'})
     end
 
     it "shows a list of keywords" do
       authorize 'whatever','whatever'
       get '/keywords'
-      expect(last_response.body).to have_tag('ul li.kw', :count => 3)
+      expect(last_response.body).to have_tag('ul li.kw', count: 3)
     end
 
     it "returns delete links for each image" do
       authorize 'whatever','whatever'
       get '/keywords'
-      expect(last_response.body).to have_tag('ul li.kw div.del a', :with => {:href=>'/keyword/del/12'})
-      expect(last_response.body).to have_tag('ul li.kw div.del a', :with => {:href=>'/keyword/del/14'})
+      expect(last_response.body).to have_tag('ul li.kw div.del a', with: {:href=>'/keyword/del/12'})
+      expect(last_response.body).to have_tag('ul li.kw div.del a', with: {:href=>'/keyword/del/14'})
     end
   end
 
   describe '#keyword' do
     it "shows a list of keywords" do
       authorize 'whatever','whatever'
-      post '/keyword', :keyword => 'rock and roll'
+      post '/keyword', keyword: 'rock and roll'
       expect((KeywordResource.all.map(&:keyword).include? 'rock and roll')).to be
       expect(last_response.status).to eql 302
     end
@@ -121,7 +121,7 @@ describe Romey do
   describe '#keyword/del' do
     it "shows a list of keywords" do
       authorize 'whatever','whatever'
-      k = KeywordResource.new(:keyword => 'whatever')
+      k = KeywordResource.new(keyword: 'whatever')
       k.save
       expect(KeywordResource.all.map(&:keyword)).to include 'whatever'
       get "/keyword/del/#{k.id}"
@@ -134,33 +134,33 @@ describe Romey do
     it "has a 'create new' link" do
       authorize 'whatever','whatever'
       get '/uploads'
-          # ', :with => {:href=>'/upload']
-      expect(last_response.body).to have_tag('a button', 'Add a new image')
+          # ', with: {:href=>'/upload']
+      expect(last_response.body).to have_tag('a', 'Add a new image')
     end
 
     it "shows a list of images" do
-      expect(ImageResource).to receive(:all).and_return [ double("MockFile", :file => double('MockUpload', :url => 'url1'), :id => 10),
-                                                          double("MockFile", :file => double('MockUpload', :url => 'url2'), :id => 12) ]
+      expect(ImageResource).to receive(:all).and_return [ double("MockFile", file: double('MockUpload', url: 'url1'), id: 10),
+                                                          double("MockFile", file: double('MockUpload', url: 'url2'), id: 12) ]
       authorize 'whatever','whatever'
       get '/uploads'
-      expect(last_response.body).to have_tag('ul li.uploaded_image', :count => 2)
+      expect(last_response.body).to have_tag('ul li.uploaded_image', count: 2)
     end
 
     it "returns images sorted by id descending" do
-      expect(ImageResource).to receive(:all).and_return [ double("MockFile", :file => double('MockUpload', :url => 'url1'), :id => 10),
-                                                          double("MockFile", :file => double('MockUpload', :url => 'url2'), :id => 12) ]
+      expect(ImageResource).to receive(:all).and_return [ double("MockFile", file: double('MockUpload', url: 'url1'), id: 10),
+                                                          double("MockFile", file: double('MockUpload', url: 'url2'), id: 12) ]
       authorize 'whatever','whatever'
       get '/uploads'
-      expect(last_response.body).to have_tag('ul li.uploaded_image img', :with => {:src=>'url1'})
-      expect(last_response.body).to have_tag('ul li.uploaded_image img', :with => {:src=>'url2'})
+      expect(last_response.body).to have_tag('ul li.uploaded_image img', with: {:src=>'url1'})
+      expect(last_response.body).to have_tag('ul li.uploaded_image img', with: {:src=>'url2'})
     end
     it "returns delete links for each image" do
-      expect(ImageResource).to receive(:all).and_return [ double("MockFile", :file => double('MockUpload', :url => 'url1'), :id => 10),
-                                                          double("MockFile", :file => double('MockUpload', :url => 'url2'), :id => 12) ]
+      expect(ImageResource).to receive(:all).and_return [ double("MockFile", file: double('MockUpload', url: 'url1'), id: 10),
+                                                          double("MockFile", file: double('MockUpload', url: 'url2'), id: 12) ]
       authorize 'whatever','whatever'
       get '/uploads'
-      expect(last_response.body).to have_tag('.uploaded_image .del a', :with => {:href=>'/pic/del/12'})
-      expect(last_response.body).to have_tag('.uploaded_image .del a', :with => {:href=>'/pic/del/10'})
+      expect(last_response.body).to have_tag('.uploaded_image .del a', with: {:href=>'/pic/del/12'})
+      expect(last_response.body).to have_tag('.uploaded_image .del a', with: {:href=>'/pic/del/10'})
     end
   end
 
@@ -168,32 +168,32 @@ describe Romey do
     it "has a 'create new' link" do
       authorize 'whatever','whatever'
       get '/baby/uploads'
-      expect(last_response.body).to have_tag('a button', 'Add a new image')
+      expect(last_response.body).to have_tag('a', 'Add a new image')
     end
 
     it "shows a list of images" do
-      expect(BabyImageResource).to receive(:all).and_return [ double("MockFile", :file => double('MockUpload', :url => 'url1'), :id => 10),
-                                                              double("MockFile", :file => double('MockUpload', :url => 'url2'), :id => 12) ]
+      expect(BabyImageResource).to receive(:all).and_return [ double("MockFile", file: double('MockUpload', url: 'url1'), id: 10),
+                                                              double("MockFile", file: double('MockUpload', url: 'url2'), id: 12) ]
       authorize 'whatever','whatever'
       get '/baby/uploads'
-      expect(last_response.body).to have_tag('ul li.uploaded_image', :count => 2)
+      expect(last_response.body).to have_tag('ul li.uploaded_image', count: 2)
     end
 
     it "returns images sorted by id descending" do
-      expect(BabyImageResource).to receive(:all).and_return [ double("MockFile", :file => double('MockUpload', :url => 'url1'), :id => 10),
-                                                              double("MockFile", :file => double('MockUpload', :url => 'url2'), :id => 12) ]
+      expect(BabyImageResource).to receive(:all).and_return [ double("MockFile", file: double('MockUpload', url: 'url1'), id: 10),
+                                                              double("MockFile", file: double('MockUpload', url: 'url2'), id: 12) ]
       authorize 'whatever','whatever'
       get '/baby/uploads'
-      expect(last_response.body).to have_tag('ul li.uploaded_image img', :with => {:src=>'url1'})
-      expect(last_response.body).to have_tag('ul li.uploaded_image img', :with => {:src=>'url2'})
+      expect(last_response.body).to have_tag('ul li.uploaded_image img', with: {:src=>'url1'})
+      expect(last_response.body).to have_tag('ul li.uploaded_image img', with: {:src=>'url2'})
     end
     it "returns delete links for each image" do
-      expect(BabyImageResource).to receive(:all).and_return [ double("MockFile", :file => double('MockUpload', :url => 'url1'), :id => 10),
-                                                              double("MockFile", :file => double('MockUpload', :url => 'url2'), :id => 12) ]
+      expect(BabyImageResource).to receive(:all).and_return [ double("MockFile", file: double('MockUpload', url: 'url1'), id: 10),
+                                                              double("MockFile", file: double('MockUpload', url: 'url2'), id: 12) ]
       authorize 'whatever','whatever'
       get '/baby/uploads'
-      expect(last_response.body).to have_tag('ul li.uploaded_image div a', :with => {:href=>'/baby/pic/del/12'})
-      expect(last_response.body).to have_tag('ul li.uploaded_image div a', :with => {:href=>'/baby/pic/del/10'})
+      expect(last_response.body).to have_tag('ul li.uploaded_image div a', with: {:href=>'/baby/pic/del/12'})
+      expect(last_response.body).to have_tag('ul li.uploaded_image div a', with: {:href=>'/baby/pic/del/10'})
     end
   end
 
@@ -220,10 +220,10 @@ describe Romey do
   describe '#events' do
     it "renders all events" do
       authorize 'whatever','whatever'
-      post '/event', { :event => {:title => 'yo1', 'description' => 'stuff' , :starttime => Time.now + 20000 }  }
-      post '/event', { :event => {:title => 'yo2', 'description' => 'stuff' , :starttime => Time.now + 30000 }  }
+      post '/event', { event: {title: 'yo1', 'description' => 'stuff' , starttime: Time.now + 20000, endtime: Time.now+24000 }  }
+      post '/event', { event: {title: 'yo2', 'description' => 'stuff' , starttime: Time.now + 30000, endtime: Time.now+34000 }  }
       get '/events'
-      expect(last_response.body).to have_tag('ul li.event', :count => 2)
+      expect(last_response.body).to have_tag('ul li.event', count: 2)
       expect(last_response.body).to have_tag('ul li.event .title', 'yo2')
       expect(last_response.body).to have_tag('ul li.event .title', 'yo1')
     end
@@ -233,12 +233,12 @@ describe Romey do
     it "creates a new event" do
       authorize 'whatever','whatever'
       precount = EventResource.count
-      post '/event', { :event => {:title => 'yo', 'description' => 'stuff', :starttime => Time.now + 10000 }  }
+      post '/event', { event: {title: 'yo', 'description' => 'stuff', starttime: Time.now + 10000 }  }
       expect(EventResource.count - precount).to eql 1
     end
     it "redirects to events list page" do
       authorize 'whatever','whatever'
-      post '/event', { :event => {:title => 'yo', 'description' => 'stuff' , :starttime => Time.now + 20000 }  }
+      post '/event', { event: {title: 'yo', 'description' => 'stuff' , starttime: Time.now + 20000 }  }
       expect(last_response.status).to eql 302
     end
   end
@@ -247,9 +247,9 @@ describe Romey do
     it "updates event attribute" do
       authorize 'whatever','whatever'
 
-      ev = EventResource.create(:title => 'yo', :starttime => Time.now)
+      ev = EventResource.create(title: 'yo', starttime: Time.now)
       _id = "%d_title" % ev.id
-      params = { :id => _id, :value => 'the new title' }
+      params = { id: _id, value: 'the new title' }
       post '/event/update_attr', params
       expect(last_response.body).to eql 'the new title'
       fetched = EventResource.get(ev.id)
@@ -258,7 +258,7 @@ describe Romey do
     it "updates event endtime using chronic parsing" do
       authorize 'whatever','whatever'
 
-      ev = EventResource.create(:title => 'yo', :starttime => Time.now)
+      ev = EventResource.create(title: 'yo', starttime: Time.now)
       _id = "%d_endtime" % ev.id
       params = { "id" => _id, "value" => 'Tomorrow at 11pm' }
       post '/event/update_attr', params
@@ -305,8 +305,8 @@ describe Romey do
       expect(last_response.content_type).to eql "application/json;charset=utf-8"
     end
     it "returns a list of all image resources as json" do
-      expect(ImageResource).to receive(:all).and_return [ double("MockFile", :file => double('MockUpload', :url => 'url1'), :id => 10),
-                                                          double("MockFile", :file => double('MockUpload', :url => 'url2'), :id => 12) ]
+      expect(ImageResource).to receive(:all).and_return [ double("MockFile", file: double('MockUpload', url: 'url1'), id: 10),
+                                                          double("MockFile", file: double('MockUpload', url: 'url2'), id: 12) ]
 
       get "/pics"
       j = JSON.parse(last_response.body)
@@ -320,8 +320,8 @@ describe Romey do
       expect(last_response.content_type).to eql "application/json;charset=utf-8"
     end
     it "returns a list of all image resources as json" do
-      expect(BabyImageResource).to receive(:all).and_return [ double("MockFile", :file => double('MockUpload', :url => 'url1'), :id => 10),
-                                                              double("MockFile", :file => double('MockUpload', :url => 'url2'), :id => 12) ]
+      expect(BabyImageResource).to receive(:all).and_return [ double("MockFile", file: double('MockUpload', url: 'url1'), id: 10),
+                                                              double("MockFile", file: double('MockUpload', url: 'url2'), id: 12) ]
       get "/baby/pics"
       j = JSON.parse(last_response.body)
       expect(j.count).to eql 2

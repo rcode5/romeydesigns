@@ -18,6 +18,10 @@ def gen_random_string(len=8)
   (0..len).map{ LETTERS_PLUS_SPACE[rand(numchars)] }.join
 end
 
+def string_to_boolean(s)
+  ["true", "1", "on"].include? s.to_s.downcase
+end
+
 class String
   def truncate(len = 40, postfix = '...')
     return self if length <= len - postfix.length
@@ -73,7 +77,7 @@ class Romey < Sinatra::Base
     @baby_images = BabyImageResource.all.sort_by(&:id).reverse
     @events = EventResource.all.sort do |b,a|
       (a.starttime && b.starttime)? (a.starttime <=> b.starttime) : a.id <=> b.id
-    end.select{|ev| ev.endtime.to_time > Time.now }
+    end.select{|ev| ev.ongoing || (ev.endtime && (ev.endtime.to_time > Time.now)) }
     @links = {
       :baby => {
         :twitter => 'http://twitter.com/romeydesigns',
@@ -113,6 +117,9 @@ class Romey < Sinatra::Base
         end
       end
     end
+
+    params["event"]["ongoing"] = (params["event"]["ongoing"] == "on") || (params["event"]["ongoing"] == "1")
+
     ev = EventResource.new(params["event"])
     if !ev.save
       @event = ev
@@ -137,13 +144,17 @@ class Romey < Sinatra::Base
           if ['starttime', 'endtime'].include? event_attr
             new_val = Chronic.parse(new_val)
           end
+          if event_attr == 'ongoing'
+            new_val = string_to_boolean(new_val)
+          end
           if ev.send(event_attr) != new_val
             ev.send(event_attr + '=', new_val)
             ev.save
-            if ['starttime', 'endtime'].include? event_attr
-              return ev.send(event_attr).strftime(Romey::TIME_FORMAT)
+            if ['starttime', 'endtime'].include?(event_attr)
+              t = ev.send(event_attr)
+              return t && t.strftime(Romey::TIME_FORMAT)
             else
-              return ev.send(event_attr)
+              return ev.send(event_attr).to_s
             end
           else
             msg = 'Update value is same as current.  No change'
@@ -276,9 +287,6 @@ class Romey < Sinatra::Base
 
 end
 
-
-Dir[File.join(File.dirname(__FILE__),"models/**/*.rb")].each do |file|
-  require file
-end
+require File.join(File.dirname(__FILE__),"models/models.rb")
 
 DataMapper.auto_upgrade!

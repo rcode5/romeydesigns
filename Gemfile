@@ -9,11 +9,11 @@ gem 'haml'
 gem 'sass'
 gem 'chronic'
 gem "data_mapper"
+gem "aws-sdk-v1"
 
 # krobertson's branch is still based on aws-s3 which is old and crufty
-# gem "dm-paperclip-s3", :git => 'https://github.com/krobertson/dm-paperclip.git'
-gem "aws-sdk"
 gem "dm-paperclip-s3", :git => 'https://github.com/krzak/dm-paperclip-s3.git'
+#gem "dm-paperclip", :git => 'https://github.com/krobertson/dm-paperclip.git'
 gem "rake"
 
 group :development do
@@ -38,4 +38,3 @@ group :test do
   gem "jasmine"
   gem "jasmine-headless-webkit"
 end
-

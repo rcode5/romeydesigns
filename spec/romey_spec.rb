@@ -1,8 +1,6 @@
 require File.dirname(__FILE__) + '/spec_helper'
 require 'mime/types'
 
-require 'byebug'
-
 LETTERS_PLUS_SPACE =  (75).times.map{|num| (48+num).chr}.reject{|c| (c =~ /[[:punct:]]/)}
 def gen_random_string(len=8)
   numchars = LETTERS_PLUS_SPACE.length

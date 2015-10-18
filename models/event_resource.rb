@@ -1,7 +1,6 @@
 require 'sinatra'
 require 'data_mapper'
 require 'dm-paperclip'
-require 'byebug'
 
 class EventResource
   include DataMapper::Resource

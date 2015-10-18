@@ -1,5 +1,5 @@
 source 'http://rubygems.org'
-ruby '2.1.5'  # commented for heroku
+ruby '2.1.2'  # commented for heroku - upgrade to 2.1.5 causes issues!
 
 gem 'sinatra'
 gem 'sinatra-static-assets'
@@ -38,4 +38,3 @@ group :test do
   gem "jasmine"
   gem "jasmine-headless-webkit"
 end
-

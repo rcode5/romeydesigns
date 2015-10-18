@@ -18,6 +18,10 @@ def gen_random_string(len=8)
   (0..len).map{ LETTERS_PLUS_SPACE[rand(numchars)] }.join
 end
 
+def string_to_boolean(s)
+  ["true", "1", "on"].include? s.to_s.downcase
+end
+
 class String
   def truncate(len = 40, postfix = '...')
     return self if length <= len - postfix.length
@@ -40,14 +44,14 @@ class Romey < Sinatra::Base
   #Paperclip.options.merge!()
 
   helpers do
-    
+
     def protected!
       unless authorized?
         response['WWW-Authenticate'] = %(Basic realm="Restricted Area")
         throw(:halt, [401, "Not authorized\n"])
       end
     end
-    
+
     def authorized?
       @auth ||=  Rack::Auth::Basic::Request.new(request.env)
       user = ENV['ROMEY_ADMIN_USER'] || gen_random_string
@@ -62,7 +66,7 @@ class Romey < Sinatra::Base
       mash['content_type'] = file_hash[:type]
       mash['size'] = file_hash[:tempfile].size
       mash
-    end    
+    end
   end
 
   set :haml, :format => :html5
@@ -71,24 +75,22 @@ class Romey < Sinatra::Base
     @images = []
     @images = ImageResource.all.sort_by(&:id).reverse
     @baby_images = BabyImageResource.all.sort_by(&:id).reverse
-    @events = EventResource.all.sort{|b,a| (a.starttime && b.starttime)? (a.starttime <=> b.starttime) : a.id <=> b.id}.select do |ev|
-      if ev.starttime
-        (Time.now - (3600 * 24)).to_date < (ev.starttime).to_date
-      end
-    end
+    @events = EventResource.all.sort do |b,a|
+      (a.starttime && b.starttime)? (a.starttime <=> b.starttime) : a.id <=> b.id
+    end.select{|ev| ev.ongoing || (ev.endtime && (ev.endtime.to_time > Time.now)) }
     @links = {
       :baby => {
         :twitter => 'http://twitter.com/romeydesigns',
         :facebook => 'http://www.facebook.com/pages/Romey-Baby/349937505041234',
-        :etsy => 'http://etsy.com/shop/RomeyBaby' 
-      }, 
+        :etsy => 'http://etsy.com/shop/RomeyBaby'
+      },
       :grownup => {
         :twitter => 'http://twitter.com/romeydesigns',
         :facebook => 'http://www.facebook.com/RomeyDesigns',
         :etsy => 'http://etsy.com/shop/RomeyDesigns'
       }
     }
-     
+
     haml :index
   end
 
@@ -115,11 +117,14 @@ class Romey < Sinatra::Base
         end
       end
     end
+
+    params["event"]["ongoing"] = (params["event"]["ongoing"] == "on") || (params["event"]["ongoing"] == "1")
+
     ev = EventResource.new(params["event"])
     if !ev.save
       @event = ev
       haml :event, :layout => :admin_layout
-    else 
+    else
       redirect '/events'
     end
   end
@@ -130,7 +135,7 @@ class Romey < Sinatra::Base
     msg = nil
     if params.has_key?('id') && params.has_key?('value')
       bits = params['id'].split '_'
-      event_id = bits[0] 
+      event_id = bits[0]
       event_attr = bits[1]
       new_val = params['value']
       ev = EventResource.get(event_id.to_i)
@@ -139,13 +144,17 @@ class Romey < Sinatra::Base
           if ['starttime', 'endtime'].include? event_attr
             new_val = Chronic.parse(new_val)
           end
+          if event_attr == 'ongoing'
+            new_val = string_to_boolean(new_val)
+          end
           if ev.send(event_attr) != new_val
             ev.send(event_attr + '=', new_val)
             ev.save
-            if ['starttime', 'endtime'].include? event_attr
-              return ev.send(event_attr).strftime(Romey::TIME_FORMAT)
+            if ['starttime', 'endtime'].include?(event_attr)
+              t = ev.send(event_attr)
+              return t && t.strftime(Romey::TIME_FORMAT)
             else
-              return ev.send(event_attr)
+              return ev.send(event_attr).to_s
             end
           else
             msg = 'Update value is same as current.  No change'
@@ -164,7 +173,7 @@ class Romey < Sinatra::Base
   end
 
   get '/event/del/:id' do
-    protected!  
+    protected!
     ev = EventResource.get(params["id"].to_i)
     if ev
       ev.destroy
@@ -224,7 +233,7 @@ class Romey < Sinatra::Base
   end
 
   get '/baby/pics' do
-    content_type :json 
+    content_type :json
     BabyImageResource.all.shuffle.to_json(:include => :url)
   end
 
@@ -247,7 +256,7 @@ class Romey < Sinatra::Base
   end
 
   get '/pics' do
-    content_type :json 
+    content_type :json
     ImageResource.all.shuffle.to_json(:include => :url)
   end
 
@@ -268,7 +277,7 @@ class Romey < Sinatra::Base
   end
 
   get '/keyword/del/:id' do
-    protected!  
+    protected!
     kw = KeywordResource.get(params["id"].to_i)
     if kw
       kw.destroy
@@ -278,10 +287,6 @@ class Romey < Sinatra::Base
 
 end
 
-
-Dir[File.join(File.dirname(__FILE__),"models/**/*.rb")].each do |file|
-  require file
-end
+require File.join(File.dirname(__FILE__),"models/models.rb")
 
 DataMapper.auto_upgrade!
-

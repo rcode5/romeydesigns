@@ -1,56 +1,159 @@
-body, div { color: #86a7b7; }
+body, div {
+  color: #86a7b7; }
 
-header { width: 205px; float: left; }
+body {
+  display: flex; }
 
-#main { width: 800px; float: left; margin: 20px; }
+.admin-content {
+  flex-basis: 80%; }
 
-header #main { width: auto; }
+.admin-header {
+  flex-basis: 20%;
+  min-width: 105px; }
 
-#main header { width: 100%; float: none; }
+.admin-content header {
+  padding-left: 20px;
+  margin-top: 20px; }
 
-h1 { font-size: 150%; padding-bottom: 10px; margin-bottom: 10px; border-bottom: 1px dotted #86a7b7; }
+.logo {
+  background-image: url("/images/romey_small_logo.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 70px;
+  widht: 100%; }
 
-.ctrls { float: right; }
+h1 {
+  font-size: 150%;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px dotted #86a7b7; }
 
-ul { margin-top: 20px; }
+.ctrls {
+  float: right;
+  padding-right: 20px; }
 
-li.event { padding: 10px; margin: 10px; border: 1px dotted #86a7b7; position: relative; }
-li.event .title { font-weight: bold; }
+ul {
+  margin-top: 20px; }
 
-li.uploaded_image { width: 120px; height: 100px; padding: 10px; margin: 10px; border: 1px dotted #86a7b7; float: left; position: relative; }
+li.event {
+  padding: 10px;
+  margin: 10px;
+  border: 1px dotted #86a7b7;
+  position: relative; }
+  li.event .title {
+    font-weight: bold; }
 
-li .del { width: 16px; height: 16px; position: absolute; top: 6px; right: 6px; }
+li.uploaded_image {
+  width: 120px;
+  height: 100px;
+  padding: 10px;
+  margin: 10px;
+  border: 1px dotted #86a7b7;
+  float: left;
+  position: relative; }
 
-li .del:hover { pointer: cursor; }
+li .del {
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  top: 6px;
+  right: 6px; }
 
-li.kw { width: 200px; float: left; }
+li .del:hover {
+  pointer: cursor; }
 
-li.kw .del { position: relative; display: inline-block; margin-left: 10px; }
+li.kw {
+  width: 200px;
+  float: left; }
 
-ul.keywords { margin-bottom: 10px; }
+li.kw .del {
+  position: relative;
+  display: inline-block;
+  margin-left: 10px; }
 
-.add_keywords { padding-top: 20px; clear: both; }
+ul.keywords {
+  margin-bottom: 10px; }
 
-.event_input { margin: 10px 0 0px; }
+.add_keywords {
+  padding-top: 20px;
+  clear: both; }
 
-form .submit { margin-top: 10px; }
+.event_input {
+  margin: 10px 0 0px; }
 
-input[type=text], textarea, input[type=submit] { border: 1px solid #86a7b7; padding: 10px; font-size: 18px; color: #357; -moz-border-radius: 10px; -webkit-border-radius: 10px; border-radius: 10px; }
+form .submit {
+  margin-top: 10px; }
 
-input[type=submit] { cursor: pointer; background-color: #EFFFEF; }
+input[type=text], textarea, input[type=submit] {
+  border: 1px solid #86a7b7;
+  padding: 10px;
+  font-size: 18px;
+  color: #357;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px; }
 
-.errors { padding: 10px; border: 1px solid #ff4444; -moz-border-radius: 10px; -webkit-border-radius: 10px; border-radius: 10px; color: #800; font-weight: bold; }
+input[type=submit] {
+  cursor: pointer;
+  background-color: #EFFFEF; }
 
-.errors .err { color: #800; font-weight: normal; }
+.errors {
+  padding: 10px;
+  border: 1px solid #ff4444;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  color: #800;
+  font-weight: bold; }
 
-form .fieldWithErrors input { border: 1px solid #ff4444; }
+.errors .err {
+  color: #800;
+  font-weight: normal; }
 
-nav { font-size: 16px; line-height: 20px; color: #86a7b7; }
+form .fieldWithErrors input {
+  border: 1px solid #ff4444; }
 
-nav a { color: #86a7b7; text-decoration: none; }
+nav {
+  font-size: 16px;
+  line-height: 20px;
+  color: #86a7b7; }
 
-nav li { padding: 10px; margin: 5px; -moz-border-radius: 10px; -webkit-border-radius: 10px; border-radius: 10px; border: 1px solid transparent; }
+nav a {
+  color: #86a7b7;
+  text-decoration: none; }
 
-nav li:hover { border: 1px solid #467; color: #357; }
+nav li {
+  padding: 10px;
+  margin: 5px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  transition: all 0.23s ease-in-out; }
 
-.editable .value { color: #357; cursor: pointer; }
+nav li:hover {
+  border: 1px solid #357;
+  color: #357;
+  background-color: #fafffc; }
+
+.editable .value {
+  color: #357;
+  cursor: pointer; }
+
+.ctrls a {
+  color: #357;
+  background-color: transparent;
+  padding: 6px;
+  margin: 5px;
+  height: 24px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  border: 1px dotted #86a7b7;
+  transition: all 0.23s ease-in-out;
+  text-decoration: none; }
+
+.ctrls a:hover {
+  border: 1px dotted #357;
+  color: #357;
+  background-color: #fafffc; }

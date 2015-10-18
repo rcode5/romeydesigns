@@ -4,7 +4,7 @@
     %meta{:name => 'description', :content => 'Romey Designs : Since February 2010, Romey has been creating appliquéd and screen-printed tees for the whole family. From conceptualizing to creating the tees, Romey often cracks herself up… and expects you to do the same when you wear them. The themes often analyze the questions we all face from day to day and make general statements based on the state of the world.'}
     %meta{:name => 'keywords', :content => "#{KeywordResource.all.map(&:keyword).compact.uniq.join(', ')}" }
     %script{ :src => '/javascripts/queue.min.js' }
-    %script{ :src => 'http://code.jquery.com/jquery-1.6.1.min.js' }     
+    %script{ :src => 'http://code.jquery.com/jquery-1.6.1.min.js' }
     %script{ :src => '/javascripts/thirdparty/jquery.jscrollpane.min.js'}
     %script{ :src => '/javascripts/thirdparty/jquery.mousewheel.js'}
     %script{ :src => '/javascripts/thirdparty/mwheelIntent.js'}
@@ -23,7 +23,7 @@
     %link{:rel => 'stylesheet', :type => 'text/css', :media => 'all', :href => '/stylesheets/jquery.jscrollpane.css'}
 
     %title #{@title}
-  %body  
+  %body
     %header
       %ul.nav_links
         %li.main_link
@@ -47,7 +47,7 @@
                     %img{:src => "#{@images[ii].file.url(:grid)}"}
           .line.last
             - 3.times.each do |ii|
-              .unit.size1of4 
+              .unit.size1of4
                 .pic.block{:class => "#{((ii==0) ? 'first' : '')}"}
                   - if @images[ii+3]
                     %img{:src => "#{@images[ii+3].file.url(:grid)}"}
@@ -74,7 +74,7 @@
                     %img{:src => "#{@baby_images[ii].file.url(:grid)}"}
           .line.last
             - 3.times.each do |ii|
-              .unit.size1of4 
+              .unit.size1of4
                 .pic.block{:class => "#{((ii==0) ? 'first' : '')}"}
                   - if @baby_images[ii+3]
                     %img{:src => "#{@baby_images[ii].file.url(:grid)}"}
@@ -87,7 +87,7 @@
                     %a{:target => '_blank', :href => @links[:baby][:twitter]} tune in
                   %li.fb
                     %a{:target => '_blank', :href => @links[:baby][:facebook]} be my friend
-          
+
         %section#events.panel
           .container
             .unit.size1of4
@@ -103,17 +103,18 @@
                   .scrollPane
                     %ul
                       - @events.each_with_index do |ev, idx|
-                        - clz = 'first' if idx == 0 
+                        - clz = 'first' if idx == 0
                         - clz = 'last' if idx == @events.length - 1
                         %li{:class => clz}
                           .event
                             .title #{ev.title}
                             .desc #{ev.description}
                             .starttime #{ev.starttime ? ev.starttime.strftime('%b %e %-I:%M%p') : ''} #{ev.endtime ? "- " + ev.endtime.strftime('%-I:%M%p'):''}
-                            .address 
-                              #{ev.address}
-                              %a.maplink{:href => ev.map_link, :target => '_blank'} (map)
-                            .url 
+                            - if ev.address.present?
+                              .address
+                                #{ev.address}
+                                %a.maplink{:href => ev.map_link, :target => '_blank'} (map)
+                            .url
                               - if ev.url && ev.url.length > 6
                                 %a{:target => '_blank', :href => ev.url} #{ev.url.truncate(64)}
             .unit.size1of4.link_block
@@ -140,4 +141,3 @@
         ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
         })();
-

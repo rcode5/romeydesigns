@@ -1,14 +1,13 @@
-.ctrls
-  %a{:href => '/events'} 
-    (back to events)
-
 %header
+  .ctrls
+    %a{:href => '/events'} (back to events)
+
   %h1
     Add a new event
 
-- if @event && @event.errors 
+- if @event && @event.errors
   .errors
-    ERRORS! 
+    ERRORS!
     - @event.errors.each do |err|
       .err #{err.join}
 
@@ -16,7 +15,7 @@
   help_msg = { :starttime => 'e.g "10/20/2011 6:00PM"' ,
   :endtime => 'e.g. "10/21/2011 4:30AM"' }
 %form{:action => '/event', :method => 'POST'}
-  - [ :title, :description, :address, :starttime, :endtime, :url].each do |k|
+  - [ :title, :description, :address, :url, :starttime, :endtime].each do |k|
     - ky = k.to_s
     - clz = (@event && @event.errors && @event.errors.keys.include?(k)) ? 'fieldWithErrors' :''
     .event_input{:class => clz}
@@ -24,12 +23,17 @@
         %label{:for => "event_#{ky}"} #{ky.capitalize}
       - if k == :description
         %textarea{:class => "event", :id => "event_#{ky}", :name => "event[#{ky}]", :value => (@event ? @event.send(ky) : ''), :rows => 5, :cols => 55}
-      - else        
+      - else
         %input{:type => 'text', :class => "event", :id => "event_#{ky}", :name => "event[#{ky}]", :value => (@event ? @event.send(ky) : '') }
       - if k == :address
         %a{:class => 'test_map'} [Test address mapping]
       %span.help #{help_msg[k]}
+  .event_input
+    .lbl
+      %label{:for => "event_ongoing"}
+        Ongoing?
+        %input{type: "checkbox", id: "event_ongoing", name: "event[ongoing]" }
+    %span.help Use this check box if you don't want to show the date on the events page.
   .clear
-  .submit  
+  .submit
     %input{:type => 'submit'}
-
